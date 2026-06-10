@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./LoginForm.scss";
 
 function LoginForm() {
@@ -13,7 +14,7 @@ function LoginForm() {
 
         <div className="auth-tabs">
           <button className="tab active">Log In</button>
-          <button className="tab">Sign Up</button>
+          <button className="tab">Create Account</button>
         </div>
 
         <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
@@ -25,9 +26,9 @@ function LoginForm() {
           <div className="input-group">
             <div className="label-row">
               <label htmlFor="password">Password</label>
-              <a href="#" className="forgot-link">
+              <Link className="forgot-link" to="/forgot-password">
                 Forgot?
-              </a>
+              </Link>
             </div>
             <div className="password-input-wrapper">
               <input type="password" id="password" placeholder="••••••••" />
@@ -96,7 +97,7 @@ function LoginForm() {
             Need help accessing your account? <a href="#">Contact Support</a>
           </p>
           <p>
-            Don't have an account? <a href="#">Sign up</a>
+            Don't have an account? <Link to="/register">Create Account</Link>
           </p>
         </div>
       </div>
