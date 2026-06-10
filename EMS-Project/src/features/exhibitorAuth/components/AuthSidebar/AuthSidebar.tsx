@@ -1,5 +1,5 @@
 import "./AuthSidebar.scss";
-import logoImage from "../../../assets/logo.png";
+import logoImage from "../../../../assets/logo.png";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   StoreManagement01Icon,
