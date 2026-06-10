@@ -36,6 +36,7 @@
     border-bottom: 1px solid var(--color-border);
 
     .tab {
+      text-decoration: none;
       background: none;
       border: none;
       padding: 0 0 12px 0;
@@ -99,8 +100,7 @@
         }
       }
 
-      input[type="email"],
-      input[type="password"] {
+      input {
         width: 100%;
         padding: 12px 16px;
         border: 1px solid var(--color-border);
@@ -109,9 +109,8 @@
         outline: none;
         box-sizing: border-box;
 
-        background-color: var(--color-input-bg) !important;
-        color: var(--color-text-main) !important;
-        color-scheme: light;
+        background-color: var(--color-input-bg);
+        color: var(--color-text-main);
 
         &::placeholder {
           color: var(--color-input-placeholder);
@@ -123,30 +122,7 @@
       }
 
       .password-input-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-
-        input {
-          padding-right: 40px;
-        }
-
-        .eye-icon-btn {
-          position: absolute;
-          right: 12px;
-          background: none;
-          border: none;
-          color: var(--color-text-muted-light);
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0;
-
-          &:hover {
-            color: var(--color-text-hover);
-          }
-        }
+        width: 100%;
       }
     }
 

@@ -1,5 +1,4 @@
-import AuthSidebar from "../components/AuthSidebar";
-import LoginForm from "../components/LoginForm";
+import { AuthSidebar, LoginForm } from "../components";
 import "./LoginPage.scss";
 
 function LoginPage() {

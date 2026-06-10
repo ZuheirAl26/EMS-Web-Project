@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./LoginForm.scss";
 
 function LoginForm() {
@@ -12,40 +13,42 @@ function LoginForm() {
         </div>
 
         <div className="auth-tabs">
-          <button className="tab active">Log In</button>
-          <button className="tab">Sign Up</button>
+          <Link className="tab active" to="/login">
+            Log In
+          </Link>
+
+          <Link className="tab" to="/register">
+            Create Account
+          </Link>
         </div>
 
         <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
           <div className="input-group">
             <label htmlFor="email">Email Address</label>
-            <input type="email" id="email" placeholder="exhibitor@gmail.com" />
+            <input
+              type="email"
+              id="email"
+              autoComplete="email"
+              placeholder="exhibitor@gmail.com"
+              required
+            />
           </div>
 
           <div className="input-group">
             <div className="label-row">
               <label htmlFor="password">Password</label>
-              <a href="#" className="forgot-link">
+              <Link className="forgot-link" to="/forgot-password">
                 Forgot?
-              </a>
+              </Link>
             </div>
             <div className="password-input-wrapper">
-              <input type="password" id="password" placeholder="••••••••" />
-              <button type="button" className="eye-icon-btn">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-              </button>
+              <input
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                placeholder="••••••••"
+                required
+              />
             </div>
           </div>
 
@@ -93,10 +96,11 @@ function LoginForm() {
 
         <div className="form-footer">
           <p>
-            Need help accessing your account? <a href="#">Contact Support</a>
+            Need help accessing your account?{" "}
+            <Link to="/contact-support">Contact Support</Link>
           </p>
           <p>
-            Don't have an account? <a href="#">Sign up</a>
+            Don't have an account? <Link to="/register">Create Account</Link>
           </p>
         </div>
       </div>

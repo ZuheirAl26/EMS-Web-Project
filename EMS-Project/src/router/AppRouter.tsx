@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import LoginPage from "../features/exhibitorAuth/routes/LoginPage";
+import LoginPage from "../features/exhibitorAuth/pages/LoginPage";
 
 export const AppRouter = () => {
   return (
