@@ -35,6 +35,7 @@ Through this platform, **Administrators** hold full operational control to orche
 🛠️ Tech Stack
 * **Library:** React
 * **Language:** TypeScript
+* **Server State & Fetching & client State:** TanStack Query & Axios & Zustand
 * **Design & Prototyping:** Figma
 * **Build Tool:** Vite 
 * **Styling:** scss
