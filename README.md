@@ -45,6 +45,7 @@ Through this platform, **Administrators** hold full operational control to orche
 
 This application utilizes a strict **Feature-Based Architecture**. Instead of grouping files by type, everything related to a specific domain lives together. This allows UI logic and local state to be highly encapsulated.
 
+```
 src/
 ├── assets/          # Static assets (SVGs, images)
 ├── api/             # Global API config (Axios instances, interceptors)
