@@ -1,44 +1,44 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./LoginForm.scss";
 
 function LoginForm() {
+  const { t } = useTranslation();
   return (
     <div className="login-form-container">
       <div className="form-wrapper">
         <div className="form-header">
-          <h2>Welcome back</h2>
-          <p className="subtitle">
-            Enter your credentials to access your portal.
-          </p>
+          <h2>{t("login.welcome")}</h2>
+          <p className="subtitle">{t("login.instructions")}</p>
         </div>
 
         <div className="auth-tabs">
           <Link className="tab active" to="/login">
-            Log In
+            {t("login.tabs.logIn")}
           </Link>
 
           <Link className="tab" to="/register">
-            Create Account
+            {t("login.tabs.createAccount")}
           </Link>
         </div>
 
         <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
           <div className="input-group">
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="email">{t("login.form.email")}</label>
             <input
               type="email"
               id="email"
               autoComplete="email"
-              placeholder="exhibitor@gmail.com"
+              placeholder={t("login.form.emailPlaceholder")}
               required
             />
           </div>
 
           <div className="input-group">
             <div className="label-row">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t("login.form.password")}</label>
               <Link className="forgot-link" to="/forgot-password">
-                Forgot?
+                {t("login.form.forgotPassword")}
               </Link>
             </div>
             <div className="password-input-wrapper">
@@ -54,15 +54,15 @@ function LoginForm() {
 
           <div className="checkbox-group">
             <input type="checkbox" id="remember" />
-            <label htmlFor="remember">Remember me on this device</label>
+            <label htmlFor="remember">{t("login.form.rememberMe")}</label>
           </div>
 
           <button type="submit" className="primary-btn">
-            Log In
+            {t("login.form.submit")}
           </button>
 
           <div className="divider">
-            <span>or</span>
+            <span>{t("login.form.or")}</span>
           </div>
 
           <button type="button" className="google-btn">
@@ -90,17 +90,20 @@ function LoginForm() {
                 fill="#EA4335"
               />
             </svg>
-            Continue with Google
+            {t("login.form.googleAuth")}
           </button>
         </form>
 
         <div className="form-footer">
           <p>
-            Need help accessing your account?{" "}
-            <Link to="/contact-support">Contact Support</Link>
+            {t("login.footer.needHelp")}{" "}
+            <Link to="/contact-support">
+              {t("login.footer.contactSupport")}
+            </Link>
           </p>
           <p>
-            Don't have an account? <Link to="/register">Create Account</Link>
+            {t("login.footer.noAccount")}{" "}
+            <Link to="/register">{t("login.tabs.createAccount")}</Link>
           </p>
         </div>
       </div>

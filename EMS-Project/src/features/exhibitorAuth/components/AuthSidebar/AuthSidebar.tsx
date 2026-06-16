@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import "./AuthSidebar.scss";
 import logoImage from "../../../../assets/logo.png";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -8,15 +9,16 @@ import {
 } from "@hugeicons/core-free-icons";
 
 function AuthSidebar() {
+  const { t } = useTranslation();
   return (
     <div className="auth-sidebar">
       <img
         src={logoImage}
-        alt="Damascus International Fair Logo"
+        alt={`${t("branding.title")} Logo`}
         className="logo-image"
       />
-      <h1>Damascus International Fair</h1>
-      <p className="subtitle">Your pavilion management portal</p>
+      <h1>{t("branding.title")}</h1>
+      <p className="subtitle">{t("branding.subtitle")}</p>
 
       <ul className="feature-list">
         <li>
@@ -28,7 +30,7 @@ function AuthSidebar() {
               strokeWidth={2}
             />
           </span>
-          <p>Manage your pavilion & Services</p>
+          <p>{t("branding.feature1")}</p>
         </li>
 
         <li>
@@ -40,7 +42,7 @@ function AuthSidebar() {
               strokeWidth={2}
             />
           </span>
-          <p>Capture & track visitor leads</p>
+          <p>{t("branding.feature2")}</p>
         </li>
 
         <li>
@@ -52,12 +54,13 @@ function AuthSidebar() {
               strokeWidth={2}
             />
           </span>
-          <p>Coordinate your team & staff</p>
+          <p>{t("branding.feature3")}</p>
         </li>
       </ul>
 
       <div className="footer-copyright">
-        © 2026 Damascus International Fair. All Rights Reserved.
+        © {new Date().getFullYear()} {t("branding.title")}{" "}
+        {t("login.footer.AllRightsReserved")}.
       </div>
     </div>
   );

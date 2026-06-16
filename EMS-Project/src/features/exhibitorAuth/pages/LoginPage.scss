@@ -26,7 +26,7 @@
     .language-toggle {
       position: absolute;
       top: 24px;
-      right: 24px;
+      inset-inline-end: 24px;
 
       &:hover {
         filter: brightness(0.95);
