@@ -1,5 +1,5 @@
 import { AuthSidebar, LoginForm } from "../components";
-import LanguageButton from "../../../components/Button/LangButton";
+import LanguageButton from "../components/Button/LangButton";
 // import { useThemeStore } from "../../../context/useThemeStore";
 import "./AuthLayout.scss";
 

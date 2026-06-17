@@ -120,11 +120,32 @@
           border-color: var(--color-primary-strong);
         }
 
+        &.input-error {
+          border-color: #ef4444;
+          background-color: #fef2f2;
+
+          [data-theme="dark"] & {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.05);
+          }
+        }
+
         &::-ms-reveal,
         &::-ms-clear,
         &::-webkit-contacts-auto-fill-button,
         &::-webkit-credentials-auto-fill-button {
           display: none !important;
+        }
+      }
+
+      .error-text {
+        font-size: 0.75rem;
+        color: #ef4444;
+        margin-top: -4px;
+        font-weight: 500;
+
+        [dir="rtl"] & {
+          text-align: right;
         }
       }
 
