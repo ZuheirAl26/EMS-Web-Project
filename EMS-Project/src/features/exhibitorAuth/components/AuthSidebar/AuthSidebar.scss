@@ -4,7 +4,7 @@
     var(--color-primary) 0%,
     var(--color-sidebar-end) 100%
   );
-  color: var(--color-bg-white);
+  color: #ffffff;
   height: 100%;
   padding: 60px 40px;
   display: flex;
@@ -14,10 +14,18 @@
   text-align: center;
   position: relative;
 
+  [data-theme="dark"] & {
+    background: linear-gradient(
+      135deg,
+      var(--color-sidebar-start) 0%,
+      var(--color-sidebar-end) 100%
+    );
+  }
+
   .logo-image {
     width: 120px;
     height: 120px;
-    background-color: var(--color-bg-white);
+    background-color: #ffffff;
     border-radius: 16px;
     margin-bottom: 32px;
     box-shadow: 0 8px 24px var(--color-shadow);

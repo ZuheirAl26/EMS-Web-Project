@@ -27,3 +27,29 @@
   --color-border: #e2e8f0;
   --color-input-placeholder: #cbd5e0;
 }
+
+[data-theme="dark"] {
+  /* Brand Colors */
+  --color-primary: #0d968b;
+  --color-sidebar-start: #2a1647;
+  --color-sidebar-end: #0a4240;
+
+  /* Backgrounds & Gradients */
+  --color-bg-white: #151c23;
+  --color-surface: #0c141a;
+  --color-muted-surface: #1e293b;
+  --color-input-bg: #0c141a;
+  --color-shadow: rgba(0, 0, 0, 0.5);
+
+  /* Text Colors */
+  --color-text-main: #ffffff;
+  --color-text-dark: #ffffff;
+  --color-text-strong: #f8fafc;
+  --color-text-muted: #64748b;
+  --color-text-muted-light: rgba(255, 255, 255, 0.6);
+  --color-text-hover: #e2e8f0;
+
+  /* UI Elements */
+  --color-border: rgba(248, 250, 251, 0.07);
+  --color-input-placeholder: rgba(255, 255, 255, 0.4);
+}
