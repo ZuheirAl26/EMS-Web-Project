@@ -32,6 +32,15 @@ export interface AuthResponse {
   };
 }
 
+export interface AuthStatusResponse {
+  status: boolean;
+  message: string;
+  data?: {
+    is_verified: boolean;
+    user?: UserData;
+  };
+}
+
 export interface ResendVerificationPayload {
   email: string;
 }
@@ -54,8 +63,10 @@ export const registerApi = async (
   return response.data;
 };
 
-export const checkAuthStatusApi = async (): Promise<any> => {
-  const response = await apiClient.get("/v1/exhibitor/auth/status");
+export const checkAuthStatusApi = async (): Promise<AuthStatusResponse> => {
+  const response = await apiClient.get<AuthStatusResponse>(
+    "/v1/exhibitor/auth/status",
+  );
   return response.data;
 };
 

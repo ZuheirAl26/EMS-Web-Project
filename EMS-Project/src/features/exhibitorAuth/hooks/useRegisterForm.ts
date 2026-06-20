@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useMutation } from "@tanstack/react-query";
 import {
   validateRegisterForm,
   type RegisterErrors,
 } from "../utils/authValidation";
 import { useAuthStore } from "../../../store/AuthStore";
-import { registerApi } from "../api/Authapi";
+import {
+  registerApi,
+  type RegisterPayload,
+  type AuthResponse,
+} from "../api/Authapi";
 
 export function useRegisterForm() {
   const { t } = useTranslation();
@@ -18,50 +23,41 @@ export function useRegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<RegisterErrors>({});
-
-  const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const registerMutation = useMutation({
+    mutationFn: (payload: RegisterPayload) => registerApi(payload),
+    onSuccess: (response: AuthResponse) => {
+      if (response.status) {
+        login(response.data.user, response.data.token);
+        navigate("/check-email", { replace: true });
+      } else {
+        setApiError(response.message || "Registration Failed.");
+      }
+    },
+    onError: (error: any) => {
+      setApiError(
+        error.response?.data?.message ||
+          "An error occurred during registration.",
+      );
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setApiError(null);
 
-    const { isValid, errors: validationErrors } = validateRegisterForm(
+    const { isValid, errors: valErrors } = validateRegisterForm(
       { fullName, email, password, confirmPassword },
       t,
     );
 
     if (!isValid) {
-      setErrors(validationErrors);
+      setErrors(valErrors);
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const payload = {
-        name: fullName,
-        email: email,
-        password: password,
-      };
-
-      const response = await registerApi(payload);
-
-      if (response.status) {
-        login(response.data.user, response.data.token);
-        console.log("Success", response.data.user);
-        navigate("/check-email", { replace: true });
-      } else {
-        setApiError(response.message || "Registration Failed.");
-      }
-    } catch (error: any) {
-      console.log("Faild");
-      setApiError(
-        error.response?.data?.message ||
-          "An error occurred during registration. Please try again.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
+    registerMutation.mutate({ name: fullName, email, password });
   };
 
   return {
@@ -75,7 +71,7 @@ export function useRegisterForm() {
     setConfirmPassword,
     errors,
     setErrors,
-    isLoading,
+    isLoading: registerMutation.isPending,
     apiError,
     setApiError,
     handleSubmit,

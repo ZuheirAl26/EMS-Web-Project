@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "../../../store/AuthStore";
-import { useState } from "react";
 import { validateLoginForm } from "../utils/authValidation";
-import { loginApi } from "../api/Authapi";
+import { loginApi, type AuthResponse, type LoginPayload } from "../api/Authapi";
 
 export function useLoginForm() {
   const { t } = useTranslation();
@@ -15,11 +16,29 @@ export function useLoginForm() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {},
   );
-
-  const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const loginMutation = useMutation({
+    mutationFn: (credentials: LoginPayload) => loginApi(credentials),
+    onSuccess: (response: AuthResponse) => {
+      if (response.status) {
+        login(response.data.user, response.data.token);
+
+        if (!response.data.user.is_verified) {
+          navigate("/check-email", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      } else {
+        setApiError(response.message);
+      }
+    },
+    onError: (error: any) => {
+      setApiError(error.response?.data?.message);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setApiError(null);
 
@@ -27,36 +46,12 @@ export function useLoginForm() {
       { email, password },
       t,
     );
-
     if (!isValid) {
       setErrors(validationErrors);
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const response = await loginApi({ email, password });
-
-      if (response.status) {
-        login(response.data.user, response.data.token);
-        console.log("Success!", response.data.user, response.data.token);
-
-        if (response.data.user.is_verified === false) {
-          navigate("/check-email", { replace: true });
-        } else {
-          navigate("/dashboard", { replace: true });
-        }
-      } else {
-        setApiError(response.message || "Login failed.");
-      }
-    } catch (error: any) {
-      setApiError(
-        error.response?.data?.message ||
-          "An error occurred during login. Please try again.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
+    loginMutation.mutate({ email, password });
   };
 
   return {
@@ -66,8 +61,7 @@ export function useLoginForm() {
     setPassword,
     errors,
     setErrors,
-    isLoading,
-    apiError,
+    isLoading: loginMutation.isPending,
     setApiError,
     handleSubmit,
     t,
