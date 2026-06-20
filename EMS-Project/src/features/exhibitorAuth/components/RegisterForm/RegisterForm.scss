@@ -73,23 +73,6 @@
     flex-direction: column;
     gap: 12px;
 
-    .error-banner {
-      background-color: #fef2f2;
-      color: #ef4444;
-      border: 1px solid #fecaca;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      text-align: center;
-
-      [data-theme="dark"] & {
-        background-color: rgba(239, 68, 68, 0.1);
-        border-color: rgba(239, 68, 68, 0.2);
-        color: #f87171;
-      }
-    }
-
     .input-group {
       display: flex;
       flex-direction: column;
@@ -258,6 +241,32 @@
     }
   }
 
+  .error-banner {
+    background-color: #fef2f2;
+    color: #ef4444;
+    border: 1px solid #f87171;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    word-break: break-word;
+    overflow-wrap: break-word;
+
+    &::before {
+      content: "⚠️";
+      font-size: 16px;
+    }
+    [data-theme="dark"] & {
+      background-color: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+  }
   .form-footer {
     margin-top: 20px;
     text-align: center;

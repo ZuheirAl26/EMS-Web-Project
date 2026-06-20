@@ -32,7 +32,7 @@ export const validateLoginForm = (
       "login.validation.passwordRequired",
       "Password is required",
     );
-  } else if (password.length < 6) {
+  } else if (password.length < 8) {
     errors.password = t(
       "login.validation.passwordShort",
       "Password must be at least 6 characters",
@@ -91,7 +91,7 @@ export const validateRegisterForm = (
       "login.validation.passwordRequired",
       "Password is required",
     );
-  } else if (password.length < 6) {
+  } else if (password.length < 8) {
     errors.password = t(
       "login.validation.passwordShort",
       "Password must be at least 6 characters",

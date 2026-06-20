@@ -1,6 +1,6 @@
-import { AuthSidebar, RegisterForm } from "../components";
-import LanguageButton from "../components/Button/LangButton";
 // import { useThemeStore } from "../../../context/useThemeStore";
+import { AuthSidebar, RegisterForm } from "../../components";
+import LanguageButton from "../../components/Button/LangButton";
 import "./AuthLayout.scss";
 
 function RegisterPage() {

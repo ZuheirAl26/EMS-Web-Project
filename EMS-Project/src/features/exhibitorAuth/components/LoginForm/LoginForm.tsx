@@ -1,36 +1,23 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import GoogleButton from "../Button/GoogleButton";
-import { validateLoginForm } from "../../utils/authValidation";
 import PasswordInput from "../Input/PasswordInput";
 import "./LoginForm.scss";
+import { useLoginForm } from "../../hooks/useLoginForm";
 
 function LoginForm() {
-  const { t } = useTranslation();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {},
-  );
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const { isValid, errors: validationErrors } = validateLoginForm(
-      { email, password },
-      t,
-    );
-
-    if (isValid) {
-      console.log("Login Validation Passed! Ready to authenticate:", {
-        email,
-        password,
-      });
-    } else {
-      setErrors(validationErrors);
-    }
-  };
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    errors,
+    setErrors,
+    isLoading,
+    apiError,
+    setApiError,
+    handleSubmit,
+    t,
+  } = useLoginForm();
 
   return (
     <div className="login-form-container">
@@ -50,6 +37,12 @@ function LoginForm() {
           </Link>
         </div>
 
+        {apiError && (
+          <div className="error-banner" style={{ marginBottom: "16px" }}>
+            {apiError}
+          </div>
+        )}
+
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="email">{t("login.form.email")}</label>
@@ -63,8 +56,10 @@ function LoginForm() {
               onChange={(e) => {
                 setEmail(e.target.value);
                 if (errors.email) setErrors({ ...errors, email: undefined });
+                setApiError(null);
               }}
               className={errors.email ? "input-error" : ""}
+              disabled={isLoading}
             />
             {errors.email && <span className="error-text">{errors.email}</span>}
           </div>
@@ -84,19 +79,17 @@ function LoginForm() {
                 setPassword(e.target.value);
                 if (errors.password)
                   setErrors({ ...errors, password: undefined });
+                setApiError(null);
               }}
               placeholder="••••••••"
               error={errors.password}
             />
           </div>
 
-          <div className="checkbox-group">
-            <input type="checkbox" id="remember" />
-            <label htmlFor="remember">{t("login.form.rememberMe")}</label>
-          </div>
+          <div className="checkbox-group"></div>
 
-          <button type="submit" className="primary-btn">
-            {t("login.form.submit")}
+          <button type="submit" className="primary-btn" disabled={isLoading}>
+            {isLoading ? "Logging in..." : t("login.form.submit")}
           </button>
 
           <div className="divider">
