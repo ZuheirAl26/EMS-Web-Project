@@ -23,15 +23,28 @@ export interface UserData {
   deleted_at: string | null;
 }
 
+export interface GoogleAuthPayload {
+  token: string;
+}
+
+export interface SystemUser {
+  id: number;
+  name: string;
+  email: string;
+  role: "admin" | "exhibitor";
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AuthResponse {
   status: boolean;
   message: string;
   data: {
     user: UserData;
-    token: string;
+    token?: string;
+    access_token?: string;
   };
 }
-
 export interface AuthStatusResponse {
   status: boolean;
   message: string;
@@ -43,6 +56,11 @@ export interface AuthStatusResponse {
 
 export interface ResendVerificationPayload {
   email: string;
+}
+
+export interface GoogleAuthResponse {
+  token: string;
+  user: SystemUser;
 }
 
 export const loginApi = async (data: LoginPayload): Promise<AuthResponse> => {
@@ -91,7 +109,12 @@ export const resendVerificationApi = async (
   return response.data;
 };
 
-export const getUserProfileApi = async (): Promise<AuthResponse> => {
-  const response = await apiClient.get<AuthResponse>("/v1/exhibitor/profile");
+export const googleAuthApi = async (
+  data: GoogleAuthPayload,
+): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>(
+    "/v1/exhibitor/auth/system/google",
+    data,
+  );
   return response.data;
 };

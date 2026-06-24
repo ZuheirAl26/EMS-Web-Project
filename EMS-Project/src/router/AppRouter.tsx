@@ -11,18 +11,18 @@ export const AppRouter = () => {
       {/* <Route element={<GuestRoute />}> */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      {/* </Route> */}
       <Route path="/check-email" element={<CheckEmailPage />} />
+      <Route path="/verify-email" element={<VerifyAccountPage />} />
+
+      {/* <Route element={<ProtectedRoute />}> */}
+      <Route
+        path="/dashboard"
+        element={<div>Welcome to your Dashboard!</div>}
+      />
       {/* </Route> */}
 
-      {/* <Route element={<ProtectedRoute />}>
-        <Route
-          path="/dashboard"
-          element={<div>Welcome to your Dashboard!</div>}
-        />
-      </Route> */}
-
       {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
-      <Route path="/verify-email" element={<VerifyAccountPage />} />
 
       <Route path="*" element={<div>404 - Page Not Found</div>} />
     </Routes>

@@ -1,9 +1,21 @@
 import { useTranslation } from "react-i18next";
 
-function GoogleButton() {
+interface GoogleButtonProps {
+  onClick: () => void;
+  isLoading?: boolean;
+}
+
+function GoogleButton({ onClick, isLoading = false }: GoogleButtonProps) {
   const { t } = useTranslation();
+
   return (
-    <button type="button" className="google-btn">
+    <button
+      type="button"
+      className="google-btn"
+      onClick={onClick}
+      disabled={isLoading}
+      aria-busy={isLoading}
+    >
       <svg
         width="18"
         height="18"
@@ -28,7 +40,9 @@ function GoogleButton() {
           fill="#EA4335"
         />
       </svg>
-      {t("login.form.googleAuth")}
+      {isLoading
+        ? t("login.form.processing", "Processing...")
+        : t("login.form.googleAuth")}
     </button>
   );
 }

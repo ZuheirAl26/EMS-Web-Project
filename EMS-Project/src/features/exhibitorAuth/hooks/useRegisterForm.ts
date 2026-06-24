@@ -29,8 +29,14 @@ export function useRegisterForm() {
     mutationFn: (payload: RegisterPayload) => registerApi(payload),
     onSuccess: (response: AuthResponse) => {
       if (response.status) {
-        login(response.data.user, response.data.token);
-        navigate("/check-email", { replace: true });
+        const validToken = response.data.token || response.data.access_token;
+
+        if (validToken) {
+          login(response.data.user, validToken);
+          navigate("/check-email", { replace: true });
+        } else {
+          setApiError("No token received from server.");
+        }
       } else {
         setApiError(response.message || "Registration Failed.");
       }

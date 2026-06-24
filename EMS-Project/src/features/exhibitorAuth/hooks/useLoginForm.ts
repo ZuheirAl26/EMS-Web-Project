@@ -21,16 +21,22 @@ export function useLoginForm() {
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginPayload) => loginApi(credentials),
     onSuccess: (response: AuthResponse) => {
-      if (response.status) {
-        login(response.data.user, response.data.token);
-
+      if (response.status && response.data) {
+        const receivedToken = response.data.token || response.data.access_token;
+        if (!receivedToken) {
+          setApiError(
+            "System Error: No authorization token received from server.",
+          );
+          return;
+        }
+        login(response.data.user, receivedToken);
         if (!response.data.user.is_verified) {
           navigate("/check-email", { replace: true });
         } else {
           navigate("/dashboard", { replace: true });
         }
       } else {
-        setApiError(response.message);
+        setApiError(response.message || "Login failed.");
       }
     },
     onError: (error: any) => {
@@ -62,6 +68,7 @@ export function useLoginForm() {
     errors,
     setErrors,
     isLoading: loginMutation.isPending,
+    apiError,
     setApiError,
     handleSubmit,
     t,

@@ -4,6 +4,7 @@ import PasswordInput from "../Input/PasswordInput";
 import TextInput from "../Input/TextInput";
 import { useRegisterForm } from "../../hooks/useRegisterForm";
 import "./RegisterForm.scss";
+import { useGoogleAuth } from "../../hooks/useGoogleAuth";
 
 function RegisterForm() {
   const {
@@ -23,6 +24,9 @@ function RegisterForm() {
     handleSubmit,
     t,
   } = useRegisterForm();
+
+  const { triggerGoogleFlow, isGoogleLoading, googleErrorMessage } =
+    useGoogleAuth();
 
   return (
     <div className="register-form-container">
@@ -137,7 +141,10 @@ function RegisterForm() {
           <div className="divider">
             <span>{t("login.form.or")}</span>
           </div>
-          <GoogleButton />
+          <GoogleButton
+            onClick={() => triggerGoogleFlow()}
+            isLoading={isGoogleLoading}
+          />
         </form>
 
         <div className="form-footer">

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import GoogleButton from "../Button/GoogleButton";
 import PasswordInput from "../Input/PasswordInput";
-import "./LoginForm.scss";
 import { useLoginForm } from "../../hooks/useLoginForm";
+import { useGoogleAuth } from "../../hooks/useGoogleAuth";
+import "./LoginForm.scss";
 
 function LoginForm() {
   const {
@@ -18,6 +19,9 @@ function LoginForm() {
     handleSubmit,
     t,
   } = useLoginForm();
+
+  const { triggerGoogleFlow, isGoogleLoading, googleErrorMessage } =
+    useGoogleAuth();
 
   return (
     <div className="login-form-container">
@@ -37,9 +41,9 @@ function LoginForm() {
           </Link>
         </div>
 
-        {apiError && (
+        {(apiError || googleErrorMessage) && (
           <div className="error-banner" style={{ marginBottom: "16px" }}>
-            {apiError}
+            {apiError || googleErrorMessage}
           </div>
         )}
 
@@ -59,7 +63,7 @@ function LoginForm() {
                 setApiError(null);
               }}
               className={errors.email ? "input-error" : ""}
-              disabled={isLoading}
+              disabled={isLoading || isGoogleLoading}
             />
             {errors.email && <span className="error-text">{errors.email}</span>}
           </div>
@@ -83,20 +87,28 @@ function LoginForm() {
               }}
               placeholder="••••••••"
               error={errors.password}
+              required={true}
             />
           </div>
 
-          <div className="checkbox-group"></div>
-
-          <button type="submit" className="primary-btn" disabled={isLoading}>
-            {isLoading ? "Logging in..." : t("login.form.submit")}
+          <button
+            type="submit"
+            className="primary-btn"
+            disabled={isLoading || isGoogleLoading}
+          >
+            {isLoading
+              ? t("login.form.processing", "Processing...")
+              : t("login.form.submit")}
           </button>
 
           <div className="divider">
             <span>{t("login.form.or")}</span>
           </div>
 
-          <GoogleButton />
+          <GoogleButton
+            onClick={() => triggerGoogleFlow()}
+            isLoading={isGoogleLoading}
+          />
         </form>
 
         <div className="form-footer">

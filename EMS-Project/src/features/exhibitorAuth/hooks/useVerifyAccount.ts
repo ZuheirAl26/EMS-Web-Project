@@ -28,6 +28,9 @@ export function useVerifyAccount() {
     retry: false,
   });
 
+  const isSuccess =
+    data?.status === true || data?.data?.user?.is_verified === true;
+
   useEffect(() => {
     if (!isLinkValidShape) {
       setErrorMessage(
@@ -36,24 +39,36 @@ export function useVerifyAccount() {
       return;
     }
 
-    if (data?.status === true || data?.data?.user?.is_verified === true) {
-      if (data.data?.user) {
+    if (isSuccess) {
+      if (data?.data?.user && data?.data?.token) {
         login(data.data.user, data.data.token);
       }
+
+      const channel = new BroadcastChannel("AUTH_SUCCESS_CHANNEL");
+      channel.postMessage({
+        type: "SUCCESS",
+        user: data?.data?.user,
+        token: data?.data?.token,
+      });
+      channel.close();
+
+      const killTimer = setTimeout(() => {
+        window.open("", "_self");
+        window.close();
+      }, 3000);
+
+      return () => clearTimeout(killTimer);
     } else if (isError) {
       const axiosErr = error as any;
       setErrorMessage(
-        axiosErr.response?.data?.message || "Verification failed.",
+        axiosErr?.response?.data?.message || "Verification failed.",
       );
     }
-  }, [data, isError, error, isLinkValidShape, login]);
-
-  let status: "verifying" | "success" | "error" = "verifying";
-  if (!isLinkValidShape || isError || (data && !data.status)) status = "error";
-  if (data?.status) status = "success";
+  }, [isSuccess, data, isError, error, isLinkValidShape, login]);
 
   return {
-    status: isPending ? "verifying" : status,
-    errorMessage,
+    isPending,
+    isError: !isLinkValidShape || isError || (data && !data.status),
+    isSuccess,
   };
 }
