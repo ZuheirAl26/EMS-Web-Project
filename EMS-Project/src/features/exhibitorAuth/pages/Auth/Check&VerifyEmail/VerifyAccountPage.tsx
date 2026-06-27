@@ -1,4 +1,4 @@
-import { useVerifyAccount } from "../../hooks/useVerifyAccount";
+import { useVerifyAccount } from "../../../hooks/useVerifyAccount";
 
 export default function VerifyAccountPage() {
   const { isPending, isError, isSuccess } = useVerifyAccount();

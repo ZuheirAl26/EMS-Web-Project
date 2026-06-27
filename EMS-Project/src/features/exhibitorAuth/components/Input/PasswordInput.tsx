@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./PasswordInput.scss";
 
 interface PasswordInputProps {
   id: string;

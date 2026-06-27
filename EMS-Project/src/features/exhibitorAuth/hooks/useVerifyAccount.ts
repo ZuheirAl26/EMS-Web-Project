@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../../store/AuthStore";
 import { verifyEmailApi } from "../api/Authapi";
-import { authKeys } from "../api/authKeys";
+import { authKeys } from "../api/AuthKeys";
 
 export function useVerifyAccount() {
   const [searchParams] = useSearchParams();

@@ -63,6 +63,28 @@ export interface GoogleAuthResponse {
   user: SystemUser;
 }
 
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface ResetPasswordPayload {
+  token: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export interface ChangePasswordPayload {
+  current_password: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export interface PasswordResponse {
+  status: boolean;
+  message: string;
+}
+
 export const loginApi = async (data: LoginPayload): Promise<AuthResponse> => {
   const response = await apiClient.post<AuthResponse>(
     "/v1/exhibitor/login",
@@ -114,6 +136,36 @@ export const googleAuthApi = async (
 ): Promise<AuthResponse> => {
   const response = await apiClient.post<AuthResponse>(
     "/v1/exhibitor/auth/system/google",
+    data,
+  );
+  return response.data;
+};
+
+export const forgotPasswordApi = async (
+  data: ForgotPasswordPayload,
+): Promise<PasswordResponse> => {
+  const response = await apiClient.post<PasswordResponse>(
+    "/v1/exhibitor/forgot-password",
+    data,
+  );
+  return response.data;
+};
+
+export const resetPasswordApi = async (
+  data: ResetPasswordPayload,
+): Promise<PasswordResponse> => {
+  const response = await apiClient.post<PasswordResponse>(
+    "/v1/exhibitor/reset-password",
+    data,
+  );
+  return response.data;
+};
+
+export const changePasswordApi = async (
+  data: ChangePasswordPayload,
+): Promise<PasswordResponse> => {
+  const response = await apiClient.post<PasswordResponse>(
+    "/v1/exhibitor/change-password",
     data,
   );
   return response.data;

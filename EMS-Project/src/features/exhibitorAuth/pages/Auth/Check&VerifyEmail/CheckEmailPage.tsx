@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
-import { useCheckEmail } from "../../hooks/useCheckEmail";
+import { useCheckEmail } from "../../../hooks/useCheckEmail";
 import "./CheckEmailPage.scss";
 
 export default function CheckEmailPage() {
-  const { user, isResending, successMessage, apiError, handleResendClick, t } =
-    useCheckEmail();
+  const {
+    user,
+    isResending,
+    successMessage,
+    apiError,
+    cooldown,
+    handleResendClick,
+    t,
+  } = useCheckEmail();
 
   return (
     <div className="check-email-container">
@@ -44,12 +51,12 @@ export default function CheckEmailPage() {
           <button
             className={`primary-btn ${successMessage ? "btn-success" : ""}`}
             onClick={handleResendClick}
-            disabled={isResending || !!successMessage}
+            disabled={isResending || cooldown > 0}
           >
             {isResending
               ? t("checkEmail.resendingBtn")
-              : successMessage
-                ? t("checkEmail.emailSent")
+              : cooldown > 0
+                ? `${t("checkEmail.resendBtn")} (${cooldown}s)`
                 : t("checkEmail.resendBtn")}
           </button>
         </div>

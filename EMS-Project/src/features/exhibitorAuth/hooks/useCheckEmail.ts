@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../../store/AuthStore";
 import { checkAuthStatusApi, resendVerificationApi } from "../api/Authapi";
-import { authKeys } from "../api/authKeys";
+import { authKeys } from "../api/AuthKeys";
+
+const COOLDOWN_SECONDS = 120;
 
 export function useCheckEmail() {
   const { t } = useTranslation();
@@ -17,6 +19,28 @@ export function useCheckEmail() {
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [cooldown, setCooldown] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startCooldown = () => {
+    setCooldown(COOLDOWN_SECONDS);
+    timerRef.current = setInterval(() => {
+      setCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current!);
+          setSuccessMessage(null);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, []);
 
   const { data: authStatus } = useQuery({
     queryKey: authKeys.status(),
@@ -39,7 +63,7 @@ export function useCheckEmail() {
         };
         login(verifiedUser, token);
       }
-      navigate("/dashboard", { replace: true });
+      navigate("/profile", { replace: true });
     }
   }, [isVerified, authStatus, user, token, login, navigate]);
 
@@ -53,7 +77,7 @@ export function useCheckEmail() {
           login({ ...user, is_verified: true }, token);
         }
         queryClient.invalidateQueries({ queryKey: authKeys.status() });
-        navigate("/dashboard", { replace: true });
+        navigate("/profile", { replace: true });
       }
     };
     return () => channel.close();
@@ -63,6 +87,7 @@ export function useCheckEmail() {
     mutationFn: (email: string) => resendVerificationApi({ email }),
     onSuccess: () => {
       setSuccessMessage(t("checkEmail.emailSent"));
+      startCooldown();
     },
     onError: (err: any) => {
       setApiError(err?.response?.data?.message || t("checkEmail.errorMsg"));
@@ -70,7 +95,7 @@ export function useCheckEmail() {
   });
 
   const handleResendClick = () => {
-    if (!user?.email) return;
+    if (!user?.email || cooldown > 0) return;
     setSuccessMessage(null);
     setApiError(null);
     resendMutation.mutate(user.email);
@@ -81,6 +106,7 @@ export function useCheckEmail() {
     isResending: resendMutation.isPending,
     successMessage,
     apiError,
+    cooldown,
     handleResendClick,
     t,
   };

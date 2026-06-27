@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import "./GoogleButton.scss";
 
 interface GoogleButtonProps {
   onClick: () => void;
