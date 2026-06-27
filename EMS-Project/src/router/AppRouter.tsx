@@ -3,14 +3,12 @@ import { GuestRoute, ProtectedRoute } from "./guards";
 import {
   ChangePasswordPage,
   CheckEmailPage,
-  ExhibitorProfilePage,
   ForgotPasswordPage,
   LoginPage,
   RegisterPage,
   ResetPasswordPage,
   VerifyAccountPage,
 } from "../features/ExhibitorAuth/pages";
-import { ExhibitorLayout } from "../layouts/DashboardLayout/ExhibitorLayout";
 
 export const AppRouter = () => {
   return (
@@ -25,11 +23,11 @@ export const AppRouter = () => {
       <Route path="/verify-email" element={<VerifyAccountPage />} />
 
       {/* <Route element={<ProtectedRoute />}> */}
-      <Route element={<ExhibitorLayout />}>
-        <Route path="/dashboard" element={<div>Hi</div>} />
-        <Route path="/change-password" element={<ChangePasswordPage />} />
-        <Route path="/profile" element={<ExhibitorProfilePage />} />{" "}
-      </Route>
+      {/* <Route element={<ExhibitorLayout />}> */}
+      <Route path="/dashboard" element={<div>Hi</div>} />
+      <Route path="/change-password" element={<ChangePasswordPage />} />
+      {/* <Route path="/profile" element={<ExhibitorProfilePage />} /> */}
+      {/* </Route> */}
 
       <Route path="*" element={<div>404 - Page Not Found</div>} />
     </Routes>
