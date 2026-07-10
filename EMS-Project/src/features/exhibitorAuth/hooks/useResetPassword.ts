@@ -27,12 +27,9 @@ export function useResetPassword() {
       if (response.status) {
         setIsSuccess(true);
         setTimeout(() => {
-          navigate("/login", { replace: true });
-
-          if (window.opener && !window.opener.closed) {
-            window.opener.close();
-          }
-        }, 2500);
+          window.open("", "_self");
+          window.close();
+        }, 1500);
       } else {
         setApiError(response.message || t("resetPassword.errorMsg"));
       }

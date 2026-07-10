@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import GoogleButton from "../Button/GoogleButton";
 import PasswordInput from "../Input/PasswordInput";
 import { useLoginForm } from "../../hooks/useLoginForm";
@@ -6,6 +6,7 @@ import { useGoogleAuth } from "../../hooks/useGoogleAuth";
 import "./LoginForm.scss";
 
 function LoginForm() {
+  const location = useLocation();
   const {
     email,
     setEmail,
@@ -71,7 +72,11 @@ function LoginForm() {
           <div className="input-group">
             <div className="label-row">
               <label htmlFor="password">{t("login.form.password")}</label>
-              <Link className="forgot-link" to="/forgot-password">
+              <Link
+                className="forgot-link"
+                to="/forgot-password"
+                state={{ background: location }}
+              >
                 {t("login.form.forgotPassword")}
               </Link>
             </div>

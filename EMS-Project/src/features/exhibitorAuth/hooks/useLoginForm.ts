@@ -20,12 +20,13 @@ export function useLoginForm() {
 
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginPayload) => loginApi(credentials),
+    onMutate: () => {},
     onSuccess: (response: AuthResponse) => {
       if (response.status && response.data) {
         const receivedToken = response.data.token || response.data.access_token;
         if (!receivedToken) {
           setApiError(
-            "System Error: No authorization token received from server.",
+            "System Error: No authorization token recived from the server",
           );
           return;
         }
