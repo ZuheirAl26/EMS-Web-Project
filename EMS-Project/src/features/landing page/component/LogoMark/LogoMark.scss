@@ -1,0 +1,15 @@
+.dif-logo {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  border-radius: 4px;
+
+  &--large {
+    width: 80px;
+    height: 80px;
+    padding: 8px;
+    background: #ffffff;
+    border-radius: 9999px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  }
+}
