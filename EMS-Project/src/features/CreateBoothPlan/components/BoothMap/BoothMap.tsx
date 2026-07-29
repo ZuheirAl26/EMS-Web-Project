@@ -4,14 +4,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import mapFallback from "../../../../assets/map.png";
 import mapSource from "../../../../assets/map.svg";
-import type { Booth } from "../../api/BoothApi";
+import type { BoothMapProps } from "../../types/componentType";
 import "./BoothMap.scss";
-
-interface BoothMapProps {
-  booths: Booth[];
-  selectedBoothId: number | null;
-  onSelect: (booth: Booth) => void;
-}
 
 const MAP_STYLE_ID = "ems-interactive-booth-styles";
 

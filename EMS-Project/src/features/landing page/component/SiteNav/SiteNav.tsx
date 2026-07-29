@@ -2,8 +2,26 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useLanguageStore } from "../../../../context/useLanguageStore";
 import { useThemeStore } from "../../../../context/useThemeStore";
+import type {
+  LandingNavTranslationKey,
+  LandingSectionId,
+} from "../../types/landingType";
+import { toLandingSectionHref } from "../../utils/validation";
 import "./SiteNav.scss";
 import logo from "../../../../assets/logo.png";
+
+const navigationItems: ReadonlyArray<{
+  id: LandingSectionId;
+  label: LandingNavTranslationKey;
+}> = [
+  { id: "home", label: "nav.home" },
+  { id: "exhibition", label: "nav.exhibition" },
+  { id: "floor-map", label: "nav.floorMap" },
+  { id: "plan", label: "nav.plan" },
+  { id: "features", label: "nav.features" },
+  { id: "blog", label: "nav.blog" },
+  { id: "contact", label: "nav.contact" },
+];
 
 export function SiteNav() {
   const { t } = useTranslation("landing");
@@ -24,13 +42,11 @@ export function SiteNav() {
 
         {/* Navigation Links */}
         <nav className="site-nav__links" aria-label={t("nav.aria")}>
-          <a href="#home">{t("nav.home")}</a>
-          <a href="#exhibition">{t("nav.exhibition")}</a>
-          <a href="#floor-map">{t("nav.floorMap")}</a>
-          <a href="#plan">{t("nav.plan")}</a>
-          <a href="#features">{t("nav.features")}</a>
-          <a href="#blog">{t("nav.blog")}</a>
-          <a href="#contact">{t("nav.contact")}</a>
+          {navigationItems.map((item) => (
+            <a href={toLandingSectionHref(item.id)} key={item.id}>
+              {t(item.label)}
+            </a>
+          ))}
         </nav>
 
         {/* Action Buttons */}

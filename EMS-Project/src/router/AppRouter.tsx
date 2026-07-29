@@ -1,5 +1,4 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { GuestRoute, ProtectedRoute } from "./guards";
 import {
   ChangePasswordPage,
   CheckEmailPage,
@@ -9,9 +8,9 @@ import {
   ResetPasswordPage,
   VerifyAccountPage,
 } from "../features/ExhibitorAuth/pages";
-import { LandingPage } from "../features/landing page/pages";
 import {
   AddServicesPage,
+  CompanyProfilePage,
   CreateBoothPlanPage,
 } from "../features/CreateBoothPlan/pages";
 import { MyBoothsPage } from "../features/MyBooths/pages";
@@ -48,6 +47,10 @@ export const AppRouter = () => {
         <Route
           path="/dashboard/booths/create/services"
           element={<AddServicesPage />}
+        />
+        <Route
+          path="/dashboard/booths/create/company"
+          element={<CompanyProfilePage />}
         />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="booths" element={<MyBoothsPage />} />

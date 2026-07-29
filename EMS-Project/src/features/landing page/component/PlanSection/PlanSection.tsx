@@ -3,7 +3,7 @@ import { Button } from "../../../../components";
 import "./PlanSection.scss";
 
 const planItems = [
-  "pavilion",
+  "booth",
   "launch",
   "showcase",
   "followUp",

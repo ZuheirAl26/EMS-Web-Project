@@ -1,14 +1,6 @@
 import { useState } from "react";
+import type { PasswordInputProps } from "../../types/componentType";
 import "./PasswordInput.scss";
-
-interface PasswordInputProps {
-  id: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  error?: string;
-  required?: boolean;
-}
 
 export default function PasswordInput({
   id,

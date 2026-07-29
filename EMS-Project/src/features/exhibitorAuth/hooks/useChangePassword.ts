@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
-import { changePasswordApi, type ChangePasswordPayload } from "../api/Authapi";
+import { changePasswordApi } from "../api/Authapi";
+import type { ChangePasswordPayload } from "../types/authType";
+import type { PasswordErrors } from "../types/validationType";
+import { getApiErrorMessage } from "../utils/apiError";
+import {
+  calculatePasswordStrength,
+  validatePasswordConfirmation,
+} from "../utils/validation";
 
 export function useChangePassword(onSuccess?: () => void) {
   const { t } = useTranslation();
@@ -9,11 +16,7 @@ export function useChangePassword(onSuccess?: () => void) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState<{
-    currentPassword?: string;
-    password?: string;
-    confirmPassword?: string;
-  }>({});
+  const [errors, setErrors] = useState<PasswordErrors>({});
   const [apiError, setApiError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -30,9 +33,9 @@ export function useChangePassword(onSuccess?: () => void) {
         setApiError(response.message || t("changePassword.errorMsg"));
       }
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       setApiError(
-        error.response?.data?.message || t("changePassword.errorMsg"),
+        getApiErrorMessage(error, t("changePassword.errorMsg")),
       );
     },
   });
@@ -41,17 +44,13 @@ export function useChangePassword(onSuccess?: () => void) {
     e.preventDefault();
     setApiError(null);
     setIsSuccess(false);
-    const newErrors: typeof errors = {};
-
-    if (!currentPassword) {
-      newErrors.currentPassword = t("changePassword.currentRequired");
-    }
-    if (!password || password.length < 8) {
-      newErrors.password = t("changePassword.passwordShort");
-    }
-    if (password !== confirmPassword) {
-      newErrors.confirmPassword = t("changePassword.passwordMismatch");
-    }
+    const newErrors = validatePasswordConfirmation(
+      password,
+      confirmPassword,
+      t,
+      "changePassword",
+      currentPassword,
+    );
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -64,15 +63,7 @@ export function useChangePassword(onSuccess?: () => void) {
     });
   };
 
-  const passwordStrength = (() => {
-    if (!password) return 0;
-    let score = 0;
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-    return score;
-  })();
+  const passwordStrength = calculatePasswordStrength(password);
 
   return {
     currentPassword,

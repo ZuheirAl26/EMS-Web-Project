@@ -37,7 +37,7 @@
         background: var(--color-muted-surface);
         border: none;
         padding: 8px 16px;
-        border-radius: 20px;
+        border-radius: var(--radius-5xl);
         cursor: pointer;
         font-weight: 600;
         color: var(--color-text-strong);

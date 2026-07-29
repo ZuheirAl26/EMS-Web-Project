@@ -1,4 +1,4 @@
-import type { BoothFilters } from "./BoothApi";
+import type { BoothFilters } from "../types/boothType";
 
 export const boothKeys = {
   all: ["booths"] as const,

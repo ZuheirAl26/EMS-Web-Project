@@ -4,7 +4,7 @@
   min-height: 374px;
   padding: 43px 0;
   background: var(--color-ebony);
-  color: #ffffff;
+  color: var(--color-white);
 
   &__shell {
     width: min(100%, 1280px);
@@ -25,7 +25,7 @@
     gap: 24px;
 
     p {
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--color-white-a60);
       font-size: 14px;
       line-height: 20px;
     }
@@ -47,7 +47,7 @@
   &__contact {
     h3 {
       margin: 0 0 16px;
-      color: #ffffff;
+      color: var(--color-white);
       font-size: 14px;
       line-height: 20px;
       font-weight: 800;
@@ -63,7 +63,7 @@
 
     a,
     li {
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--color-white-a60);
       font-size: 14px;
       line-height: 20px;
     }
@@ -76,11 +76,11 @@
     input,
     textarea {
       width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 6px;
+      border: 1px solid var(--color-white-a10);
+      background: var(--color-white-a05);
+      border-radius: var(--radius-md);
       padding: 9px 12px;
-      color: #ffffff;
+      color: var(--color-white);
       font-size: 14px;
       line-height: 20px;
     }
@@ -97,8 +97,8 @@
     display: flex;
     justify-content: space-between;
     gap: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.4);
+    border-top: 1px solid var(--color-white-a10);
+    color: var(--color-white-a40);
     font-size: 14px;
     line-height: 20px;
 

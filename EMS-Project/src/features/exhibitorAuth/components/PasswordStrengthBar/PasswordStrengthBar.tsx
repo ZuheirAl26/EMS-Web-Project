@@ -1,10 +1,5 @@
+import type { PasswordStrengthBarProps } from "../../types/componentType";
 import "./PasswordStrengthBar.scss";
-
-interface PasswordStrengthBarProps {
-  strength: number;
-  password: string;
-  confirmPassword?: string;
-}
 
 const labels = ["", "Weak", "Fair", "Good", "Strong"];
 const colors = ["", "#ef4444", "#f59e0b", "#3b82f6", "#10b981"];

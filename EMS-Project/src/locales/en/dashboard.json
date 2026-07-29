@@ -16,7 +16,7 @@
   },
   "account": {
     "fallbackName": "Exhibitor Account",
-    "role": "Pavilion Manager",
+    "role": "Booth Manager",
     "logout": "Log out"
   },
   "header": {

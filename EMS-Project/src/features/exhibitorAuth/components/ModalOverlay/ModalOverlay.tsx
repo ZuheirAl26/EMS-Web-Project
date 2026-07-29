@@ -1,10 +1,6 @@
 import { useEffect } from "react";
+import type { ModalOverlayProps } from "../../types/componentType";
 import "./ModalOverlay.scss";
-
-interface ModalOverlayProps {
-  children: React.ReactNode;
-  onClose?: () => void;
-}
 
 export default function ModalOverlay({ children, onClose }: ModalOverlayProps) {
   useEffect(() => {

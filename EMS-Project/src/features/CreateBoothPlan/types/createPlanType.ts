@@ -1,0 +1,20 @@
+import type { CompanyProfileDraft } from "./companyProfileType";
+
+export interface CreatePlanState {
+  boothId: number | null;
+  serviceQuantities: Record<number, number>;
+  companyProfile: CompanyProfileDraft;
+  companyLogo: File | null;
+  boothBanner: File | null;
+  setBoothId: (boothId: number | null) => void;
+  setServiceQuantity: (serviceId: number, quantity: number) => void;
+  updateCompanyProfile: (
+    field: keyof CompanyProfileDraft,
+    value: string,
+  ) => void;
+  setCompanyLogo: (file: File | null) => void;
+  setBoothBanner: (file: File | null) => void;
+  resetDraft: () => void;
+}
+
+export type BoothPlanStep = 1 | 2 | 3 | 4;

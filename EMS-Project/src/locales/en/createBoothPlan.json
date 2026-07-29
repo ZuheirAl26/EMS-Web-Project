@@ -7,7 +7,7 @@
   },
   "steps": {
     "aria": "Booth creation progress",
-    "chooseBooth": "Choose Pavilion",
+    "chooseBooth": "Choose Booth",
     "addServices": "Add Services",
     "companyProfile": "Company Profile",
     "review": "Review & Submit"
@@ -25,7 +25,7 @@
   },
   "services": {
     "title": "Add Services",
-    "description": "Enhance your pavilion with additional services. Set quantity to 0 to skip.",
+    "description": "Enhance your booth with additional services. Set quantity to 0 to skip.",
     "loading": "Loading services\u2026",
     "emptyTitle": "No services found",
     "emptyMessage": "Change or reset the filters and try again.",
@@ -62,6 +62,63 @@
       "title": "Could not load services",
       "message": "Check your connection or API configuration and try again.",
       "retry": "Retry"
+    }
+  },
+  "companyProfile": {
+    "title": "Company Profile",
+    "description": "Pre-filled from your sign-up. Update if needed, or select an existing company.",
+    "primaryCompany": "Primary Company",
+    "socialLinks": "Social Links",
+    "socialLinksRequirement": "(at least one required)",
+    "optional": "(optional)",
+    "back": "Back",
+    "continue": "Continue",
+    "readyForReview": "All company fields are saved and ready for the review step.",
+    "missingBoothTitle": "Choose a booth first",
+    "missingBoothMessage": "The company-profile step needs a selected booth before it can continue.",
+    "chooseBooth": "Choose Booth",
+    "fields": {
+      "companyName": "Company Name",
+      "companyNamePlaceholder": "Your company name",
+      "businessSector": "Business Sector",
+      "businessSectorPlaceholder": "e.g. Technology",
+      "companyLocation": "Company Location",
+      "companyLocationPlaceholder": "e.g. Damascus, Syria",
+      "phoneNumber": "Phone Number",
+      "phoneNumberPlaceholder": "+963 11 XXX XXXX",
+      "yearFounded": "Year Founded",
+      "yearFoundedPlaceholder": "2010",
+      "website": "Website",
+      "websitePlaceholder": "https://yourcompany.com",
+      "twitter": "Twitter / X",
+      "twitterPlaceholder": "https://x.com/yourhandle",
+      "linkedin": "LinkedIn",
+      "linkedinPlaceholder": "https://linkedin.com/company/...",
+      "description": "Description",
+      "descriptionPlaceholder": "Brief description of your company..."
+    },
+    "media": {
+      "title": "Media & Assets",
+      "description": "Your selected files will be included with the company data in the final request.",
+      "logo": "Company Logo",
+      "banner": "Booth Banner",
+      "logoHelp": "PNG, JPG, WebP, or SVG",
+      "bannerHelp": "Recommended: 1920×480px",
+      "dropBanner": "Drop banner image here",
+      "uploaded": "Uploaded",
+      "missing": "Missing"
+    },
+    "directory": {
+      "button": "Company directory",
+      "title": "Existing company profiles",
+      "description": "Selecting a saved company will fill the form automatically when the directory endpoint is connected.",
+      "selectLabel": "Company profile",
+      "empty": "No saved company profiles loaded",
+      "useCompany": "Use company"
+    },
+    "validation": {
+      "socialLinkRequired": "Add at least one social link: Website, Twitter / X, or LinkedIn.",
+      "logoRequired": "Company logo is required."
     }
   },
   "filters": {

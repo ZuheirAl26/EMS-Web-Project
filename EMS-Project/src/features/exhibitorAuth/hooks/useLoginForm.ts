@@ -3,8 +3,14 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "../../../store/AuthStore";
-import { validateLoginForm } from "../utils/authValidation";
-import { loginApi, type AuthResponse, type LoginPayload } from "../api/Authapi";
+import { loginApi } from "../api/Authapi";
+import type {
+  AuthResponse,
+  LoginPayload,
+} from "../types/authType";
+import type { LoginErrors } from "../types/validationType";
+import { getApiErrorMessage } from "../utils/apiError";
+import { validateLoginForm } from "../utils/validation";
 
 export function useLoginForm() {
   const { t } = useTranslation();
@@ -13,9 +19,7 @@ export function useLoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {},
-  );
+  const [errors, setErrors] = useState<LoginErrors>({});
   const [apiError, setApiError] = useState<string | null>(null);
 
   const loginMutation = useMutation({
@@ -40,8 +44,8 @@ export function useLoginForm() {
         setApiError(response.message || "Login failed.");
       }
     },
-    onError: (error: any) => {
-      setApiError(error.response?.data?.message);
+    onError: (error: unknown) => {
+      setApiError(getApiErrorMessage(error, t("login.errorMsg")));
     },
   });
 

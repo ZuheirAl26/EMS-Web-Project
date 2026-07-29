@@ -3,7 +3,7 @@
   overflow: hidden;
   min-height: 592px;
   padding: 66px 0;
-  background: #ffffff;
+  background: var(--color-white);
 
   &__shell {
     width: min(100%, 1280px);
@@ -54,10 +54,10 @@
   }
 
   &__metric-card {
-    background: #ffffff;
+    background: var(--color-white);
     border: 1px solid var(--color-athens-gray);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-4xl);
     padding: 24px;
 
     strong {
@@ -83,13 +83,13 @@
     background:
       linear-gradient(
         180deg,
-        rgba(10, 135, 130, 0.08),
-        rgba(93, 42, 138, 0.08)
+        var(--color-primary-a08),
+        var(--color-eminence-a08)
       ),
-      #ffffff;
+      var(--color-white);
     border: 1px solid var(--color-athens-gray);
-    border-radius: 24px;
-    box-shadow: 0 18px 40px rgba(17, 24, 39, 0.1);
+    border-radius: var(--radius-6xl);
+    box-shadow: var(--shadow-md);
   }
 
   &__showcase-stage {
@@ -112,8 +112,8 @@
     justify-content: center;
     min-height: 28px;
     padding: 6px 16px;
-    border-radius: 9999px;
-    background: rgba(10, 135, 130, 0.1);
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-a10);
     color: var(--color-blue-chill);
     font-size: 12px;
     line-height: 16px;
@@ -133,9 +133,9 @@
     gap: 14px;
     align-items: start;
     padding: 18px;
-    background: rgba(255, 255, 255, 0.78);
-    border: 1px solid rgba(229, 231, 235, 0.9);
-    border-radius: 14px;
+    background: var(--color-white-a78);
+    border: 1px solid var(--color-border-a90);
+    border-radius: var(--radius-3xl);
 
     > span {
       color: var(--color-eminence);

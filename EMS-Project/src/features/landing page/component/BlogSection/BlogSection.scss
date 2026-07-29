@@ -46,10 +46,10 @@
 
   &__card {
     overflow: hidden;
-    background: #ffffff;
+    background: var(--color-white);
     border: 1px solid var(--color-athens-gray);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-4xl);
   }
 
   &__media {
@@ -57,12 +57,12 @@
     background:
       linear-gradient(
         135deg,
-        rgba(10, 135, 130, 0.85),
-        rgba(93, 42, 138, 0.85)
+        var(--color-primary-a85),
+        var(--color-eminence-a85)
       ),
       repeating-linear-gradient(
         45deg,
-        rgba(255, 255, 255, 0.22) 0 2px,
+        var(--color-white-a22) 0 2px,
         transparent 2px 18px
       );
   }

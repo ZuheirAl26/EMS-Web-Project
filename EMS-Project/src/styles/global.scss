@@ -4,6 +4,49 @@
   --color-primary-light: #0d9e98;
   --color-primary-dark: #064e56;
   --color-primary-strong: #0d7c8a;
+  --color-primary-deep: #007b83;
+
+  /* Shared Static Palette */
+  --color-white: #ffffff;
+  --color-ink: #181d1c;
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-150: #f4f4f7;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-slate-400: #94a3b8;
+  --color-gray-light: #eeeeee;
+  --color-page: #f8fafb;
+  --color-navy-950: #070b16;
+  --color-navy-900: #16213e;
+  --color-navy-800: #1a1a2e;
+  --color-navy-700: #2a2a4a;
+  --color-neutral-950: #09090b;
+
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-success-light: #34d399;
+  --color-success-lighter: #86efac;
+  --color-success-dark: #16a34a;
+  --color-success-strong: #047857;
+  --color-success-google: #1e8e3e;
+  --color-success-surface: #f0fdf4;
+  --color-success-surface-muted: #d1fae5;
+  --color-success-google-surface: #e6f4ea;
+  --color-danger: #ef4444;
+  --color-danger-light: #f87171;
+  --color-danger-dark: #dc2626;
+  --color-danger-text: #991b1b;
+  --color-danger-surface: #fef2f2;
+  --color-danger-surface-muted: #fee2e2;
+  --color-danger-border: #fecaca;
+  --color-warning-text: #92400e;
+  --color-warning-surface: #fffbeb;
+  --color-warning-border: #fde68a;
+  --color-cerise-dark: #c2185b;
 
   /* Extracted Page Colors */
   --color-blue-chill: #0a8782;
@@ -37,6 +80,84 @@
   /* UI Elements */
   --color-border: #e2e8f0;
   --color-input-placeholder: #cbd5e0;
+
+  /* Reusable Alpha Colors */
+  --color-black-a04: rgba(0, 0, 0, 0.04);
+  --color-black-a05: rgba(0, 0, 0, 0.05);
+  --color-black-a08: rgba(0, 0, 0, 0.08);
+  --color-black-a10: rgba(0, 0, 0, 0.1);
+  --color-black-a12: rgba(0, 0, 0, 0.12);
+  --color-black-a25: rgba(0, 0, 0, 0.25);
+  --color-black-a30: rgba(0, 0, 0, 0.3);
+  --color-black-a45: rgba(0, 0, 0, 0.45);
+  --color-white-a05: rgba(255, 255, 255, 0.05);
+  --color-white-a08: rgba(255, 255, 255, 0.08);
+  --color-white-a10: rgba(255, 255, 255, 0.1);
+  --color-white-a15: rgba(255, 255, 255, 0.15);
+  --color-white-a22: rgba(255, 255, 255, 0.22);
+  --color-white-a30: rgba(255, 255, 255, 0.3);
+  --color-white-a40: rgba(255, 255, 255, 0.4);
+  --color-white-a60: rgba(255, 255, 255, 0.6);
+  --color-white-a70: rgba(255, 255, 255, 0.7);
+  --color-white-a75: rgba(255, 255, 255, 0.75);
+  --color-white-a78: rgba(255, 255, 255, 0.78);
+  --color-white-a80: rgba(255, 255, 255, 0.8);
+  --color-primary-a035: rgba(10, 135, 130, 0.035);
+  --color-primary-a05: rgba(10, 135, 130, 0.05);
+  --color-primary-a06: rgba(10, 135, 130, 0.06);
+  --color-primary-a08: rgba(10, 135, 130, 0.08);
+  --color-primary-a10: rgba(10, 135, 130, 0.1);
+  --color-primary-a12: rgba(10, 135, 130, 0.12);
+  --color-primary-a20: rgba(10, 135, 130, 0.2);
+  --color-primary-a30: rgba(10, 135, 130, 0.3);
+  --color-primary-a40: rgba(10, 135, 130, 0.4);
+  --color-primary-a55: rgba(10, 135, 130, 0.55);
+  --color-primary-a85: rgba(10, 135, 130, 0.85);
+  --color-primary-a92: rgba(10, 135, 130, 0.92);
+  --color-success-a10: rgba(16, 185, 129, 0.1);
+  --color-success-a20: rgba(16, 185, 129, 0.2);
+  --color-success-a25: rgba(16, 185, 129, 0.25);
+  --color-danger-a05: rgba(239, 68, 68, 0.05);
+  --color-danger-a10: rgba(239, 68, 68, 0.1);
+  --color-danger-a20: rgba(239, 68, 68, 0.2);
+  --color-ebony-a10: rgba(17, 24, 39, 0.1);
+  --color-border-a90: rgba(229, 231, 235, 0.9);
+  --color-eminence-a08: rgba(93, 42, 138, 0.08);
+  --color-eminence-a10: rgba(93, 42, 138, 0.1);
+  --color-eminence-a85: rgba(93, 42, 138, 0.85);
+  --color-cerise-a035: rgba(224, 26, 112, 0.035);
+
+  /* Shape and Elevation */
+  --radius-2xs: 2px;
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
+  --radius-3xl: 14px;
+  --radius-4xl: 16px;
+  --radius-5xl: 20px;
+  --radius-6xl: 24px;
+  --radius-7xl: 38px;
+  --radius-8xl: 44px;
+  --radius-9xl: 48px;
+  --radius-pill: 999px;
+  --radius-round: 50%;
+  --radius-organic: 48%;
+  --shadow-xs: 0 1px 2px var(--color-black-a05);
+  --shadow-xs-strong: 0 1px 2px var(--color-black-a08);
+  --shadow-sm: 0 1px 4px var(--color-black-a04);
+  --shadow-md: 0 18px 40px var(--color-ebony-a10);
+  --shadow-lg: 0 25px 50px -12px var(--color-black-a12);
+  --shadow-xl: 0 25px 50px -12px var(--color-black-a25);
+  --shadow-xl-strong: 0 25px 50px -12px var(--color-black-a30);
+  --shadow-focus-sm: 0 0 0 2px var(--color-primary-a12);
+  --shadow-focus: 0 0 0 3px var(--color-primary-a12);
+  --shadow-white-glow: 0 0 20px var(--color-white-a40);
+  --shadow-theme-xs: 0 1px 2px var(--color-shadow);
+  --shadow-theme-md: 0 4px 6px var(--color-shadow);
+  --shadow-theme-lg: 0 8px 24px var(--color-shadow);
 }
 
 [data-theme="dark"] {

@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../../store/AuthStore";
 import { checkAuthStatusApi, resendVerificationApi } from "../api/Authapi";
 import { authKeys } from "../api/AuthKeys";
+import { getApiErrorMessage } from "../utils/apiError";
 
 const COOLDOWN_SECONDS = 120;
 
@@ -89,8 +90,8 @@ export function useCheckEmail() {
       setSuccessMessage(t("checkEmail.emailSent"));
       startCooldown();
     },
-    onError: (err: any) => {
-      setApiError(err?.response?.data?.message || t("checkEmail.errorMsg"));
+    onError: (error: unknown) => {
+      setApiError(getApiErrorMessage(error, t("checkEmail.errorMsg")));
     },
   });
 

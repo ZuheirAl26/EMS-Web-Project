@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import {
   ArrowLeft02Icon,
   Building03Icon,
@@ -11,12 +10,9 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.png";
+import type { BoothPlanShellProps } from "../types/componentType";
+import type { BoothPlanStep } from "../types/createPlanType";
 import "../pages/CreateBoothPlanPage.scss";
-
-interface BoothPlanShellProps {
-  children: ReactNode;
-  currentStep: 1 | 2 | 3 | 4;
-}
 
 export function BoothPlanShell({
   children,
@@ -53,7 +49,7 @@ export function BoothPlanShell({
       <main className="create-booth-plan__main">
         <ol className="create-booth-plan__steps" aria-label={t("steps.aria")}>
           {steps.map((step, index) => {
-            const stepNumber = (index + 1) as 1 | 2 | 3 | 4;
+            const stepNumber = (index + 1) as BoothPlanStep;
             const status =
               stepNumber < currentStep
                 ? "complete"
