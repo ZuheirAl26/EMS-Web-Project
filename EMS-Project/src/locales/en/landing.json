@@ -1,0 +1,184 @@
+{
+  "nav": {
+    "brand": "Damascus International Fair",
+    "logoAlt": "Damascus International Fair logo",
+    "aria": "Main navigation",
+    "home": "Home",
+    "exhibition": "Exhibition",
+    "floorMap": "Floor Map",
+    "plan": "Create Plan",
+    "features": "Features",
+    "blog": "Blog",
+    "contact": "Contact",
+    "login": "Log In",
+    "getStarted": "Get Started",
+    "language": "العربية",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
+  },
+  "hero": {
+    "title": "Your Complete Exhibition Management Platform",
+    "description": "Manage pavilions, capture leads, coordinate your team, and delight your visitors, all from one powerful portal.",
+    "explore": "Explore the Floor Map",
+    "register": "Register as Exhibitor",
+    "exhibitors": "500+ Exhibitors",
+    "visitors": "12,000+ Visitors",
+    "halls": "3 Event Halls"
+  },
+  "exhibition": {
+    "eyebrow": "About the Exhibition",
+    "title": "TechConnect Expo 2025",
+    "description": "TechConnect Expo 2025 is the premier technology trade show for enterprise software, industrial IoT, and AI-powered solutions. Bringing together 500+ exhibitors and 12,000+ industry professionals across 3 dedicated halls.",
+    "metrics": {
+      "exhibitors": "Exhibitors",
+      "visitors": "Expected Visitors",
+      "halls": "Event Halls",
+      "showcase": "Startup Pitch Showcase"
+    },
+    "schedule": "Event Schedule",
+    "hallCount": "3 Halls",
+    "events": {
+      "keynote": {
+        "title": "Opening Keynote",
+        "description": "Enterprise innovation and AI-powered operations."
+      },
+      "pitch": {
+        "title": "Startup Pitch Showcase",
+        "description": "New ventures present products to buyers and partners."
+      },
+      "networking": {
+        "title": "Networking Session",
+        "description": "Connect with exhibitors, visitors, and event teams."
+      }
+    },
+    "viewSchedule": "View Event Schedule"
+  },
+  "floorMap": {
+    "eyebrow": "Floor Plan",
+    "title": "Explore the Exhibition Halls",
+    "description": "Click any pavilion to preview their profile, products, and team.",
+    "mapTitle": "Damascus International Fair Floor Map",
+    "mapAlt": "Complete Damascus International Fair exhibition map"
+  },
+  "mobileApp": {
+    "eyebrow": "For Visitors",
+    "title": "Your Complete Fair Experience, Right in Your Pocket",
+    "description": "Download the Damascus Fair Visitor App to navigate the exhibition halls, connect with exhibitors, and make the most of every moment at the fair.",
+    "previewAria": "Visitor app home preview",
+    "lightPreviewAlt": "Light-mode preview of the Damascus Fair visitor app",
+    "darkPreviewAlt": "Dark-mode preview of the Damascus Fair visitor app",
+    "fairName": "Damascus International Fair",
+    "fairNameArabic": "معرض دمشق الدولي",
+    "search": "Search exhibitors, booths, and events",
+    "interactiveMap": "Interactive map",
+    "exhibitors": "Exhibitors",
+    "features": {
+      "scan": {
+        "title": "Scan & Save Exhibitors",
+        "description": "Scan any booth QR code to instantly save contact info and product catalogs."
+      },
+      "plan": {
+        "title": "Plan Your Visit",
+        "description": "Build a personal schedule, mark booths to visit, and navigate the halls with an interactive map."
+      },
+      "alerts": {
+        "title": "Live Event Alerts",
+        "description": "Get real-time notifications about presentations, networking sessions, and special announcements."
+      },
+      "review": {
+        "title": "Rate & Review",
+        "description": "Leave feedback on exhibitors you visited and discover top-rated booths from other attendees."
+      }
+    },
+    "downloadTitle": "Download the Visitor App",
+    "downloadDescription": "Free for all fair attendees. Available on iOS and Android.",
+    "appStorePrefix": "Download on the",
+    "appStore": "App Store",
+    "googlePlayPrefix": "Get it on",
+    "googlePlay": "Google Play",
+    "fairVisitors": "Fair Visitors",
+    "appRating": "App Rating",
+    "free": "Free",
+    "alwaysFree": "Always Free"
+  },
+  "plan": {
+    "eyebrow": "Start your journey with us",
+    "title": "Build Your Personal Section",
+    "description": "Manage your hall, schedule meetings, and get a personalized route through the halls. Scan a lead and manage your events.",
+    "button": "Create My Plan",
+    "cardTitle": "My Plan — TechConnect 2025",
+    "items": {
+      "pavilion": "A-03 Pavilion demo",
+      "launch": "B-03 Product launch",
+      "showcase": "Startup Pitch Showcase",
+      "followUp": "Lead follow-up queue"
+    },
+    "checkmark": "✓"
+  },
+  "features": {
+    "eyebrow": "Platform Features",
+    "title": "Everything You Need to Run a World-Class Exhibition",
+    "items": {
+      "pavilion": {
+        "title": "Pavilion Management",
+        "description": "Manage your booth setup, services, and booking requests end-to-end."
+      },
+      "leads": {
+        "title": "Lead Retrieval",
+        "description": "Capture visitor leads via QR scan and export to your CRM in one click."
+      },
+      "maps": {
+        "title": "Interactive Floor Maps",
+        "description": "Publish real-time navigable maps that visitors browse on any device."
+      },
+      "team": {
+        "title": "Team Coordination",
+        "description": "Assign roles, manage staff access, and coordinate your event-day team."
+      },
+      "announcements": {
+        "title": "Announcements",
+        "description": "Push announcements to all exhibitors and visitors instantly."
+      },
+      "reports": {
+        "title": "Engagement Reports",
+        "description": "Track profile views, lead scores, and visitor engagement in real-time."
+      }
+    }
+  },
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "From the ExhibitorHub Blog",
+    "viewAll": "View All Posts",
+    "posts": {
+      "roi": {
+        "title": "5 Ways to Maximize Booth ROI at Trade Shows",
+        "description": "Learn how top exhibitors generate 3x more leads by combining digital follow-up with engaging live demos."
+      },
+      "ai": {
+        "title": "How AI is Changing Lead Capture at Events",
+        "description": "AI-powered badge scanning and sentiment analysis are transforming how exhibitors qualify leads in real time."
+      },
+      "setup": {
+        "title": "The Complete Guide to Pavilion Setup at TechConnect 2025",
+        "description": "From media uploads to service requests, a step-by-step walkthrough of the ExhibitorHub portal."
+      }
+    }
+  },
+  "footer": {
+    "brand": "ExhibitorHub",
+    "description": "The complete exhibitor management platform.",
+    "exhibition": "Exhibition",
+    "floorMap": "Floor Map",
+    "schedule": "Event Schedule",
+    "features": "Platform Features",
+    "contact": "Contact Us",
+    "location": "Damascus, Syria",
+    "name": "Name",
+    "message": "Message",
+    "send": "Send",
+    "copyright": "© 2025 ExhibitorHub. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy"
+  }
+}

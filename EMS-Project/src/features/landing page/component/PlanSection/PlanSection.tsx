@@ -1,37 +1,37 @@
+import { useTranslation } from "react-i18next";
 import { Button } from "../../../../components";
 import "./PlanSection.scss";
 
 const planItems = [
-  "A-03 Pavilion demo",
-  "B-03 Product launch",
-  "Startup Pitch Showcase",
-  "Lead follow-up queue",
-];
+  "pavilion",
+  "launch",
+  "showcase",
+  "followUp",
+] as const;
 
 export function PlanSection() {
+  const { t } = useTranslation("landing");
+
   return (
-    <section className="plan-section" id="create-plan">
+    <section className="plan-section" id="plan">
       <div className="plan-section__shell">
         <div className="plan-section__copy">
           <div>
-            <p>Start your journey with us</p>
-            <h2>Build Your Personal Section</h2>
+            <p>{t("plan.eyebrow")}</p>
+            <h2>{t("plan.title")}</h2>
           </div>
-          <span>
-            Manage your hall, schedule meetings, and get a personalized route
-            through the halls. Scan a lead and manage your events.
-          </span>
+          <span>{t("plan.description")}</span>
           <Button size="hero" variant="secondary">
-            Create My Plan
+            {t("plan.button")}
           </Button>
         </div>
         <div className="plan-section__card">
-          <h3>My Plan — TechConnect 2025</h3>
+          <h3>{t("plan.cardTitle")}</h3>
           <div className="plan-section__list">
             {planItems.map((item) => (
               <div className="plan-section__list-item" key={item}>
-                <span>✓</span>
-                {item}
+                <span>{t("plan.checkmark")}</span>
+                {t(`plan.items.${item}`)}
               </div>
             ))}
           </div>

@@ -9,6 +9,13 @@ import {
   ResetPasswordPage,
   VerifyAccountPage,
 } from "../features/ExhibitorAuth/pages";
+import { LandingPage } from "../features/landing page/pages";
+import {
+  AddServicesPage,
+  CreateBoothPlanPage,
+} from "../features/CreateBoothPlan/pages";
+import { MyBoothsPage } from "../features/MyBooths/pages";
+import { DashboardLayout } from "../layouts/DashboardLayout";
 
 export const AppRouter = () => {
   const location = useLocation();
@@ -27,6 +34,7 @@ export const AppRouter = () => {
     <>
       {/* <Route element={<GuestRoute />}> */}
       <Routes location={background || location}>
+        {/* <Route path="/" element={<LandingPage />} /> */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/check-email" element={<CheckEmailPage />} />
@@ -34,9 +42,17 @@ export const AppRouter = () => {
 
         {/* <Route element={<ProtectedRoute />}> */}
         <Route
-          path="/dashboard"
-          element={<div>Welcome to your Dashboard!</div>}
+          path="/dashboard/booths/create"
+          element={<CreateBoothPlanPage />}
         />
+        <Route
+          path="/dashboard/booths/create/services"
+          element={<AddServicesPage />}
+        />
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="booths" element={<MyBoothsPage />} />
+          <Route path="*" element={null} />
+        </Route>
         {/* </Route> */}
 
         <Route path="*" element={<div>404 - Page Not Found</div>} />

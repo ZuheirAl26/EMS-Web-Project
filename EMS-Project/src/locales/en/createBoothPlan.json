@@ -1,0 +1,116 @@
+{
+  "header": {
+    "title": "Plan Your Exhibition",
+    "status": "Not Created 2026",
+    "back": "Back to My Booths",
+    "logoAlt": "Damascus Fair logo"
+  },
+  "steps": {
+    "aria": "Booth creation progress",
+    "chooseBooth": "Choose Pavilion",
+    "addServices": "Add Services",
+    "companyProfile": "Company Profile",
+    "review": "Review & Submit"
+  },
+  "selection": {
+    "title": "Select Your Booth",
+    "description": "Choose an available booth from the interactive map or results list. Booked booths are locked.",
+    "selectedLabel": "Selected booth",
+    "area": "Area",
+    "price": "Price",
+    "svgId": "SVG ID",
+    "continue": "Continue",
+    "nextStepPending": "The booth is selected. Send the services and reservation endpoints to connect the next step.",
+    "ready": "{{number}} is selected and ready to continue."
+  },
+  "services": {
+    "title": "Add Services",
+    "description": "Enhance your pavilion with additional services. Set quantity to 0 to skip.",
+    "loading": "Loading services\u2026",
+    "emptyTitle": "No services found",
+    "emptyMessage": "Change or reset the filters and try again.",
+    "inactive": "Unavailable",
+    "quantity": "Quantity for {{name}}",
+    "decrease": "Decrease {{name}} quantity",
+    "increase": "Increase {{name}} quantity",
+    "selectedUnits_one": "{{count}} service unit selected",
+    "selectedUnits_other": "{{count}} service units selected",
+    "back": "Back",
+    "continue": "Continue",
+    "nextStepPending": "Your service choices are saved for this step. Send the company-profile endpoint to connect the next tab.",
+    "missingBoothTitle": "Choose a booth first",
+    "missingBoothMessage": "The services step needs a selected booth before it can continue.",
+    "chooseBooth": "Choose Booth",
+    "filters": {
+      "title": "Filter services",
+      "updating": "Updating results\u2026",
+      "resultCount_one": "{{count}} service",
+      "resultCount_other": "{{count}} services",
+      "name": "Service name",
+      "namePlaceholder": "Search by service name",
+      "sort": "Sort",
+      "defaultSort": "Default order",
+      "nameAscending": "Name: A to Z",
+      "nameDescending": "Name: Z to A",
+      "priceLow": "Price: low to high",
+      "priceHigh": "Price: high to low",
+      "perPage": "Per page",
+      "apply": "Apply",
+      "reset": "Reset"
+    },
+    "errors": {
+      "title": "Could not load services",
+      "message": "Check your connection or API configuration and try again.",
+      "retry": "Retry"
+    }
+  },
+  "filters": {
+    "title": "Filter booths",
+    "updating": "Updating results…",
+    "number": "Booth number",
+    "numberPlaceholder": "Exact number, e.g. SE_01",
+    "booking": "Booking status",
+    "hallType": "Hall type",
+    "hallTypePlaceholder": "Enter hall type",
+    "include": "Include",
+    "includePlaceholder": "Related resources",
+    "sort": "Sort",
+    "all": "All booths",
+    "defaultSort": "Default order",
+    "priceLow": "Price: low to high",
+    "priceHigh": "Price: high to low",
+    "areaSmall": "Area: small to large",
+    "areaLarge": "Area: large to small",
+    "numberAscending": "Booth number",
+    "apply": "Apply",
+    "reset": "Reset"
+  },
+  "map": {
+    "title": "Interactive 2D floor map",
+    "hint": "Pan the map and select an available booth.",
+    "aria": "Interactive exhibition booth map",
+    "fallbackAlt": "Exhibition floor map",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomLevel": "Map zoom level",
+    "legend": "Map status legend",
+    "mappingWarning": "This SVG does not contain booth element IDs matching the API svg_id values yet. Export each booth as a named SVG layer (for example id=\"SE_01\") to activate map selection and coloring."
+  },
+  "results": {
+    "title": "Booth results",
+    "count": "{{count}} booths",
+    "loading": "Loading…",
+    "emptyTitle": "No booths found",
+    "emptyMessage": "Change or reset the filters and try again."
+  },
+  "status": {
+    "available": "Available",
+    "booked": "Booked",
+    "selected": "Selected"
+  },
+  "errors": {
+    "title": "Could not load booths",
+    "message": "Check your connection or API configuration and try again.",
+    "retry": "Retry"
+  }
+}

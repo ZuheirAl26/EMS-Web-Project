@@ -15,9 +15,9 @@ export function LandingPage() {
       <main>
         <HeroSection />
         <ExhibitionSection />
+        <MobileAppSection />
         <FloorMapSection />
         <PlanSection />
-        <MobileAppSection />
         <FeaturesSection />
         <BlogSection />
       </main>

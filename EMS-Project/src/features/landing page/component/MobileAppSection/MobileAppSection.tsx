@@ -1,55 +1,39 @@
+import { useTranslation } from "react-i18next";
 import { appFeatures } from "../../pages/landingData";
 import { Icon } from "../Icon/Icon";
-import { LogoMark } from "../LogoMark/LogoMark";
+import visitorAppDark from "../../assets/visitor-app-dark.jpg";
+import visitorAppLight from "../../assets/visitor-app-light.jpg";
 import "./MobileAppSection.scss";
 
-const qrCells = [0, 1, 3, 4, 5, 6, 8, 9, 15, 16, 18, 20, 22, 23, 24];
-
 export function MobileAppSection() {
+  const { t } = useTranslation("landing");
+
   return (
     <section className="mobile-app-section" id="visitor-app">
       <div className="mobile-app-section__shell">
         <div className="mobile-app-section__heading">
-          <span>For Visitors</span>
-          <h2>Your Complete Fair Experience, Right in Your Pocket</h2>
-          <p>
-            Download the Damascus Fair Visitor App to navigate the exhibition
-            halls, connect with exhibitors, and make the most of every moment at
-            the fair.
-          </p>
+          <span>{t("mobileApp.eyebrow")}</span>
+          <h2>{t("mobileApp.title")}</h2>
+          <p>{t("mobileApp.description")}</p>
         </div>
 
         <div className="mobile-app-section__showcase">
           <div
             className="mobile-app-section__phone-wrap"
-            aria-label="Visitor app home preview"
+            aria-label={t("mobileApp.previewAria")}
           >
             <div className="mobile-app-section__phone-frame">
-              <div className="mobile-app-section__phone-notch" />
               <div className="mobile-app-section__phone-screen">
-                <div className="mobile-app-section__phone-header">
-                  <LogoMark large />
-                  <h3>Damascus International Fair</h3>
-                  <div>معرض دمشق الدولي</div>
-                </div>
-                <div className="mobile-app-section__phone-search">
-                  <Icon name="map" size={18} />
-                  <span>Search exhibitors, booths, and events</span>
-                </div>
-                <div className="mobile-app-section__phone-actions">
-                  <div className="mobile-app-section__phone-action">
-                    <div>
-                      <Icon name="ticket" size={26} />
-                    </div>
-                    Interactive map
-                  </div>
-                  <div className="mobile-app-section__phone-action">
-                    <div>
-                      <Icon name="users" size={26} />
-                    </div>
-                    Exhibitors
-                  </div>
-                </div>
+                <img
+                  alt={t("mobileApp.lightPreviewAlt")}
+                  className="mobile-app-section__phone-image mobile-app-section__phone-image--light"
+                  src={visitorAppLight}
+                />
+                <img
+                  alt={t("mobileApp.darkPreviewAlt")}
+                  className="mobile-app-section__phone-image mobile-app-section__phone-image--dark"
+                  src={visitorAppDark}
+                />
               </div>
             </div>
           </div>
@@ -58,13 +42,13 @@ export function MobileAppSection() {
             {appFeatures.map((feature) => (
               <article
                 className="mobile-app-section__feature-card"
-                key={feature.title}
+                key={feature.id}
               >
                 <div>
                   <Icon name={feature.icon} size={20} />
                 </div>
-                <h3>{feature.title}</h3>
-                <p>{feature.text}</p>
+                <h3>{t(`mobileApp.features.${feature.id}.title`)}</h3>
+                <p>{t(`mobileApp.features.${feature.id}.description`)}</p>
               </article>
             ))}
           </div>
@@ -72,51 +56,39 @@ export function MobileAppSection() {
 
         <div className="mobile-app-section__download-strip">
           <div>
-            <h3>Download the Visitor App</h3>
-            <p>Free for all fair attendees. Available on iOS and Android.</p>
+            <h3>{t("mobileApp.downloadTitle")}</h3>
+            <p>{t("mobileApp.downloadDescription")}</p>
           </div>
           <div className="mobile-app-section__store-buttons">
             <a className="mobile-app-section__store-btn" href="#visitor-app">
               <Icon name="apple" size={28} />
               <span>
-                Download on the
-                <strong>App Store</strong>
+                {t("mobileApp.appStorePrefix")}
+                <strong>{t("mobileApp.appStore")}</strong>
               </span>
             </a>
             <a className="mobile-app-section__store-btn" href="#visitor-app">
               <Icon name="ticket" size={28} />
               <span>
-                Get it on
-                <strong>Google Play</strong>
+                {t("mobileApp.googlePlayPrefix")}
+                <strong>{t("mobileApp.googlePlay")}</strong>
               </span>
             </a>
-            <div className="mobile-app-section__qr-card">
-              <div className="mobile-app-section__qr-code" aria-hidden="true">
-                {Array.from({ length: 25 }).map((_, index) =>
-                  qrCells.includes(index) ? (
-                    <i key={index} />
-                  ) : (
-                    <span key={index} />
-                  ),
-                )}
-              </div>
-              <span>Scan to download</span>
-            </div>
           </div>
         </div>
 
         <div className="mobile-app-section__stats">
           <div>
             <strong>10,000+</strong>
-            <span>Fair Visitors</span>
+            <span>{t("mobileApp.fairVisitors")}</span>
           </div>
           <div>
             <strong>4.8</strong>
-            <span>App Rating</span>
+            <span>{t("mobileApp.appRating")}</span>
           </div>
           <div>
-            <strong>Free</strong>
-            <span>Always Free</span>
+            <strong>{t("mobileApp.free")}</strong>
+            <span>{t("mobileApp.alwaysFree")}</span>
           </div>
         </div>
       </div>

@@ -1,49 +1,29 @@
-import { Button } from "../../../../components";
-import { halls } from "../../pages/landingData";
-import "./FloorMapSection.scss";
+import { useTranslation } from "react-i18next";
+import exhibitionMap from "../../../../assets/map.png";
+import "./MapSection.scss";
 
 export function FloorMapSection() {
+  const { t } = useTranslation("landing");
+
   return (
     <section className="floor-map-section" id="floor-map">
       <div className="floor-map-section__shell">
         <div className="floor-map-section__heading">
-          <p>Floor Plan</p>
-          <h2>Explore the Exhibition Halls</h2>
-          <span>
-            Click any pavilion to preview their profile, products, and team.
-          </span>
+          <p>{t("floorMap.eyebrow")}</p>
+          <h2>{t("floorMap.title")}</h2>
+          <span>{t("floorMap.description")}</span>
         </div>
         <div className="floor-map-section__map-shell">
-          <div className="floor-map-section__toolbar">
-            <h3>Damascus International Fair Floor Map</h3>
-            <Button variant="secondary">Full Screen Map</Button>
-          </div>
-          <div className="floor-map-section__map">
-            {halls.map(([title, ...booths], hallIndex) => (
-              <div className="floor-map-section__hall" key={title}>
-                <div className="floor-map-section__hall-title">{title}</div>
-                {booths.map((booth, boothIndex) => {
-                  const active = ["A-03", "A-07"].includes(booth);
-                  const premium = booth === "B-03";
-                  const accent = hallIndex === 1 && boothIndex > 5;
-                  const className = [
-                    "floor-map-section__booth",
-                    active ? "floor-map-section__booth--active" : "",
-                    premium ? "floor-map-section__booth--premium" : "",
-                    accent ? "floor-map-section__booth--accent" : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ");
-
-                  return (
-                    <button className={className} key={booth} type="button">
-                      {booth}
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
-            <div className="floor-map-section__aisle">Main Aisle</div>
+          <div
+            aria-label={t("floorMap.mapTitle")}
+            className="floor-map-section__canvas"
+            role="region"
+          >
+            <img
+              alt={t("floorMap.mapAlt")}
+              className="floor-map-section__image"
+              src={exhibitionMap}
+            />
           </div>
         </div>
       </div>

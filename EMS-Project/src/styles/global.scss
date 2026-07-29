@@ -5,6 +5,17 @@
   --color-primary-dark: #064e56;
   --color-primary-strong: #0d7c8a;
 
+  /* Extracted Page Colors */
+  --color-blue-chill: #0a8782;
+  --color-eminence: #5d2a8a;
+  --color-cerise: #e01a70;
+
+  /* Extracted Backgrounds & UI Elements */
+  --color-aqua-haze: #f4f7f9;
+  --color-ebony: #111827;
+  --color-athens-gray: #e2e8f0;
+  --color-pale-sky: #64748b;
+
   /* Backgrounds & Gradients */
   --color-sidebar-end: #3b1f6b;
   --color-bg-white: #ffffff;
@@ -14,10 +25,10 @@
   --color-surface: #f7fafc;
   --color-muted-surface: #f0f4f8;
   --color-input-bg: #ffffff;
-  --color-text-strong: #333333;
 
   /* Text Colors */
   --color-text-main: #1a1a1a;
+  --color-text-strong: #333333;
   --color-text-muted: #718096;
   --color-text-muted-light: #a0aec0;
   --color-text-hover: #4a5568;
@@ -33,6 +44,17 @@
   --color-primary: #0d968b;
   --color-sidebar-start: #2a1647;
   --color-sidebar-end: #0a4240;
+
+  /* Extracted Page Colors (Dark Mode Adjustments) */
+  --color-blue-chill: #0d9e98;
+  --color-eminence: #7b43a8;
+  --color-cerise: #f0428d;
+
+  /* Extracted Backgrounds & UI Elements (Dark Mode Adjustments) */
+  --color-aqua-haze: #0c141a;
+  --color-ebony: #ffffff;
+  --color-athens-gray: rgba(248, 250, 251, 0.07);
+  --color-pale-sky: #94a3b8;
 
   /* Backgrounds & Gradients */
   --color-bg-white: #151c23;

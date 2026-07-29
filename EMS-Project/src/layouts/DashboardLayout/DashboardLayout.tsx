@@ -1,0 +1,193 @@
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowRight01Icon,
+  Building03Icon,
+  Calendar03Icon,
+  DashboardSquare01Icon,
+  Logout03Icon,
+  Message02Icon,
+  Notification02Icon,
+  UserAdd01Icon,
+  UserGroupIcon,
+} from "@hugeicons/core-free-icons";
+import logo from "../../assets/logo.png";
+import { useAuthStore } from "../../store/AuthStore";
+import "./DashboardLayout.scss";
+
+const navigationItems = [
+  {
+    id: "dashboard",
+    path: "/dashboard",
+    icon: DashboardSquare01Icon,
+  },
+  {
+    id: "booths",
+    path: "/dashboard/booths",
+    icon: Building03Icon,
+  },
+  {
+    id: "visitors",
+    path: "/dashboard/visitors",
+    icon: UserGroupIcon,
+  },
+  {
+    id: "team",
+    path: "/dashboard/team",
+    icon: UserAdd01Icon,
+  },
+  {
+    id: "events",
+    path: "/dashboard/events",
+    icon: Calendar03Icon,
+  },
+  {
+    id: "contact",
+    path: "/dashboard/contact",
+    icon: Message02Icon,
+  },
+] as const;
+
+function getInitials(name: string) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part.charAt(0))
+    .join("")
+    .toUpperCase();
+}
+
+export function DashboardLayout() {
+  const { t } = useTranslation("dashboard");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const accountName = user?.name?.trim() || t("account.fallbackName");
+  const initials = useMemo(() => getInitials(accountName), [accountName]);
+  const activeItem =
+    navigationItems.find((item) =>
+      item.id === "dashboard"
+        ? location.pathname === item.path
+        : location.pathname.startsWith(item.path),
+    ) ?? navigationItems[0];
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
+
+  return (
+    <div className="dashboard-layout">
+      <aside className="dashboard-sidebar">
+        <div className="dashboard-sidebar__brand">
+          <img alt={t("branding.logoAlt")} src={logo} />
+          <div>
+            <strong>{t("branding.name")}</strong>
+            <span>{t("branding.portal")}</span>
+          </div>
+        </div>
+
+        <div className="dashboard-sidebar__navigation">
+          <p className="dashboard-sidebar__menu-label">{t("menuLabel")}</p>
+          <nav aria-label={t("navigation.aria")}>
+            {navigationItems.map((item) => (
+              <NavLink
+                className={({ isActive }) =>
+                  `dashboard-sidebar__link${
+                    isActive ? " dashboard-sidebar__link--active" : ""
+                  }`
+                }
+                end={item.id === "dashboard"}
+                key={item.id}
+                to={item.path}
+              >
+                <HugeiconsIcon
+                  color="currentColor"
+                  icon={item.icon}
+                  size={16}
+                  strokeWidth={1.8}
+                />
+                <span>{t(`navigation.${item.id}`)}</span>
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+
+        <div className="dashboard-sidebar__account">
+          <div className="dashboard-sidebar__avatar" aria-hidden="true">
+            {initials}
+          </div>
+          <div className="dashboard-sidebar__account-copy">
+            <strong>{accountName}</strong>
+            <span>{t("account.role")}</span>
+          </div>
+          <button
+            aria-label={t("account.logout")}
+            className="dashboard-sidebar__logout"
+            onClick={handleLogout}
+            type="button"
+          >
+            <HugeiconsIcon
+              color="currentColor"
+              icon={Logout03Icon}
+              size={14}
+              strokeWidth={1.8}
+            />
+          </button>
+        </div>
+      </aside>
+
+      <main className="dashboard-layout__content">
+        <header className="dashboard-header">
+          <div className="dashboard-header__breadcrumb">
+            <NavLink to="/dashboard">{t("header.dashboard")}</NavLink>
+            <HugeiconsIcon
+              color="currentColor"
+              icon={ArrowRight01Icon}
+              size={12}
+              strokeWidth={1.8}
+            />
+            <span aria-current="page">
+              {t(`header.pages.${activeItem.id}`)}
+            </span>
+          </div>
+
+          <div className="dashboard-header__actions">
+            <button
+              aria-label={t("header.notifications")}
+              className="dashboard-header__notifications"
+              type="button"
+            >
+              <HugeiconsIcon
+                color="currentColor"
+                icon={Notification02Icon}
+                size={16}
+                strokeWidth={1.8}
+              />
+              <span aria-hidden="true">3</span>
+            </button>
+            <div
+              aria-label={accountName}
+              className="dashboard-header__avatar"
+              role="img"
+            >
+              {initials}
+            </div>
+          </div>
+        </header>
+        <div className="dashboard-layout__body">
+          <Outlet />
+        </div>
+      </main>
+    </div>
+  );
+}

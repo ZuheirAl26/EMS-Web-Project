@@ -1,8 +1,8 @@
 .landing-footer {
   position: relative;
   overflow: hidden;
-  min-height: 549px;
-  padding: 64px 0;
+  min-height: 374px;
+  padding: 43px 0;
   background: var(--color-ebony);
   color: #ffffff;
 
@@ -119,7 +119,7 @@
 @media (max-width: 760px) {
   .landing-footer {
     min-height: auto;
-    padding-block: 72px;
+    padding-block: 49px;
 
     &__shell {
       padding-inline: 20px;

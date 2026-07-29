@@ -1,0 +1,38 @@
+{
+  "branding": {
+    "name": "Damascus Fair",
+    "portal": "Exhibitor Portal",
+    "logoAlt": "Damascus Fair logo"
+  },
+  "menuLabel": "Menu",
+  "navigation": {
+    "aria": "Exhibitor dashboard navigation",
+    "dashboard": "Dashboard",
+    "booths": "My Booths & QR",
+    "visitors": "Visitors Info",
+    "team": "Team & Staff",
+    "events": "Events",
+    "contact": "Contact Admin"
+  },
+  "account": {
+    "fallbackName": "Exhibitor Account",
+    "role": "Pavilion Manager",
+    "logout": "Log out"
+  },
+  "header": {
+    "dashboard": "Dashboard",
+    "notifications": "Notifications (3 unread)",
+    "pages": {
+      "dashboard": "Dashboard",
+      "booths": "My Booths & QR",
+      "visitors": "Visitors Info",
+      "team": "Team & Staff",
+      "events": "Events",
+      "contact": "Contact Admin"
+    }
+  },
+  "myBooths": {
+    "aria": "My Booths and QR",
+    "addBooth": "Add Booth"
+  }
+}

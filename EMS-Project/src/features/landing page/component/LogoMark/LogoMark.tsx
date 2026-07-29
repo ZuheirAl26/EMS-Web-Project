@@ -1,4 +1,5 @@
-import difLogo from "../../../../assets/logo/dif-logo.svg";
+import { useTranslation } from "react-i18next";
+import difLogo from "../../../../assets/logo.png";
 import "./LogoMark.scss";
 
 type LogoMarkProps = {
@@ -6,9 +7,11 @@ type LogoMarkProps = {
 };
 
 export function LogoMark({ large = false }: LogoMarkProps) {
+  const { t } = useTranslation("landing");
+
   return (
     <img
-      alt="Damascus International Fair"
+      alt={t("nav.logoAlt")}
       className={large ? "dif-logo dif-logo--large" : "dif-logo"}
       src={difLogo}
     />

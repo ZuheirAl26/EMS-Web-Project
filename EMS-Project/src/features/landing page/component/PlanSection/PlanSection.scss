@@ -1,8 +1,8 @@
 .plan-section {
   position: relative;
   overflow: hidden;
-  min-height: 641px;
-  padding: 96px 0;
+  min-height: 436px;
+  padding: 66px 0;
   background: linear-gradient(108.46deg, #0a8782 0%, #5d2a8a 100%);
 
   &__shell {
@@ -98,7 +98,7 @@
 @media (max-width: 760px) {
   .plan-section {
     min-height: auto;
-    padding-block: 72px;
+    padding-block: 49px;
 
     &__shell {
       padding-inline: 20px;

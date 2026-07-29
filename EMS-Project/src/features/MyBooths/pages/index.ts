@@ -1,0 +1,1 @@
+export { MyBoothsPage } from "./MyBoothsPage";

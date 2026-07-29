@@ -1,8 +1,8 @@
 .blog-section {
   position: relative;
   overflow: hidden;
-  min-height: 770px;
-  padding: 96px 0;
+  min-height: 524px;
+  padding: 66px 0;
   background: var(--color-aqua-haze);
 
   &__shell {
@@ -96,7 +96,7 @@
 @media (max-width: 760px) {
   .blog-section {
     min-height: auto;
-    padding-block: 72px;
+    padding-block: 49px;
 
     &__shell {
       padding-inline: 20px;
