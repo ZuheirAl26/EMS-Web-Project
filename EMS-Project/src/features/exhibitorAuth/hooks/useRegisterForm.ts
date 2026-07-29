@@ -9,7 +9,7 @@ import type {
   RegisterPayload,
 } from "../types/authType";
 import type { RegisterErrors } from "../types/validationType";
-import { getApiErrorMessage } from "../utils/apiError";
+import { getApiErrorMessage } from "../../../utils/apiError";
 import { validateRegisterForm } from "../utils/validation";
 
 export function useRegisterForm() {

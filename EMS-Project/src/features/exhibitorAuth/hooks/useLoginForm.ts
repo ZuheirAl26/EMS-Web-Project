@@ -9,7 +9,7 @@ import type {
   LoginPayload,
 } from "../types/authType";
 import type { LoginErrors } from "../types/validationType";
-import { getApiErrorMessage } from "../utils/apiError";
+import { getApiErrorMessage } from "../../../utils/apiError";
 import { validateLoginForm } from "../utils/validation";
 
 export function useLoginForm() {

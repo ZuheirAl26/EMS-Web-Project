@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { changePasswordApi } from "../api/Authapi";
 import type { ChangePasswordPayload } from "../types/authType";
 import type { PasswordErrors } from "../types/validationType";
-import { getApiErrorMessage } from "../utils/apiError";
+import { getApiErrorMessage } from "../../../utils/apiError";
 import {
   calculatePasswordStrength,
   validatePasswordConfirmation,

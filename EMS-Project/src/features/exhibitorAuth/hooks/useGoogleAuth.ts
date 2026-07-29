@@ -7,7 +7,7 @@ import type {
   AuthResponse,
   GoogleAuthPayload,
 } from "../types/authType";
-import { getApiErrorMessage } from "../utils/apiError";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 export function useGoogleAuth() {
   const navigate = useNavigate();

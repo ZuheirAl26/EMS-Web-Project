@@ -1,10 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   NavLink,
   Outlet,
   useLocation,
-  useNavigate,
 } from "react-router-dom";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -19,6 +18,8 @@ import {
   UserGroupIcon,
 } from "@hugeicons/core-free-icons";
 import logo from "../../assets/logo.png";
+import { LogoutDialog } from "../../features/ExhibitorAuth/components";
+import { useLogout } from "../../features/ExhibitorAuth/hooks/useLogout";
 import { useAuthStore } from "../../store/AuthStore";
 import "./DashboardLayout.scss";
 
@@ -68,9 +69,9 @@ function getInitials(name: string) {
 export function DashboardLayout() {
   const { t } = useTranslation("dashboard");
   const location = useLocation();
-  const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const logoutMutation = useLogout();
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const accountName = user?.name?.trim() || t("account.fallbackName");
   const initials = useMemo(() => getInitials(accountName), [accountName]);
   const activeItem =
@@ -81,8 +82,8 @@ export function DashboardLayout() {
     ) ?? navigationItems[0];
 
   const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
+    setIsLogoutDialogOpen(true);
+    logoutMutation.reset();
   };
 
   return (
@@ -188,6 +189,16 @@ export function DashboardLayout() {
           <Outlet />
         </div>
       </main>
+      <LogoutDialog
+        errorMessage={logoutMutation.errorMessage}
+        isPending={logoutMutation.isPending}
+        onCancel={() => {
+          setIsLogoutDialogOpen(false);
+          logoutMutation.reset();
+        }}
+        onConfirm={logoutMutation.logout}
+        open={isLogoutDialogOpen}
+      />
     </div>
   );
 }

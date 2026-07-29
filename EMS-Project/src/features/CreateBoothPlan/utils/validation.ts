@@ -10,6 +10,10 @@ import type {
   ServiceFilterDraft,
   ServiceFilters,
 } from "../types/serviceType";
+import type {
+  RequestBoothDraft,
+  ReviewValidationIssue,
+} from "../types/requestBoothType";
 
 export const initialBoothFilterDraft: BoothFilterDraft = {
   number: "",
@@ -69,4 +73,46 @@ export function validateCompanyProfile(
     socialLinks: hasSocialLink ? undefined : "required",
     companyLogo: companyLogo ? undefined : "required",
   };
+}
+
+export function validateRequestBoothDraft(
+  draft: RequestBoothDraft,
+): ReviewValidationIssue[] {
+  const issues: ReviewValidationIssue[] = [];
+  const hasExistingCompany = Boolean(
+    draft.companyProfile.directoryCompanyId.trim(),
+  );
+  const requiredCompanyFields = [
+    draft.companyProfile.companyName,
+    draft.companyProfile.businessSector,
+    draft.companyProfile.companyLocation,
+    draft.companyProfile.phoneNumber,
+    draft.companyProfile.yearFounded,
+  ];
+  const hasSocialLink = [
+    draft.companyProfile.website,
+    draft.companyProfile.twitter,
+    draft.companyProfile.linkedin,
+  ].some((value) => value.trim().length > 0);
+  const yearFounded = Number(draft.companyProfile.yearFounded);
+  const hasValidYear = Number.isInteger(yearFounded) && yearFounded > 0;
+
+  if (!draft.boothId || !isValidBoothId(draft.boothId)) {
+    issues.push("booth");
+  }
+  if (
+    !hasExistingCompany &&
+    (requiredCompanyFields.some((value) => !value.trim()) ||
+      !hasValidYear)
+  ) {
+    issues.push("companyProfile");
+  }
+  if (!hasExistingCompany && !hasSocialLink) {
+    issues.push("socialLinks");
+  }
+  if (!hasExistingCompany && !draft.companyLogo) {
+    issues.push("companyLogo");
+  }
+
+  return issues;
 }

@@ -6,6 +6,7 @@ import type {
   ForgotPasswordPayload,
   GoogleAuthPayload,
   LoginPayload,
+  LogoutResponse,
   PasswordResponse,
   RegisterPayload,
   ResendVerificationPayload,
@@ -95,5 +96,17 @@ export const changePasswordApi = async (
     "/v1/exhibitor/change-password",
     data,
   );
+  return response.data;
+};
+
+export const logoutApi = async (): Promise<LogoutResponse> => {
+  const response = await apiClient.post<LogoutResponse>(
+    "/v1/exhibitor/logout",
+  );
+
+  if (!response.data.status) {
+    throw new Error(response.data.message || "Logout failed.");
+  }
+
   return response.data;
 };

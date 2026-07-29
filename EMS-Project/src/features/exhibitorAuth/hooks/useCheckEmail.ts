@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../../store/AuthStore";
 import { checkAuthStatusApi, resendVerificationApi } from "../api/Authapi";
 import { authKeys } from "../api/AuthKeys";
-import { getApiErrorMessage } from "../utils/apiError";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 const COOLDOWN_SECONDS = 120;
 

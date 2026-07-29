@@ -17,7 +17,15 @@
   "account": {
     "fallbackName": "Exhibitor Account",
     "role": "Booth Manager",
-    "logout": "Log out"
+    "logout": "Log out",
+    "logoutDialog": {
+      "title": "Log out?",
+      "message": "Are you sure you want to log out of your exhibitor account?",
+      "cancel": "Cancel",
+      "confirm": "Log out",
+      "loggingOut": "Logging out…",
+      "error": "We could not log you out. Please try again."
+    }
   },
   "header": {
     "dashboard": "Dashboard",

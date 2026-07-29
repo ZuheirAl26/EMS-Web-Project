@@ -35,3 +35,11 @@ export interface PasswordStrengthBarProps {
   password: string;
   confirmPassword?: string;
 }
+
+export interface LogoutDialogProps {
+  errorMessage: string | null;
+  isPending: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+  open: boolean;
+}

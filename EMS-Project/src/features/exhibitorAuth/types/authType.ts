@@ -84,6 +84,7 @@ export interface PasswordResponse {
   message: string;
 }
 
-export interface ApiErrorResponse {
-  message?: string;
+export interface LogoutResponse {
+  status: boolean;
+  message: string;
 }

@@ -29,10 +29,10 @@ export function CompanyProfilePage() {
   const hasSelectedBooth = isValidBoothId(boothId);
   const companyProfile = useCreatePlanStore((state) => state.companyProfile);
   const companyLogo = useCreatePlanStore((state) => state.companyLogo);
+  const setDraftBoothId = useCreatePlanStore((state) => state.setBoothId);
   const updateCompanyProfile = useCreatePlanStore(
     (state) => state.updateCompanyProfile,
   );
-  const [isReadyForReview, setIsReadyForReview] = useState(false);
   const [validationErrors, setValidationErrors] =
     useState<CompanyProfileValidationErrors>({});
 
@@ -41,7 +41,6 @@ export function CompanyProfilePage() {
     value: string,
   ) => {
     updateCompanyProfile(field, value);
-    setIsReadyForReview(false);
 
     if (
       value.trim() &&
@@ -57,10 +56,14 @@ export function CompanyProfilePage() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const errors = validateCompanyProfile(companyProfile, companyLogo);
-    const hasErrors = Boolean(errors.socialLinks || errors.companyLogo);
-
     setValidationErrors(errors);
-    setIsReadyForReview(!hasErrors);
+
+    if (errors.socialLinks || errors.companyLogo) {
+      return;
+    }
+
+    setDraftBoothId(boothId);
+    navigate(`/dashboard/booths/create/review?boothId=${boothId}`);
   };
 
   return (
@@ -92,7 +95,6 @@ export function CompanyProfilePage() {
                   ? t("companyProfile.validation.logoRequired")
                   : undefined
               }
-              onDraftChange={() => setIsReadyForReview(false)}
               onLogoAccepted={() =>
                 setValidationErrors((current) => ({
                   ...current,
@@ -120,11 +122,6 @@ export function CompanyProfilePage() {
               </button>
 
               <div className="company-profile__continue">
-                <span aria-live="polite">
-                  {isReadyForReview
-                    ? t("companyProfile.readyForReview")
-                    : ""}
-                </span>
                 <button type="submit">
                   {t("companyProfile.continue")}
                   <HugeiconsIcon

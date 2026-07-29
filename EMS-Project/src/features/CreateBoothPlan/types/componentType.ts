@@ -102,7 +102,6 @@ export interface CompanyDetailsFormProps {
 
 export interface CompanyMediaSectionProps {
   companyLogoError?: string;
-  onDraftChange: () => void;
   onLogoAccepted: () => void;
 }
 

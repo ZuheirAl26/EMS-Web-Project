@@ -121,6 +121,47 @@
       "logoRequired": "Company logo is required."
     }
   },
+  "review": {
+    "title": "Review & Submit",
+    "description": "Review your exhibition plan before submitting it for approval.",
+    "booth": {
+      "title": "Booth",
+      "number": "Booth number",
+      "area": "Area",
+      "price": "Price",
+      "missing": "No booth selected."
+    },
+    "services": {
+      "title": "Services",
+      "empty": "No services added.",
+      "quantity_one": "{{count}} unit",
+      "quantity_other": "{{count}} units",
+      "fallbackName": "Service #{{id}}"
+    },
+    "company": {
+      "title": "Company Profile",
+      "name": "Company",
+      "sector": "Sector"
+    },
+    "total": {
+      "label": "Estimated Total",
+      "notice": "Subject to final approval"
+    },
+    "submit": "Submit for Approval",
+    "submitting": "Submitting…",
+    "success": "Your booth request was submitted successfully.",
+    "validation": {
+      "booth": "Choose a booth before submitting.",
+      "companyLogo": "Upload the required company logo before submitting.",
+      "companyProfile": "Complete the required company profile fields before submitting.",
+      "socialLinks": "Add at least one company social link before submitting."
+    },
+    "errors": {
+      "submit": "We could not submit your booth request. Please try again.",
+      "payload": "We could not prepare your booth request.",
+      "edit": "Edit details"
+    }
+  },
   "filters": {
     "title": "Filter booths",
     "updating": "Updating results…",

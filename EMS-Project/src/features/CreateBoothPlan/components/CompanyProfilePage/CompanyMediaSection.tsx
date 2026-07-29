@@ -5,7 +5,6 @@ import { MediaUpload } from "./MediaUpload";
 
 export function CompanyMediaSection({
   companyLogoError,
-  onDraftChange,
   onLogoAccepted,
 }: CompanyMediaSectionProps) {
   const { t } = useTranslation("createBoothPlan");
@@ -35,7 +34,6 @@ export function CompanyMediaSection({
           label={t("companyProfile.media.logo")}
           onFileChange={(file) => {
             setCompanyLogo(file);
-            onDraftChange();
             if (file) {
               onLogoAccepted();
             }
@@ -52,7 +50,6 @@ export function CompanyMediaSection({
           label={t("companyProfile.media.banner")}
           onFileChange={(file) => {
             setBoothBanner(file);
-            onDraftChange();
           }}
           uploadedLabel={t("companyProfile.media.uploaded")}
           wide

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordApi } from "../api/Authapi";
 import type { ForgotPasswordPayload } from "../types/authType";
-import { getApiErrorMessage } from "../utils/apiError";
+import { getApiErrorMessage } from "../../../utils/apiError";
 import { validateEmail } from "../utils/validation";
 
 export function useForgotPassword() {

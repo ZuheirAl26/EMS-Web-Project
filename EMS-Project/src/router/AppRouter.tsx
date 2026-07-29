@@ -12,6 +12,7 @@ import {
   AddServicesPage,
   CompanyProfilePage,
   CreateBoothPlanPage,
+  ReviewSubmitPage,
 } from "../features/CreateBoothPlan/pages";
 import { MyBoothsPage } from "../features/MyBooths/pages";
 import { DashboardLayout } from "../layouts/DashboardLayout";
@@ -51,6 +52,10 @@ export const AppRouter = () => {
         <Route
           path="/dashboard/booths/create/company"
           element={<CompanyProfilePage />}
+        />
+        <Route
+          path="/dashboard/booths/create/review"
+          element={<ReviewSubmitPage />}
         />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="booths" element={<MyBoothsPage />} />
