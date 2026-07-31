@@ -12,12 +12,9 @@ import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import type { BoothPlanShellProps } from "../types/componentType";
 import type { BoothPlanStep } from "../types/createPlanType";
-import "../pages/CreateBoothPlanPage.scss";
+import "../pages/CreateBoothPlanPage/CreateBoothPlanPage.scss";
 
-export function BoothPlanShell({
-  children,
-  currentStep,
-}: BoothPlanShellProps) {
+export function BoothPlanShell({ children, currentStep }: BoothPlanShellProps) {
   const { t } = useTranslation("createBoothPlan");
   const steps = [
     { label: t("steps.chooseBooth"), icon: Building03Icon },

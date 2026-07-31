@@ -1,26 +1,25 @@
 import { useMemo, useState, type FormEvent } from "react";
-import {
-  ArrowLeft02Icon,
-  ArrowRight02Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowLeft02Icon, ArrowRight02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ServiceFiltersPanel } from "../components/AddServicesPage/ServiceFiltersPanel";
-import { ServiceList } from "../components/AddServicesPage/ServiceList";
-import { BoothPlanShell } from "../components/BoothPlanShell";
-import { useServices } from "../hooks/useServices";
-import { useCreatePlanStore } from "../store/useCreatePlanStore";
+import {
+  BoothPlanShell,
+  ServiceFiltersPanel,
+  ServiceList,
+} from "../../components";
+import { useServices } from "../../hooks/useServices";
+import { useCreatePlanStore } from "../../store/useCreatePlanStore";
 import type {
   ServiceFilterDraft,
   ServiceFilters,
-} from "../types/serviceType";
+} from "../../types/serviceType";
 import {
   clampServiceQuantity,
   initialServiceFilterDraft,
   isValidBoothId,
   toServiceApiFilters,
-} from "../utils/validation";
+} from "../../utils/validation";
 import "./AddServicesPage.scss";
 
 export function AddServicesPage() {
@@ -46,12 +45,15 @@ export function AddServicesPage() {
 
   const currencyFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(i18n.language.startsWith("ar") ? "ar-SY" : "en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }),
+      new Intl.NumberFormat(
+        i18n.language.startsWith("ar") ? "ar-SY" : "en-US",
+        {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        },
+      ),
     [i18n.language],
   );
 
@@ -80,10 +82,7 @@ export function AddServicesPage() {
     }
 
     const quantity = quantities[serviceId] ?? 0;
-    setServiceQuantity(
-      serviceId,
-      clampServiceQuantity(quantity + change),
-    );
+    setServiceQuantity(serviceId, clampServiceQuantity(quantity + change));
   };
 
   const continueToCompany = () => {

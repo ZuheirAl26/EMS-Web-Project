@@ -1,22 +1,21 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useSearchParams } from "react-router-dom";
-import { BoothPlanShell } from "../components/BoothPlanShell";
-import { ReviewSummary } from "../components/ReviewSubmitPage/ReviewSummary";
-import { useBooths } from "../hooks/useBooths";
-import { useRequestBooth } from "../hooks/useRequestBooth";
-import { useServices } from "../hooks/useServices";
-import { useCreatePlanStore } from "../store/useCreatePlanStore";
+import { BoothPlanShell, ReviewSummary } from "../../components";
+import { useBooths } from "../../hooks/useBooths";
+import { useRequestBooth } from "../../hooks/useRequestBooth";
+import { useServices } from "../../hooks/useServices";
+import { useCreatePlanStore } from "../../store/useCreatePlanStore";
 import type {
   RequestBoothDraft,
   ReviewValidationIssue,
   ReviewValidationTranslationKey,
   SelectedServiceSummary,
-} from "../types/requestBoothType";
+} from "../../types/requestBoothType";
 import {
   isValidBoothId,
   validateRequestBoothDraft,
-} from "../utils/validation";
+} from "../../utils/validation";
 import "./ReviewSubmitPage.scss";
 
 function getValidationKey(
@@ -45,55 +44,52 @@ export function ReviewSubmitPage() {
     (state) => state.serviceQuantities,
   );
   const routeBoothId = Number(searchParams.get("boothId"));
-  const boothId = isValidBoothId(routeBoothId)
-    ? routeBoothId
-    : storedBoothId;
+  const boothId = isValidBoothId(routeBoothId) ? routeBoothId : storedBoothId;
   const boothsQuery = useBooths({});
   const servicesQuery = useServices({ perPage: 100 });
   const requestMutation = useRequestBooth();
-  const [validationMessage, setValidationMessage] =
-    useState<string | null>(null);
+  const [validationMessage, setValidationMessage] = useState<string | null>(
+    null,
+  );
   const booth =
     boothsQuery.data?.data.find((item) => item.id === boothId) ?? null;
 
   const currencyFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(i18n.language.startsWith("ar") ? "ar-SY" : "en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }),
+      new Intl.NumberFormat(
+        i18n.language.startsWith("ar") ? "ar-SY" : "en-US",
+        {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        },
+      ),
     [i18n.language],
   );
 
-  const selectedServices = useMemo<SelectedServiceSummary[]>(
-    () => {
-      const services = servicesQuery.data?.data.data ?? [];
+  const selectedServices = useMemo<SelectedServiceSummary[]>(() => {
+    const services = servicesQuery.data?.data.data ?? [];
 
-      return Object.entries(serviceQuantities)
-        .filter(([, quantity]) => quantity > 0)
-        .map(([serviceId, quantity]) => {
-          const id = Number(serviceId);
-          const service = services.find((item) => item.id === id);
+    return Object.entries(serviceQuantities)
+      .filter(([, quantity]) => quantity > 0)
+      .map(([serviceId, quantity]) => {
+        const id = Number(serviceId);
+        const service = services.find((item) => item.id === id);
 
-          return {
-            service_id: id,
-            quantity,
-            name:
-              service?.name || t("review.services.fallbackName", { id }),
-            unitPrice: Number(service?.price ?? 0),
-          };
-        });
-    },
-    [serviceQuantities, servicesQuery.data, t],
-  );
+        return {
+          service_id: id,
+          quantity,
+          name: service?.name || t("review.services.fallbackName", { id }),
+          unitPrice: Number(service?.price ?? 0),
+        };
+      });
+  }, [serviceQuantities, servicesQuery.data, t]);
 
   const estimatedTotal =
     Number(booth?.price ?? 0) +
     selectedServices.reduce(
-      (total, service) =>
-        total + service.unitPrice * service.quantity,
+      (total, service) => total + service.unitPrice * service.quantity,
       0,
     );
 
@@ -136,9 +132,7 @@ export function ReviewSubmitPage() {
 
         {validationMessage || requestMutation.errorMessage ? (
           <div className="review-submit__error" role="alert">
-            <span>
-              {validationMessage || requestMutation.errorMessage}
-            </span>
+            <span>{validationMessage || requestMutation.errorMessage}</span>
             <Link
               to={`/dashboard/booths/create/company?boothId=${boothId ?? ""}`}
             >

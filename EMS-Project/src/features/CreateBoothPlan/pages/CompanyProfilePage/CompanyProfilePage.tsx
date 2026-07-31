@@ -1,24 +1,20 @@
 import { useState, type FormEvent } from "react";
-import {
-  ArrowLeft02Icon,
-  ArrowRight02Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowLeft02Icon, ArrowRight02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { BoothPlanShell } from "../components/BoothPlanShell";
-import { CompanyDetailsForm } from "../components/CompanyProfilePage/CompanyDetailsForm";
-import { CompanyDirectory } from "../components/CompanyProfilePage/CompanyDirectory";
-import { CompanyMediaSection } from "../components/CompanyProfilePage/CompanyMediaSection";
-import { useCreatePlanStore } from "../store/useCreatePlanStore";
+import {
+  BoothPlanShell,
+  CompanyDetailsForm,
+  CompanyDirectory,
+  CompanyMediaSection,
+} from "../../components";
+import { useCreatePlanStore } from "../../store/useCreatePlanStore";
 import type {
   CompanyProfileDraft,
   CompanyProfileValidationErrors,
-} from "../types/companyProfileType";
-import {
-  isValidBoothId,
-  validateCompanyProfile,
-} from "../utils/validation";
+} from "../../types/companyProfileType";
+import { isValidBoothId, validateCompanyProfile } from "../../utils/validation";
 import "./CompanyProfilePage.scss";
 
 export function CompanyProfilePage() {
@@ -36,10 +32,7 @@ export function CompanyProfilePage() {
   const [validationErrors, setValidationErrors] =
     useState<CompanyProfileValidationErrors>({});
 
-  const updateField = (
-    field: keyof CompanyProfileDraft,
-    value: string,
-  ) => {
+  const updateField = (field: keyof CompanyProfileDraft, value: string) => {
     updateCompanyProfile(field, value);
 
     if (

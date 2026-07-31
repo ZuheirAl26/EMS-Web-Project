@@ -3,23 +3,25 @@ import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { BoothMap } from "../components/BoothMap";
-import { BoothPlanShell } from "../components/BoothPlanShell";
-import { BoothFiltersPanel } from "../components/CreateBoothPlanPage/BoothFiltersPanel";
-import { BoothResults } from "../components/CreateBoothPlanPage/BoothResults";
-import { BoothSelectionSummary } from "../components/CreateBoothPlanPage/BoothSelectionSummary";
-import { useBooths } from "../hooks/useBooths";
-import { useCreatePlanStore } from "../store/useCreatePlanStore";
+import {
+  BoothFiltersPanel,
+  BoothMap,
+  BoothPlanShell,
+  BoothResults,
+  BoothSelectionSummary,
+} from "../../components";
+import { useBooths } from "../../hooks/useBooths";
+import { useCreatePlanStore } from "../../store/useCreatePlanStore";
 import type {
   Booth,
   BoothFilterDraft,
   BoothFilters,
-} from "../types/boothType";
+} from "../../types/boothType";
 import {
   initialBoothFilterDraft,
   isValidBoothId,
   toBoothApiFilters,
-} from "../utils/validation";
+} from "../../utils/validation";
 import "./CreateBoothPlanPage.scss";
 
 export function CreateBoothPlanPage() {
@@ -38,18 +40,20 @@ export function CreateBoothPlanPage() {
   const boothsQuery = useBooths(filters);
   const booths = boothsQuery.data?.data ?? [];
   const selectedBooth =
-    booths.find(
-      (booth) => booth.id === selectedBoothId && !booth.is_booked,
-    ) ?? null;
+    booths.find((booth) => booth.id === selectedBoothId && !booth.is_booked) ??
+    null;
 
   const currencyFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(i18n.language.startsWith("ar") ? "ar-SY" : "en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }),
+      new Intl.NumberFormat(
+        i18n.language.startsWith("ar") ? "ar-SY" : "en-US",
+        {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        },
+      ),
     [i18n.language],
   );
 
@@ -100,9 +104,7 @@ export function CreateBoothPlanPage() {
 
   const continueToServices = () => {
     if (selectedBooth) {
-      navigate(
-        `/dashboard/booths/create/services?boothId=${selectedBooth.id}`,
-      );
+      navigate(`/dashboard/booths/create/services?boothId=${selectedBooth.id}`);
     }
   };
 
