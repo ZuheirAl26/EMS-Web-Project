@@ -15,6 +15,7 @@ import {
   ReviewSubmitPage,
 } from "../features/CreateBoothPlan/pages";
 import { MyBoothsPage } from "../features/MyBooths/pages";
+import { ExhibitorProfilePage } from "../features/ExhibitorProfile/pages";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 
 export const AppRouter = () => {
@@ -59,6 +60,7 @@ export const AppRouter = () => {
         />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="booths" element={<MyBoothsPage />} />
+          <Route path="profile" element={<ExhibitorProfilePage />} />
           <Route path="*" element={null} />
         </Route>
         {/* </Route> */}

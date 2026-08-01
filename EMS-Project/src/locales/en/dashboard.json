@@ -17,6 +17,7 @@
   "account": {
     "fallbackName": "Exhibitor Account",
     "role": "Booth Manager",
+    "openProfile": "Open my profile",
     "logout": "Log out",
     "logoutDialog": {
       "title": "Log out?",
@@ -36,11 +37,129 @@
       "visitors": "Visitors Info",
       "team": "Team & Staff",
       "events": "Events",
-      "contact": "Contact Admin"
+      "contact": "Contact Admin",
+      "profile": "My Profile"
     }
   },
   "myBooths": {
     "aria": "My Booths and QR",
-    "addBooth": "Add Booth"
+    "title": "My Booths & QR Code",
+    "description": "View your confirmed booth details and download your QR code for visitors.",
+    "fairName": "Damascus International Fair 2026",
+    "addBooth": "Add Booth",
+    "loading": "Loading your booths…",
+    "errorTitle": "We couldn't load your booths",
+    "errorMessage": "Please check your connection and try again.",
+    "retry": "Try again",
+    "emptyTitle": "No booths yet",
+    "emptyMessage": "Add a booth to view its details and visitor QR code here.",
+    "details": {
+      "title": "Booth Details",
+      "statusApproved": "Approved",
+      "statusPending": "Pending",
+      "fair": "Fair",
+      "hall": "Hall",
+      "hallValue": "Hall {{number}}",
+      "boothNumber": "Booth Number",
+      "area": "Area",
+      "areaValue": "{{area}} m²",
+      "company": "Company",
+      "qrToken": "QR Token",
+      "servicesBooked": "Services Booked",
+      "serviceQuantity": "{{name}}, quantity {{quantity}}",
+      "noServices": "No additional services booked."
+    },
+    "qr": {
+      "title": "Your QR Code",
+      "description": "Display this at your booth. Visitors scan it to register as leads.",
+      "alt": "Visitor QR code for booth {{number}}",
+      "unavailable": "QR code is not available yet.",
+      "print": "Print",
+      "download": "Download PNG",
+      "downloading": "Downloading…",
+      "actionError": "The QR image could not be prepared. Please try again.",
+      "printTitle": "Booth {{number}} QR Code"
+    },
+    "pagination": {
+      "aria": "Booth pages",
+      "previous": "Previous page",
+      "next": "Next page",
+      "summary": "Page {{current}} of {{total}}"
+    }
+  },
+  "profile": {
+    "aria": "Exhibitor and company profile",
+    "title": "My Profile",
+    "description": "Manage your account information and company profile.",
+    "role": "Booth Manager",
+    "loading": "Loading your profile…",
+    "errorTitle": "We couldn't load your profile",
+    "errorMessage": "Please check your connection and try again.",
+    "retry": "Try again",
+    "companyLoading": "Loading the company profile…",
+    "companyErrorTitle": "We couldn't load this company",
+    "companyErrorMessage": "Choose another company or try again.",
+    "noCompaniesTitle": "No company profile yet",
+    "noCompaniesMessage": "A company will appear here after it is linked to one of your booths.",
+    "avatarAlt": "Profile photo for {{name}}",
+    "noCompany": "No active company",
+    "companyLogo": "Company logo",
+    "companyLogoAlt": "{{name}} logo",
+    "boothLocation": "Hall {{hall}} · Booth {{booth}}",
+    "areaValue": "{{area}} m²",
+    "status": {
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "companySelector": {
+      "title": "Active company",
+      "companyProfile": "Company profile",
+      "options": "Available companies",
+      "managing": "Managing {{count}} companies"
+    },
+    "summary": {
+      "yearFounded": "Year founded",
+      "boothArea": "Booth area",
+      "booths": "Booths"
+    },
+    "accountInformation": "Account Information",
+    "fields": {
+      "fullName": "Full name",
+      "role": "Role",
+      "companyName": "Company name",
+      "businessSector": "Business sector",
+      "location": "Headquarters coordinates",
+      "phone": "Phone number",
+      "email": "Email address",
+      "yearFounded": "Year founded",
+      "website": "Website"
+    },
+    "about": {
+      "title": "About the Company",
+      "empty": "No company description has been added yet.",
+      "headquarters": "Company headquarters"
+    },
+    "social": {
+      "title": "Social & Web Presence",
+      "empty": "No social links have been added yet.",
+      "platforms": {
+        "linkedin": "LinkedIn",
+        "twitter": "Twitter",
+        "x": "X",
+        "facebook": "Facebook",
+        "website": "Website"
+      }
+    },
+    "media": {
+      "title": "Media & Assets",
+      "description": "Company logo and gallery images.",
+      "logo": "Company logo",
+      "gallery": "Company gallery",
+      "uploaded": "Uploaded",
+      "missing": "Not uploaded",
+      "noGallery": "No gallery images",
+      "galleryAlt": "Company gallery image {{index}}"
+    }
   }
 }

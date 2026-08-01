@@ -1,0 +1,139 @@
+.booth-details-card {
+  min-width: 0;
+  padding: 25px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-2xl);
+  background: var(--color-white);
+
+  &__header {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    h2 {
+      margin: 0;
+      color: var(--color-ink);
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  &__status {
+    min-height: 22px;
+    padding: 3px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 700;
+
+    &--approved {
+      background: var(--color-success-surface-muted);
+      color: var(--color-success-dark);
+    }
+
+    &--pending {
+      background: var(--color-warning-surface);
+      color: var(--color-warning-text);
+    }
+  }
+
+  &__list {
+    margin: 0;
+
+    div {
+      min-height: 37px;
+      padding-block: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--color-neutral-100);
+    }
+
+    dt,
+    dd {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    dt {
+      flex: 0 0 auto;
+      color: var(--color-neutral-400);
+      font-weight: 700;
+    }
+
+    dd {
+      min-width: 0;
+      margin: 0;
+      overflow-wrap: anywhere;
+      color: var(--color-ink);
+      text-align: end;
+    }
+  }
+
+  &__services {
+    padding-top: 16px;
+
+    h3 {
+      margin: 0 0 8px;
+      color: var(--color-neutral-500);
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      list-style: none;
+    }
+
+    li {
+      min-height: 26px;
+      padding: 4px 13px;
+      border: 1px solid var(--color-primary-a30);
+      border-radius: var(--radius-pill);
+      background: var(--color-primary-surface);
+      color: var(--color-primary);
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0;
+      color: var(--color-neutral-400);
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+}
+
+@media (max-width: 980px) {
+  .booth-details-card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .booth-details-card {
+    &__list div {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    &__list dd {
+      text-align: start;
+    }
+  }
+}

@@ -133,10 +133,7 @@ export function CompanyDetailsForm({
       </div>
 
       <label className="company-profile__field">
-        <span>
-          {t("companyProfile.fields.description")}{" "}
-          <em>{t("companyProfile.optional")}</em>
-        </span>
+        <span>{t("companyProfile.fields.description")}</span>
         <span className="company-profile__input company-profile__input--textarea">
           <HugeiconsIcon
             aria-hidden="true"
@@ -150,6 +147,7 @@ export function CompanyDetailsForm({
               onFieldChange("description", event.target.value)
             }
             placeholder={t("companyProfile.fields.descriptionPlaceholder")}
+            required
             rows={4}
             value={companyProfile.description}
           />

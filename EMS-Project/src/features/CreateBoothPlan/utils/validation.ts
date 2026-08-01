@@ -88,6 +88,7 @@ export function validateRequestBoothDraft(
     draft.companyProfile.companyLocation,
     draft.companyProfile.phoneNumber,
     draft.companyProfile.yearFounded,
+    draft.companyProfile.description,
   ];
   const hasSocialLink = [
     draft.companyProfile.website,

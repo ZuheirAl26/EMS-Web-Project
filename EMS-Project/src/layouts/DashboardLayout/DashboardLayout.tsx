@@ -80,6 +80,9 @@ export function DashboardLayout() {
         ? location.pathname === item.path
         : location.pathname.startsWith(item.path),
     ) ?? navigationItems[0];
+  const activePageId = location.pathname.startsWith("/dashboard/profile")
+    ? "profile"
+    : activeItem.id;
 
   const handleLogout = () => {
     setIsLogoutDialogOpen(true);
@@ -124,13 +127,19 @@ export function DashboardLayout() {
         </div>
 
         <div className="dashboard-sidebar__account">
-          <div className="dashboard-sidebar__avatar" aria-hidden="true">
-            {initials}
-          </div>
-          <div className="dashboard-sidebar__account-copy">
-            <strong>{accountName}</strong>
-            <span>{t("account.role")}</span>
-          </div>
+          <NavLink
+            aria-label={t("account.openProfile")}
+            className="dashboard-sidebar__profile-link"
+            to="/dashboard/profile"
+          >
+            <div className="dashboard-sidebar__avatar" aria-hidden="true">
+              {initials}
+            </div>
+            <div className="dashboard-sidebar__account-copy">
+              <strong>{accountName}</strong>
+              <span>{t("account.role")}</span>
+            </div>
+          </NavLink>
           <button
             aria-label={t("account.logout")}
             className="dashboard-sidebar__logout"
@@ -158,7 +167,7 @@ export function DashboardLayout() {
               strokeWidth={1.8}
             />
             <span aria-current="page">
-              {t(`header.pages.${activeItem.id}`)}
+              {t(`header.pages.${activePageId}`)}
             </span>
           </div>
 
@@ -176,13 +185,13 @@ export function DashboardLayout() {
               />
               <span aria-hidden="true">3</span>
             </button>
-            <div
+            <NavLink
               aria-label={accountName}
               className="dashboard-header__avatar"
-              role="img"
+              to="/dashboard/profile"
             >
               {initials}
-            </div>
+            </NavLink>
           </div>
         </header>
         <div className="dashboard-layout__body">

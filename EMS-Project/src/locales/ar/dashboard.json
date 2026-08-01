@@ -17,6 +17,7 @@
   "account": {
     "fallbackName": "حساب العارض",
     "role": "مدير الجناح",
+    "openProfile": "فتح ملفي الشخصي",
     "logout": "تسجيل الخروج",
     "logoutDialog": {
       "title": "تسجيل الخروج؟",
@@ -36,11 +37,129 @@
       "visitors": "معلومات الزوار",
       "team": "الفريق والموظفون",
       "events": "الفعاليات",
-      "contact": "تواصل مع الإدارة"
+      "contact": "تواصل مع الإدارة",
+      "profile": "ملفي الشخصي"
     }
   },
   "myBooths": {
     "aria": "أجنحتي ورمز QR",
-    "addBooth": "إضافة جناح"
+    "title": "أجنحتي ورموز QR",
+    "description": "اعرض تفاصيل الأجنحة المؤكدة ونزّل رموز QR الخاصة بالزوار.",
+    "fairName": "معرض دمشق الدولي 2026",
+    "addBooth": "إضافة جناح",
+    "loading": "جارٍ تحميل الأجنحة…",
+    "errorTitle": "تعذر تحميل الأجنحة",
+    "errorMessage": "تحقق من الاتصال وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة",
+    "emptyTitle": "لا توجد أجنحة بعد",
+    "emptyMessage": "أضف جناحاً لعرض تفاصيله ورمز QR الخاص بالزوار هنا.",
+    "details": {
+      "title": "تفاصيل الجناح",
+      "statusApproved": "مقبول",
+      "statusPending": "قيد الانتظار",
+      "fair": "المعرض",
+      "hall": "القاعة",
+      "hallValue": "القاعة {{number}}",
+      "boothNumber": "رقم الجناح",
+      "area": "المساحة",
+      "areaValue": "{{area}} م²",
+      "company": "الشركة",
+      "qrToken": "رمز QR",
+      "servicesBooked": "الخدمات المحجوزة",
+      "serviceQuantity": "{{name}}، الكمية {{quantity}}",
+      "noServices": "لا توجد خدمات إضافية محجوزة."
+    },
+    "qr": {
+      "title": "رمز QR الخاص بك",
+      "description": "اعرضه في جناحك ليتمكن الزوار من مسحه والتسجيل كعملاء محتملين.",
+      "alt": "رمز QR للزوار الخاص بالجناح {{number}}",
+      "unavailable": "رمز QR غير متوفر بعد.",
+      "print": "طباعة",
+      "download": "تنزيل PNG",
+      "downloading": "جارٍ التنزيل…",
+      "actionError": "تعذر تجهيز صورة رمز QR. حاول مرة أخرى.",
+      "printTitle": "رمز QR للجناح {{number}}"
+    },
+    "pagination": {
+      "aria": "صفحات الأجنحة",
+      "previous": "الصفحة السابقة",
+      "next": "الصفحة التالية",
+      "summary": "الصفحة {{current}} من {{total}}"
+    }
+  },
+  "profile": {
+    "aria": "الملف الشخصي للعارض والشركة",
+    "title": "ملفي الشخصي",
+    "description": "إدارة معلومات الحساب والملف التعريفي للشركة.",
+    "role": "مدير الجناح",
+    "loading": "جارٍ تحميل ملفك الشخصي…",
+    "errorTitle": "تعذر تحميل ملفك الشخصي",
+    "errorMessage": "تحقق من الاتصال وحاول مرة أخرى.",
+    "retry": "إعادة المحاولة",
+    "companyLoading": "جارٍ تحميل ملف الشركة…",
+    "companyErrorTitle": "تعذر تحميل هذه الشركة",
+    "companyErrorMessage": "اختر شركة أخرى أو حاول مرة أخرى.",
+    "noCompaniesTitle": "لا يوجد ملف شركة بعد",
+    "noCompaniesMessage": "ستظهر الشركة هنا بعد ربطها بأحد أجنحتك.",
+    "avatarAlt": "الصورة الشخصية لـ {{name}}",
+    "noCompany": "لا توجد شركة نشطة",
+    "companyLogo": "شعار الشركة",
+    "companyLogoAlt": "شعار {{name}}",
+    "boothLocation": "القاعة {{hall}} · الجناح {{booth}}",
+    "areaValue": "{{area}} م²",
+    "status": {
+      "approved": "معتمدة",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوضة"
+    },
+    "companySelector": {
+      "title": "الشركة النشطة",
+      "companyProfile": "ملف الشركة",
+      "options": "الشركات المتاحة",
+      "managing": "إدارة {{count}} شركات"
+    },
+    "summary": {
+      "yearFounded": "سنة التأسيس",
+      "boothArea": "مساحة الأجنحة",
+      "booths": "الأجنحة"
+    },
+    "accountInformation": "معلومات الحساب",
+    "fields": {
+      "fullName": "الاسم الكامل",
+      "role": "الدور",
+      "companyName": "اسم الشركة",
+      "businessSector": "قطاع الأعمال",
+      "location": "إحداثيات المقر",
+      "phone": "رقم الهاتف",
+      "email": "البريد الإلكتروني",
+      "yearFounded": "سنة التأسيس",
+      "website": "الموقع الإلكتروني"
+    },
+    "about": {
+      "title": "عن الشركة",
+      "empty": "لم تتم إضافة وصف للشركة بعد.",
+      "headquarters": "مقر الشركة"
+    },
+    "social": {
+      "title": "الحضور الاجتماعي والرقمي",
+      "empty": "لم تتم إضافة روابط اجتماعية بعد.",
+      "platforms": {
+        "linkedin": "لينكدإن",
+        "twitter": "تويتر",
+        "x": "إكس",
+        "facebook": "فيسبوك",
+        "website": "الموقع الإلكتروني"
+      }
+    },
+    "media": {
+      "title": "الوسائط والملفات",
+      "description": "شعار الشركة وصور المعرض.",
+      "logo": "شعار الشركة",
+      "gallery": "معرض صور الشركة",
+      "uploaded": "تم الرفع",
+      "missing": "غير مرفوع",
+      "noGallery": "لا توجد صور في المعرض",
+      "galleryAlt": "صورة الشركة {{index}}"
+    }
   }
 }
