@@ -1,9 +1,7 @@
-import type { LandingIconName } from "../../pages/landingData";
-
-type IconProps = {
-  name: LandingIconName;
-  size?: number;
-};
+import type {
+  LandingIconName,
+  LandingIconProps,
+} from "../../types/landingType";
 
 const iconPaths: Record<LandingIconName, string[]> = {
   apple: [
@@ -34,7 +32,7 @@ const iconPaths: Record<LandingIconName, string[]> = {
   ],
 };
 
-export function Icon({ name, size = 24 }: IconProps) {
+export function Icon({ name, size = 24 }: LandingIconProps) {
   const isSolid = name === "star" || name === "apple" || name === "qr";
 
   return (

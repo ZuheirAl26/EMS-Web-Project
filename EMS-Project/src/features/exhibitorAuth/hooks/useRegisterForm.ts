@@ -2,16 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
-import {
-  validateRegisterForm,
-  type RegisterErrors,
-} from "../utils/authValidation";
 import { useAuthStore } from "../../../store/AuthStore";
-import {
-  registerApi,
-  type RegisterPayload,
-  type AuthResponse,
-} from "../api/Authapi";
+import { registerApi } from "../api/Authapi";
+import type {
+  AuthResponse,
+  RegisterPayload,
+} from "../types/authType";
+import type { RegisterErrors } from "../types/validationType";
+import { getApiErrorMessage } from "../../../utils/apiError";
+import { validateRegisterForm } from "../utils/validation";
 
 export function useRegisterForm() {
   const { t } = useTranslation();
@@ -41,10 +40,12 @@ export function useRegisterForm() {
         setApiError(response.message || "Registration Failed.");
       }
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       setApiError(
-        error.response?.data?.message ||
+        getApiErrorMessage(
+          error,
           "An error occurred during registration.",
+        ),
       );
     },
   });

@@ -18,7 +18,7 @@
   },
   "hero": {
     "title": "Your Complete Exhibition Management Platform",
-    "description": "Manage pavilions, capture leads, coordinate your team, and delight your visitors, all from one powerful portal.",
+    "description": "Manage booths, capture leads, coordinate your team, and delight your visitors, all from one powerful portal.",
     "explore": "Explore the Floor Map",
     "register": "Register as Exhibitor",
     "exhibitors": "500+ Exhibitors",
@@ -56,7 +56,7 @@
   "floorMap": {
     "eyebrow": "Floor Plan",
     "title": "Explore the Exhibition Halls",
-    "description": "Click any pavilion to preview their profile, products, and team.",
+    "description": "Click any booth to preview its profile, products, and team.",
     "mapTitle": "Damascus International Fair Floor Map",
     "mapAlt": "Complete Damascus International Fair exhibition map"
   },
@@ -108,7 +108,7 @@
     "button": "Create My Plan",
     "cardTitle": "My Plan — TechConnect 2025",
     "items": {
-      "pavilion": "A-03 Pavilion demo",
+      "booth": "A-03 Booth demo",
       "launch": "B-03 Product launch",
       "showcase": "Startup Pitch Showcase",
       "followUp": "Lead follow-up queue"
@@ -119,8 +119,8 @@
     "eyebrow": "Platform Features",
     "title": "Everything You Need to Run a World-Class Exhibition",
     "items": {
-      "pavilion": {
-        "title": "Pavilion Management",
+      "booth": {
+        "title": "Booth Management",
         "description": "Manage your booth setup, services, and booking requests end-to-end."
       },
       "leads": {
@@ -159,7 +159,7 @@
         "description": "AI-powered badge scanning and sentiment analysis are transforming how exhibitors qualify leads in real time."
       },
       "setup": {
-        "title": "The Complete Guide to Pavilion Setup at TechConnect 2025",
+        "title": "The Complete Guide to Booth Setup at TechConnect 2025",
         "description": "From media uploads to service requests, a step-by-step walkthrough of the ExhibitorHub portal."
       }
     }

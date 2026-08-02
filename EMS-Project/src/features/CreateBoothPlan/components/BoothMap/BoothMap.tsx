@@ -4,29 +4,23 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import mapFallback from "../../../../assets/map.png";
 import mapSource from "../../../../assets/map.svg";
-import type { Booth } from "../../api/BoothApi";
+import type { BoothMapProps } from "../../types/componentType";
 import "./BoothMap.scss";
 
-interface BoothMapProps {
-  booths: Booth[];
-  selectedBoothId: number | null;
-  onSelect: (booth: Booth) => void;
-}
-
 const MAP_STYLE_ID = "ems-interactive-booth-styles";
+const MIN_ZOOM = 4;
+const INITIAL_ZOOM = 5;
+const MAX_ZOOM = 20;
+const ZOOM_STEP = 0.2;
 
-export function BoothMap({
-  booths,
-  selectedBoothId,
-  onSelect,
-}: BoothMapProps) {
+export function BoothMap({ booths, selectedBoothId, onSelect }: BoothMapProps) {
   const { t } = useTranslation("createBoothPlan");
   const objectRef = useRef<HTMLObjectElement>(null);
-  const [zoom, setZoom] = useState(1);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const hasCenteredMapRef = useRef(false);
+  const [zoom, setZoom] = useState(INITIAL_ZOOM);
   const [mapLoadRevision, setMapLoadRevision] = useState(0);
-  const [mappedBoothCount, setMappedBoothCount] = useState<number | null>(
-    null,
-  );
+  const [mappedBoothCount, setMappedBoothCount] = useState<number | null>(null);
 
   useEffect(() => {
     const mapDocument = objectRef.current?.contentDocument;
@@ -151,12 +145,36 @@ export function BoothMap({
     };
   }, [booths, mapLoadRevision, onSelect, selectedBoothId, t]);
 
+  useEffect(() => {
+    if (mapLoadRevision === 0 || hasCenteredMapRef.current) {
+      return;
+    }
+
+    const centerFrame = window.requestAnimationFrame(() => {
+      const viewport = viewportRef.current;
+
+      if (!viewport) {
+        return;
+      }
+
+      viewport.scrollTo({
+        left: (viewport.scrollWidth - viewport.clientWidth) / 2,
+        top: (viewport.scrollHeight - viewport.clientHeight) / 2,
+      });
+      hasCenteredMapRef.current = true;
+    });
+
+    return () => {
+      window.cancelAnimationFrame(centerFrame);
+    };
+  }, [mapLoadRevision]);
+
   const decreaseZoom = () => {
-    setZoom((currentZoom) => Math.max(0.6, currentZoom - 0.2));
+    setZoom((currentZoom) => Math.max(MIN_ZOOM, currentZoom - ZOOM_STEP));
   };
 
   const increaseZoom = () => {
-    setZoom((currentZoom) => Math.min(2.4, currentZoom + 0.2));
+    setZoom((currentZoom) => Math.min(MAX_ZOOM, currentZoom + ZOOM_STEP));
   };
 
   return (
@@ -169,7 +187,7 @@ export function BoothMap({
         <div className="booth-map__zoom">
           <button
             aria-label={t("map.zoomOut")}
-            disabled={zoom <= 0.6}
+            disabled={zoom <= MIN_ZOOM}
             onClick={decreaseZoom}
             type="button"
           >
@@ -185,7 +203,7 @@ export function BoothMap({
           </output>
           <button
             aria-label={t("map.zoomIn")}
-            disabled={zoom >= 2.4}
+            disabled={zoom >= MAX_ZOOM}
             onClick={increaseZoom}
             type="button"
           >
@@ -199,7 +217,7 @@ export function BoothMap({
         </div>
       </div>
 
-      <div className="booth-map__viewport">
+      <div className="booth-map__viewport" ref={viewportRef}>
         <div
           className="booth-map__surface"
           style={{ transform: `scale(${zoom})` }}

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
-import { forgotPasswordApi, type ForgotPasswordPayload } from "../api/Authapi";
+import { forgotPasswordApi } from "../api/Authapi";
+import type { ForgotPasswordPayload } from "../types/authType";
+import { getApiErrorMessage } from "../../../utils/apiError";
+import { validateEmail } from "../utils/validation";
 
 export function useForgotPassword() {
   const { t } = useTranslation();
@@ -19,9 +22,9 @@ export function useForgotPassword() {
         setApiError(response.message || t("forgotPassword.errorMsg"));
       }
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       setApiError(
-        error.response?.data?.message || t("forgotPassword.errorMsg"),
+        getApiErrorMessage(error, t("forgotPassword.errorMsg")),
       );
     },
   });
@@ -32,6 +35,10 @@ export function useForgotPassword() {
     setSuccessMessage(null);
     if (!email.trim()) {
       setApiError(t("forgotPassword.emailRequired"));
+      return;
+    }
+    if (!validateEmail(email)) {
+      setApiError(t("login.validation.emailInvalid"));
       return;
     }
     mutation.mutate({ email });

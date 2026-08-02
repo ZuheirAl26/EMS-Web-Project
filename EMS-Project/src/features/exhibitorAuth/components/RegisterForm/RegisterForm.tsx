@@ -25,8 +25,7 @@ function RegisterForm() {
     t,
   } = useRegisterForm();
 
-  const { triggerGoogleFlow, isGoogleLoading, googleErrorMessage } =
-    useGoogleAuth();
+  const { triggerGoogleFlow, isGoogleLoading } = useGoogleAuth();
 
   return (
     <div className="register-form-container">

@@ -1,7 +1,8 @@
 import { useVerifyAccount } from "../../../hooks/useVerifyAccount";
 
 export default function VerifyAccountPage() {
-  const { isPending, isError, isSuccess } = useVerifyAccount();
+  const { errorMessage, isPending, isError, isSuccess } =
+    useVerifyAccount();
 
   return (
     <div
@@ -32,7 +33,7 @@ export default function VerifyAccountPage() {
 
         {isError && (
           <h3 style={{ color: "#d93025" }}>
-            ❌ Verification link expired or invalid.
+            ❌ {errorMessage || "Verification link expired or invalid."}
           </h3>
         )}
       </div>

@@ -2,11 +2,12 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useAuthStore } from "../../../store/AuthStore";
-import {
-  googleAuthApi,
-  type AuthResponse,
-  type GoogleAuthPayload,
-} from "../api/Authapi";
+import { googleAuthApi } from "../api/Authapi";
+import type {
+  AuthResponse,
+  GoogleAuthPayload,
+} from "../types/authType";
+import { getApiErrorMessage } from "../../../utils/apiError";
 
 export function useGoogleAuth() {
   const navigate = useNavigate();
@@ -45,8 +46,7 @@ export function useGoogleAuth() {
     isGoogleLoading: mutation.isPending,
     isGoogleError: mutation.isError,
     googleErrorMessage: mutation.error
-      ? (mutation.error as any).response?.data?.message ||
-        mutation.error.message
+      ? getApiErrorMessage(mutation.error, mutation.error.message)
       : null,
   };
 }

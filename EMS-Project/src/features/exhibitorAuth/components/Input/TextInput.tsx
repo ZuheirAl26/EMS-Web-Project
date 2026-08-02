@@ -1,13 +1,4 @@
-interface TextInputProps {
-  id: string;
-  label: string;
-  type?: "text" | "email";
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  error?: string;
-  required?: boolean;
-}
+import type { TextInputProps } from "../../types/componentType";
 
 export default function TextInput({
   id,

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { UserData } from "../features/ExhibitorAuth/api/Authapi";
+import type { UserData } from "../features/ExhibitorAuth/types/authType";
 
 interface AuthState {
   user: UserData | null;

@@ -72,6 +72,104 @@
       "retry": "إعادة المحاولة"
     }
   },
+  "companyProfile": {
+    "title": "ملف الشركة",
+    "description": "تُملأ البيانات من التسجيل مسبقاً. حدّثها عند الحاجة أو اختر شركة موجودة.",
+    "primaryCompany": "الشركة الأساسية",
+    "socialLinks": "روابط التواصل",
+    "socialLinksRequirement": "(رابط واحد على الأقل مطلوب)",
+    "optional": "(اختياري)",
+    "back": "رجوع",
+    "continue": "متابعة",
+    "readyForReview": "تم حفظ جميع حقول الشركة وأصبحت جاهزة لخطوة المراجعة.",
+    "missingBoothTitle": "اختر جناحاً أولاً",
+    "missingBoothMessage": "تحتاج خطوة ملف الشركة إلى جناح محدد قبل المتابعة.",
+    "chooseBooth": "اختيار جناح",
+    "fields": {
+      "companyName": "اسم الشركة",
+      "companyNamePlaceholder": "اسم شركتك",
+      "businessSector": "قطاع الأعمال",
+      "businessSectorPlaceholder": "مثال: التكنولوجيا",
+      "companyLocation": "موقع الشركة",
+      "companyLocationPlaceholder": "مثال: دمشق، سوريا",
+      "phoneNumber": "رقم الهاتف",
+      "phoneNumberPlaceholder": "+963 11 XXX XXXX",
+      "yearFounded": "سنة التأسيس",
+      "yearFoundedPlaceholder": "2010",
+      "website": "الموقع الإلكتروني",
+      "websitePlaceholder": "https://yourcompany.com",
+      "twitter": "تويتر / X",
+      "twitterPlaceholder": "https://x.com/yourhandle",
+      "linkedin": "لينكدإن",
+      "linkedinPlaceholder": "https://linkedin.com/company/...",
+      "description": "الوصف",
+      "descriptionPlaceholder": "وصف موجز عن شركتك..."
+    },
+    "media": {
+      "title": "الوسائط والملفات",
+      "description": "سيتم تضمين الملفات المحددة مع بيانات الشركة في الطلب النهائي.",
+      "logo": "شعار الشركة",
+      "banner": "لافتة الجناح",
+      "logoHelp": "PNG أو JPG أو WebP أو SVG",
+      "bannerHelp": "المقاس المقترح: 1920×480 بكسل",
+      "dropBanner": "أفلت صورة اللافتة هنا",
+      "uploaded": "تم الرفع",
+      "missing": "غير مرفق"
+    },
+    "directory": {
+      "button": "دليل الشركات",
+      "title": "ملفات الشركات الموجودة",
+      "description": "سيؤدي اختيار شركة محفوظة إلى تعبئة النموذج تلقائياً عند ربط نقطة نهاية الدليل.",
+      "selectLabel": "ملف الشركة",
+      "empty": "لم يتم تحميل شركات محفوظة",
+      "useCompany": "استخدام الشركة"
+    },
+    "validation": {
+      "socialLinkRequired": "أضف رابط تواصل واحداً على الأقل: الموقع الإلكتروني أو تويتر / X أو لينكدإن.",
+      "logoRequired": "شعار الشركة مطلوب."
+    }
+  },
+  "review": {
+    "title": "المراجعة والإرسال",
+    "description": "راجع خطة مشاركتك قبل إرسالها للموافقة.",
+    "booth": {
+      "title": "الجناح",
+      "number": "رقم الجناح",
+      "area": "المساحة",
+      "price": "السعر",
+      "missing": "لم يتم اختيار جناح."
+    },
+    "services": {
+      "title": "الخدمات",
+      "empty": "لم تتم إضافة خدمات.",
+      "quantity_one": "وحدة واحدة",
+      "quantity_other": "{{count}} وحدات",
+      "fallbackName": "الخدمة رقم {{id}}"
+    },
+    "company": {
+      "title": "ملف الشركة",
+      "name": "الشركة",
+      "sector": "القطاع"
+    },
+    "total": {
+      "label": "المجموع التقديري",
+      "notice": "يخضع للموافقة النهائية"
+    },
+    "submit": "إرسال للموافقة",
+    "submitting": "جارٍ الإرسال…",
+    "success": "تم إرسال طلب الجناح بنجاح.",
+    "validation": {
+      "booth": "اختر جناحاً قبل الإرسال.",
+      "companyLogo": "حمّل شعار الشركة المطلوب قبل الإرسال.",
+      "companyProfile": "أكمل حقول ملف الشركة المطلوبة قبل الإرسال.",
+      "socialLinks": "أضف رابط تواصل واحداً على الأقل للشركة قبل الإرسال."
+    },
+    "errors": {
+      "submit": "تعذر إرسال طلب الجناح. يرجى المحاولة مرة أخرى.",
+      "payload": "تعذر تجهيز طلب الجناح.",
+      "edit": "تعديل البيانات"
+    }
+  },
   "filters": {
     "title": "تصفية الأجنحة",
     "updating": "جارٍ تحديث النتائج…",

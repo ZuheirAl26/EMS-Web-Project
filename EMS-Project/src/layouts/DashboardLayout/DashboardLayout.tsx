@@ -1,10 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   NavLink,
   Outlet,
   useLocation,
-  useNavigate,
 } from "react-router-dom";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -19,6 +18,8 @@ import {
   UserGroupIcon,
 } from "@hugeicons/core-free-icons";
 import logo from "../../assets/logo.png";
+import { LogoutDialog } from "../../features/ExhibitorAuth/components";
+import { useLogout } from "../../features/ExhibitorAuth/hooks/useLogout";
 import { useAuthStore } from "../../store/AuthStore";
 import "./DashboardLayout.scss";
 
@@ -68,9 +69,9 @@ function getInitials(name: string) {
 export function DashboardLayout() {
   const { t } = useTranslation("dashboard");
   const location = useLocation();
-  const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const logoutMutation = useLogout();
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const accountName = user?.name?.trim() || t("account.fallbackName");
   const initials = useMemo(() => getInitials(accountName), [accountName]);
   const activeItem =
@@ -79,10 +80,13 @@ export function DashboardLayout() {
         ? location.pathname === item.path
         : location.pathname.startsWith(item.path),
     ) ?? navigationItems[0];
+  const activePageId = location.pathname.startsWith("/dashboard/profile")
+    ? "profile"
+    : activeItem.id;
 
   const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
+    setIsLogoutDialogOpen(true);
+    logoutMutation.reset();
   };
 
   return (
@@ -123,13 +127,19 @@ export function DashboardLayout() {
         </div>
 
         <div className="dashboard-sidebar__account">
-          <div className="dashboard-sidebar__avatar" aria-hidden="true">
-            {initials}
-          </div>
-          <div className="dashboard-sidebar__account-copy">
-            <strong>{accountName}</strong>
-            <span>{t("account.role")}</span>
-          </div>
+          <NavLink
+            aria-label={t("account.openProfile")}
+            className="dashboard-sidebar__profile-link"
+            to="/dashboard/profile"
+          >
+            <div className="dashboard-sidebar__avatar" aria-hidden="true">
+              {initials}
+            </div>
+            <div className="dashboard-sidebar__account-copy">
+              <strong>{accountName}</strong>
+              <span>{t("account.role")}</span>
+            </div>
+          </NavLink>
           <button
             aria-label={t("account.logout")}
             className="dashboard-sidebar__logout"
@@ -157,7 +167,7 @@ export function DashboardLayout() {
               strokeWidth={1.8}
             />
             <span aria-current="page">
-              {t(`header.pages.${activeItem.id}`)}
+              {t(`header.pages.${activePageId}`)}
             </span>
           </div>
 
@@ -175,19 +185,29 @@ export function DashboardLayout() {
               />
               <span aria-hidden="true">3</span>
             </button>
-            <div
+            <NavLink
               aria-label={accountName}
               className="dashboard-header__avatar"
-              role="img"
+              to="/dashboard/profile"
             >
               {initials}
-            </div>
+            </NavLink>
           </div>
         </header>
         <div className="dashboard-layout__body">
           <Outlet />
         </div>
       </main>
+      <LogoutDialog
+        errorMessage={logoutMutation.errorMessage}
+        isPending={logoutMutation.isPending}
+        onCancel={() => {
+          setIsLogoutDialogOpen(false);
+          logoutMutation.reset();
+        }}
+        onConfirm={logoutMutation.logout}
+        open={isLogoutDialogOpen}
+      />
     </div>
   );
 }

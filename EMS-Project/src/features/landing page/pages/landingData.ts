@@ -7,7 +7,7 @@ export const metrics = [
 
 export const features = [
   {
-    id: "pavilion",
+    id: "booth",
     icon: "calendar",
   },
   {
@@ -30,7 +30,7 @@ export const features = [
     id: "reports",
     icon: "star",
   },
-] as const;
+] as const satisfies ReadonlyArray<{ id: string; icon: LandingIconName }>;
 
 export const appFeatures = [
   {
@@ -49,7 +49,7 @@ export const appFeatures = [
     id: "review",
     icon: "star",
   },
-] as const;
+] as const satisfies ReadonlyArray<{ id: string; icon: LandingIconName }>;
 
 export const posts = [
   { id: "roi" },
@@ -57,7 +57,4 @@ export const posts = [
   { id: "setup" },
 ] as const;
 
-export type LandingIconName =
-  | (typeof features)[number]["icon"]
-  | "apple"
-  | "ticket";
+import type { LandingIconName } from "../types/landingType";

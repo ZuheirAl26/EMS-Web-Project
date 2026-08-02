@@ -1,16 +1,210 @@
 .my-booths {
   min-height: 100%;
-  padding: 24px;
+  padding: 24px 24px 84px;
+
+  &__intro {
+    margin-bottom: 20px;
+
+    h1,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      color: var(--color-ink);
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    p {
+      margin-top: 4px;
+      color: var(--color-neutral-500);
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+
+  &__success {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-success-light);
+    border-radius: var(--radius-lg);
+    background: var(--color-success-surface);
+    color: var(--color-success-strong);
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__state,
+  &__empty {
+    min-height: 260px;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--radius-2xl);
+    background: var(--color-white);
+  }
+
+  &__state {
+    flex-direction: column;
+    gap: 10px;
+    color: var(--color-neutral-500);
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+
+    .loader {
+      width: 28px;
+      height: 28px;
+      display: block;
+      border: 3px solid var(--color-primary-a20);
+      border-top-color: var(--color-primary);
+      border-radius: var(--radius-round);
+      animation: my-booths-spin 700ms linear infinite;
+    }
+
+    &--error {
+      border-color: var(--color-danger-border);
+      background: var(--color-danger-surface);
+      color: var(--color-danger-text);
+
+      strong {
+        font-size: 14px;
+      }
+
+      button {
+        min-height: 34px;
+        padding: 7px 14px;
+        border: 1px solid var(--color-danger-border);
+        border-radius: var(--radius-lg);
+        background: var(--color-white);
+        color: var(--color-danger-text);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__empty {
+    text-align: center;
+
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h2 {
+      color: var(--color-ink);
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    p {
+      margin-top: 6px;
+      color: var(--color-neutral-500);
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+
+  &__pagination {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    button {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-lg);
+      background: var(--color-white);
+      color: var(--color-neutral-600);
+      cursor: pointer;
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.45;
+      }
+    }
+
+    span {
+      color: var(--color-neutral-500);
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
 
   &__add-button {
+    position: fixed;
+    z-index: 10;
+    inset-block-end: 24px;
+    inset-inline-start: 264px;
     min-width: 118px;
-    min-height: 36px;
     height: 36px;
     padding: 8px 16px;
-    border-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-lg);
+    background: var(--color-primary);
+    color: var(--color-white);
     font-size: 12px;
     line-height: 16px;
+    font-weight: 500;
     text-decoration: none;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-xs-strong);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+
+    &:hover {
+      background: var(--color-primary-light);
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-primary-a20);
+      outline-offset: 2px;
+    }
+  }
+}
+
+@keyframes my-booths-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+[dir="rtl"] {
+  .my-booths__pagination button svg {
+    transform: scaleX(-1);
+  }
+}
+
+@media (max-width: 980px) {
+  .my-booths {
+    padding: 20px 20px 80px;
+
+    &__add-button {
+      inset-block-end: 20px;
+      inset-inline-start: 260px;
+    }
   }
 }

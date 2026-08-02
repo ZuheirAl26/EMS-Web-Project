@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "./App.tsx";
-import "./index.css";
+import "./index.scss";
 import "./styles/global.scss";
 import "./utils/i18n";
 import { GoogleOAuthProvider } from "@react-oauth/google";

@@ -1,12 +1,18 @@
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
-import { resetPasswordApi, type ResetPasswordPayload } from "../api/Authapi";
+import { resetPasswordApi } from "../api/Authapi";
+import type { ResetPasswordPayload } from "../types/authType";
+import type { PasswordErrors } from "../types/validationType";
+import { getApiErrorMessage } from "../../../utils/apiError";
+import {
+  calculatePasswordStrength,
+  validatePasswordConfirmation,
+} from "../utils/validation";
 
 export function useResetPassword() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const token = searchParams.get("token") || "";
@@ -14,10 +20,7 @@ export function useResetPassword() {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState<{
-    password?: string;
-    confirmPassword?: string;
-  }>({});
+  const [errors, setErrors] = useState<PasswordErrors>({});
   const [apiError, setApiError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -34,22 +37,22 @@ export function useResetPassword() {
         setApiError(response.message || t("resetPassword.errorMsg"));
       }
     },
-    onError: (error: any) => {
-      setApiError(error.response?.data?.message || t("resetPassword.errorMsg"));
+    onError: (error: unknown) => {
+      setApiError(
+        getApiErrorMessage(error, t("resetPassword.errorMsg")),
+      );
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setApiError(null);
-    const newErrors: typeof errors = {};
-
-    if (!password || password.length < 8) {
-      newErrors.password = t("resetPassword.passwordShort");
-    }
-    if (password !== confirmPassword) {
-      newErrors.confirmPassword = t("resetPassword.passwordMismatch");
-    }
+    const newErrors = validatePasswordConfirmation(
+      password,
+      confirmPassword,
+      t,
+      "resetPassword",
+    );
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -63,15 +66,7 @@ export function useResetPassword() {
     });
   };
 
-  const passwordStrength = (() => {
-    if (!password) return 0;
-    let score = 0;
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-    return score;
-  })();
+  const passwordStrength = calculatePasswordStrength(password);
 
   const isLinkValid = Boolean(token && email);
 

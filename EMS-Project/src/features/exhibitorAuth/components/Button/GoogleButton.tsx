@@ -1,10 +1,6 @@
 import { useTranslation } from "react-i18next";
+import type { GoogleButtonProps } from "../../types/componentType";
 import "./GoogleButton.scss";
-
-interface GoogleButtonProps {
-  onClick: () => void;
-  isLoading?: boolean;
-}
 
 function GoogleButton({ onClick, isLoading = false }: GoogleButtonProps) {
   const { t } = useTranslation();

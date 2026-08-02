@@ -3,7 +3,7 @@
   overflow: hidden;
   min-height: 567px;
   padding: 66px 0;
-  background: #ffffff;
+  background: var(--color-white);
 
   &__shell {
     width: min(100%, 1280px);
@@ -50,10 +50,10 @@
   &__card {
     min-height: 196px;
     padding: 28px;
-    background: #ffffff;
+    background: var(--color-white);
     border: 1px solid var(--color-athens-gray);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-4xl);
 
     > div {
       width: 40px;
@@ -61,9 +61,9 @@
       margin-bottom: 16px;
       display: grid;
       place-items: center;
-      background: rgba(10, 135, 130, 0.1);
+      background: var(--color-primary-a10);
       color: var(--color-blue-chill);
-      border-radius: 12px;
+      border-radius: var(--radius-2xl);
     }
 
     h3 {

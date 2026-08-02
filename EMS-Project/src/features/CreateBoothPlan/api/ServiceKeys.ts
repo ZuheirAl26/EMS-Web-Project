@@ -1,4 +1,4 @@
-import type { ServiceFilters } from "./ServiceApi";
+import type { ServiceFilters } from "../types/serviceType";
 
 export const serviceKeys = {
   all: ["exhibitor-services"] as const,

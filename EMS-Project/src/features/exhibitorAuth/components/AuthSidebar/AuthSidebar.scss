@@ -4,7 +4,7 @@
     var(--color-primary) 0%,
     var(--color-sidebar-end) 100%
   );
-  color: #ffffff;
+  color: var(--color-white);
   height: 100%;
   padding: 60px 40px;
   display: flex;
@@ -25,10 +25,10 @@
   .logo-image {
     width: 120px;
     height: 120px;
-    background-color: #ffffff;
-    border-radius: 16px;
+    background-color: var(--color-white);
+    border-radius: var(--radius-4xl);
     margin-bottom: 32px;
-    box-shadow: 0 8px 24px var(--color-shadow);
+    box-shadow: var(--shadow-theme-lg);
     object-fit: contain;
     padding: 12px;
   }
@@ -68,7 +68,7 @@
         background: var(--color-white-fade);
         color: var(--color-icon);
         padding: 8px;
-        border-radius: 8px;
+        border-radius: var(--radius-lg);
         margin-inline-end: 16px;
         display: inline-flex;
         align-items: center;

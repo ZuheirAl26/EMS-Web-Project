@@ -1,0 +1,1 @@
+export { ExhibitorProfilePage } from "./ExhibitorProfilePage";
