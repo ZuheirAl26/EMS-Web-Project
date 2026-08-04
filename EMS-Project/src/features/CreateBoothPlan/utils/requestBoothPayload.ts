@@ -3,6 +3,8 @@ import type {
   RequestBoothPayload,
   RequestBoothService,
 } from "../types/requestBoothType";
+import { isBusinessSector } from "../types/businessSectorType";
+import { isValidLatitude, isValidLongitude } from "./validation";
 
 function serializeServices(
   quantities: Record<number, number>,
@@ -46,13 +48,26 @@ export function buildRequestBoothPayload(
     throw new Error("The company logo is required.");
   }
 
+  if (!isBusinessSector(draft.companyProfile.businessSector)) {
+    throw new Error("A valid business sector is required.");
+  }
+
+  if (
+    !isValidLatitude(draft.companyProfile.headquartersLatitude) ||
+    !isValidLongitude(draft.companyProfile.headquartersLongitude)
+  ) {
+    throw new Error("Valid company headquarters coordinates are required.");
+  }
+
   payload.new_company = {
     name: draft.companyProfile.companyName.trim(),
-    business_sector: draft.companyProfile.businessSector.trim(),
+    business_sector: draft.companyProfile.businessSector,
     phone: draft.companyProfile.phoneNumber.trim(),
     description: draft.companyProfile.description.trim(),
     year_founded: Number(draft.companyProfile.yearFounded),
     social_links: socialLinks,
+    headquarters_lat: Number(draft.companyProfile.headquartersLatitude),
+    headquarters_lng: Number(draft.companyProfile.headquartersLongitude),
     logo: draft.companyLogo,
     gallery: draft.boothBanner ? [draft.boothBanner] : [],
   };

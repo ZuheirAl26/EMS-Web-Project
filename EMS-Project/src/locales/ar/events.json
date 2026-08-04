@@ -1,0 +1,76 @@
+{
+  "aria": "فعاليات العارض",
+  "title": "الفعاليات",
+  "description": "استعرض الفعاليات والمحاضرات التي طلبتها في قاعات المعرض.",
+  "requestEvent": "طلب فعالية",
+  "total_zero": "لا توجد فعاليات",
+  "total_one": "فعالية واحدة",
+  "total_two": "فعاليتان",
+  "total_few": "{{count}} فعاليات",
+  "total_many": "{{count}} فعالية",
+  "total_other": "{{count}} فعالية",
+  "loading": "جارٍ تحميل الفعاليات…",
+  "statistics": {
+    "aria": "إحصاءات طلبات الفعاليات",
+    "total": "إجمالي الفعاليات",
+    "approved": "المقبولة",
+    "pending": "قيد المراجعة",
+    "rejected": "المرفوضة"
+  },
+  "status": {
+    "approved": "مقبولة",
+    "pending": "قيد المراجعة",
+    "rejected": "مرفوضة",
+    "other": "{{value}}"
+  },
+  "card": {
+    "edit": "تعديل",
+    "hall": "قاعة الفعالية",
+    "hallFallback": "القاعة رقم {{id}}",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "duration": "المدة",
+    "durationMinutes_zero": "أقل من دقيقة",
+    "durationMinutes_one": "دقيقة واحدة",
+    "durationMinutes_two": "دقيقتان",
+    "durationMinutes_few": "{{count}} دقائق",
+    "durationMinutes_many": "{{count}} دقيقة",
+    "durationMinutes_other": "{{count}} دقيقة",
+    "speakers": "المتحدثون",
+    "noSpeakers": "لا يوجد متحدثون",
+    "noRatings": "لا توجد تقييمات بعد",
+    "ratingAria": "التقييم {{rating}} من 5",
+    "reviews_zero": "(لا توجد مراجعات)",
+    "reviews_one": "(مراجعة واحدة)",
+    "reviews_two": "(مراجعتان)",
+    "reviews_few": "({{count}} مراجعات)",
+    "reviews_many": "({{count}} مراجعة)",
+    "reviews_other": "({{count}} مراجعة)",
+    "eventId": "المعرّف: {{id}}",
+    "hallId": "القاعة رقم {{id}}",
+    "created": "أُنشئت في {{date}}"
+  },
+  "metrics": {
+    "aria": "إحصائيات {{title}}",
+    "qrToken": "رمز QR",
+    "qrAlt": "رمز QR لفعالية {{title}}",
+    "qrPending": "غير متوفر",
+    "visitorLeads": "بيانات الزوار",
+    "savedByVisitors": "حفظها الزوار"
+  },
+  "empty": {
+    "title": "لا توجد فعاليات بعد",
+    "message": "ستظهر طلبات فعالياتك هنا."
+  },
+  "error": {
+    "title": "تعذر تحميل الفعاليات",
+    "message": "تحقق من الاتصال أو إعدادات الواجهة البرمجية ثم حاول مجدداً.",
+    "retry": "إعادة المحاولة"
+  },
+  "pagination": {
+    "aria": "صفحات الفعاليات",
+    "previous": "الصفحة السابقة",
+    "next": "الصفحة التالية",
+    "summary": "الصفحة {{current}} من {{total}}"
+  }
+}

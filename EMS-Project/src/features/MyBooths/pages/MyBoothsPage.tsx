@@ -8,6 +8,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { EmptyState, Loader } from "../../../components";
+import { usePrefetchBooths } from "../../CreateBoothPlan/hooks/usePrefetchBooths";
 import { MyBoothCard } from "../components/MyBoothsPage";
 import { useMyBooths } from "../hooks/useMyBooths";
 import type { MyBoothsLocationState } from "../types/navigationType";
@@ -17,6 +18,7 @@ export function MyBoothsPage() {
   const { t } = useTranslation("dashboard");
   const location = useLocation();
   const [page, setPage] = useState(1);
+  const prefetchBooths = usePrefetchBooths();
   const myBoothsQuery = useMyBooths(page);
   const requestMessage = (
     location.state as MyBoothsLocationState | null
@@ -27,8 +29,26 @@ export function MyBoothsPage() {
   return (
     <section className="my-booths" aria-label={t("myBooths.aria")}>
       <header className="my-booths__intro">
-        <h1>{t("myBooths.title")}</h1>
-        <p>{t("myBooths.description")}</p>
+        <div>
+          <h1>{t("myBooths.title")}</h1>
+          <p>{t("myBooths.description")}</p>
+        </div>
+        <Link
+          className="my-booths__add-button"
+          onFocus={prefetchBooths}
+          onMouseEnter={prefetchBooths}
+          onTouchStart={prefetchBooths}
+          to="create"
+        >
+          <HugeiconsIcon
+            aria-hidden="true"
+            color="currentColor"
+            icon={Add01Icon}
+            size={18}
+            strokeWidth={1.8}
+          />
+          <span>{t("myBooths.addBooth")}</span>
+        </Link>
       </header>
 
       {requestMessage ? (
@@ -112,20 +132,6 @@ export function MyBoothsPage() {
           </button>
         </nav>
       ) : null}
-
-      <Link
-        className="my-booths__add-button"
-        to="create"
-      >
-        <HugeiconsIcon
-          aria-hidden="true"
-          color="currentColor"
-          icon={Add01Icon}
-          size={18}
-          strokeWidth={1.8}
-        />
-        <span>{t("myBooths.addBooth")}</span>
-      </Link>
     </section>
   );
 }

@@ -3,7 +3,7 @@ import { ZoomInAreaIcon, ZoomOutAreaIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import mapFallback from "../../../../assets/map.png";
-import mapSource from "../../../../assets/map.svg";
+import mapSource from "../../../../assets/exhibition_runtime.svg";
 import type { BoothMapProps } from "../../types/componentType";
 import "./BoothMap.scss";
 

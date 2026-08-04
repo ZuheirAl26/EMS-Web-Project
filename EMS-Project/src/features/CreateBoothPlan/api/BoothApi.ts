@@ -6,10 +6,12 @@ import type {
 
 export async function getBooths(
   filters: BoothFilters,
+  signal?: AbortSignal,
 ): Promise<BoothListResponse> {
   const response = await apiClient.get<BoothListResponse>(
     "/v1/exhibitor/booth",
     {
+      signal,
       params: {
         "filter[number]": filters.number || undefined,
         "filter[booked]": filters.booked,
@@ -19,6 +21,10 @@ export async function getBooths(
       },
     },
   );
+
+  if (!response.data.status) {
+    throw new Error(response.data.message || "The booths could not be loaded.");
+  }
 
   return response.data;
 }

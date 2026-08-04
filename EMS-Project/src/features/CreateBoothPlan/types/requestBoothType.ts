@@ -1,4 +1,5 @@
 import type { Booth } from "./boothType";
+import type { BusinessSector } from "./businessSectorType";
 import type { CompanyProfileDraft } from "./companyProfileType";
 
 export interface RequestBoothService {
@@ -8,13 +9,13 @@ export interface RequestBoothService {
 
 export interface NewCompanyRequest {
   name: string;
-  business_sector: string;
+  business_sector: BusinessSector;
   phone: string;
   description: string;
   year_founded: number;
   social_links: string[];
-  headquarters_lat?: number;
-  headquarters_lng?: number;
+  headquarters_lat: number;
+  headquarters_lng: number;
   logo: File;
   gallery: File[];
 }
