@@ -9,10 +9,10 @@ import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { EmptyState, Loader } from "../../../components";
 import { usePrefetchBooths } from "../../CreateBoothPlan/hooks/usePrefetchBooths";
-import { MyBoothCard } from "../components/MyBoothsPage";
 import { useMyBooths } from "../hooks/useMyBooths";
 import type { MyBoothsLocationState } from "../types/navigationType";
 import "./MyBoothsPage.scss";
+import { MyBoothCard } from "../components";
 
 export function MyBoothsPage() {
   const { t } = useTranslation("dashboard");
@@ -20,9 +20,8 @@ export function MyBoothsPage() {
   const [page, setPage] = useState(1);
   const prefetchBooths = usePrefetchBooths();
   const myBoothsQuery = useMyBooths(page);
-  const requestMessage = (
-    location.state as MyBoothsLocationState | null
-  )?.requestMessage;
+  const requestMessage = (location.state as MyBoothsLocationState | null)
+    ?.requestMessage;
   const pagination = myBoothsQuery.data?.data;
   const booths = pagination?.data ?? [];
 
@@ -66,10 +65,7 @@ export function MyBoothsPage() {
         <div className="my-booths__state my-booths__state--error" role="alert">
           <strong>{t("myBooths.errorTitle")}</strong>
           <span>{t("myBooths.errorMessage")}</span>
-          <button
-            onClick={() => void myBoothsQuery.refetch()}
-            type="button"
-          >
+          <button onClick={() => void myBoothsQuery.refetch()} type="button">
             {t("myBooths.retry")}
           </button>
         </div>

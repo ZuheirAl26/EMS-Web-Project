@@ -2,11 +2,8 @@ import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import type { ProfileSidebarCardProps } from "../../types/profileType";
-import {
-  getInitials,
-  resolveMediaUrl,
-} from "../../utils/profileUtils";
-import { ActiveCompanySelector } from "./ActiveCompanySelector";
+import { getInitials, resolveMediaUrl } from "../../utils/profileUtils";
+import { ActiveCompanySelector } from "../ActiveCompanySelector/ActiveCompanySelector";
 import "./ProfileSidebarCard.scss";
 
 export function ProfileSidebarCard({
@@ -43,7 +40,10 @@ export function ProfileSidebarCard({
         <div className="profile-sidebar-card__banner" />
         <div className="profile-sidebar-card__avatar">
           {avatarUrl ? (
-            <img alt={t("profile.avatarAlt", { name: exhibitor.name })} src={avatarUrl} />
+            <img
+              alt={t("profile.avatarAlt", { name: exhibitor.name })}
+              src={avatarUrl}
+            />
           ) : (
             <span aria-hidden="true">{getInitials(exhibitor.name)}</span>
           )}
@@ -86,7 +86,10 @@ export function ProfileSidebarCard({
         <h3>{t("profile.companyLogo")}</h3>
         <div>
           {logoUrl ? (
-            <img alt={t("profile.companyLogoAlt", { name: company?.name })} src={logoUrl} />
+            <img
+              alt={t("profile.companyLogoAlt", { name: company?.name })}
+              src={logoUrl}
+            />
           ) : (
             <span aria-hidden="true">
               {getInitials(company?.name || t("profile.noCompany"))}

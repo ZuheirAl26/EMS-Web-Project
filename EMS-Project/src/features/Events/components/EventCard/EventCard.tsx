@@ -21,7 +21,7 @@ import {
   getEventStatusTone,
   getEventStatusTranslationKey,
 } from "../../utils/eventUtils";
-import { EventMetrics } from "./EventMetrics";
+import { EventMetrics } from "../EventMetrics";
 import "./EventCard.scss";
 
 export function EventCard({ event }: EventCardProps) {
@@ -52,7 +52,9 @@ export function EventCard({ event }: EventCardProps) {
         <header className="event-card__header">
           <h2 id={`event-${event.id}-title`}>{event.title}</h2>
           <div className="event-card__actions">
-            <span className={`event-card__status event-card__status--${statusTone}`}>
+            <span
+              className={`event-card__status event-card__status--${statusTone}`}
+            >
               <HugeiconsIcon
                 aria-hidden="true"
                 color="currentColor"
@@ -111,7 +113,9 @@ export function EventCard({ event }: EventCardProps) {
               strokeWidth={1.9}
             />
             <dt>{t("card.time")}</dt>
-            <dd>{formatEventTimeRange(event.start_at, event.end_at, locale)}</dd>
+            <dd>
+              {formatEventTimeRange(event.start_at, event.end_at, locale)}
+            </dd>
           </div>
           <div>
             <HugeiconsIcon
@@ -166,9 +170,7 @@ export function EventCard({ event }: EventCardProps) {
                 ))}
               </span>
               <strong>{numberFormatter.format(event.average_rating)}</strong>
-              <small>
-                {t("card.reviews", { count: event.reviews_count })}
-              </small>
+              <small>{t("card.reviews", { count: event.reviews_count })}</small>
             </div>
           )}
           <span className="event-card__token">

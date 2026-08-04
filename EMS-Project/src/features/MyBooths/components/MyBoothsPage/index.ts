@@ -1,1 +1,0 @@
-export { MyBoothCard } from "./MyBoothCard";

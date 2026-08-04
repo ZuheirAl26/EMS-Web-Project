@@ -7,7 +7,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { EmptyState, Loader } from "../../../components";
-import { EventCard, EventStatisticsCards } from "../components/EventsPage";
+import { EventCard, EventStatisticsCards } from "../components";
 import { useEventStatistics } from "../hooks/useEventStatistics";
 import { useEvents } from "../hooks/useEvents";
 import "./EventsPage.scss";
