@@ -2,6 +2,7 @@ import type {
   BoothFilterDraft,
   BoothFilters,
 } from "../types/boothType";
+import { isBusinessSector } from "../types/businessSectorType";
 import type {
   CompanyProfileDraft,
   CompanyProfileValidationErrors,
@@ -72,7 +73,34 @@ export function validateCompanyProfile(
   return {
     socialLinks: hasSocialLink ? undefined : "required",
     companyLogo: companyLogo ? undefined : "required",
+    headquartersLocation:
+      isValidLatitude(profile.headquartersLatitude) &&
+      isValidLongitude(profile.headquartersLongitude)
+        ? undefined
+        : "required",
   };
+}
+
+export function isValidLatitude(value: string): boolean {
+  const coordinate = Number(value);
+
+  return (
+    value.trim() !== "" &&
+    Number.isFinite(coordinate) &&
+    coordinate >= -90 &&
+    coordinate <= 90
+  );
+}
+
+export function isValidLongitude(value: string): boolean {
+  const coordinate = Number(value);
+
+  return (
+    value.trim() !== "" &&
+    Number.isFinite(coordinate) &&
+    coordinate >= -180 &&
+    coordinate <= 180
+  );
 }
 
 export function validateRequestBoothDraft(
@@ -104,6 +132,9 @@ export function validateRequestBoothDraft(
   if (
     !hasExistingCompany &&
     (requiredCompanyFields.some((value) => !value.trim()) ||
+      !isBusinessSector(draft.companyProfile.businessSector) ||
+      !isValidLatitude(draft.companyProfile.headquartersLatitude) ||
+      !isValidLongitude(draft.companyProfile.headquartersLongitude) ||
       !hasValidYear)
   ) {
     issues.push("companyProfile");

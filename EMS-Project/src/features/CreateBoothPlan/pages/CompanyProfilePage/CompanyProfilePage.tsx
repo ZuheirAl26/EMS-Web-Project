@@ -44,6 +44,17 @@ export function CompanyProfilePage() {
         socialLinks: undefined,
       }));
     }
+
+    if (
+      value.trim() &&
+      (field === "headquartersLatitude" ||
+        field === "headquartersLongitude")
+    ) {
+      setValidationErrors((current) => ({
+        ...current,
+        headquartersLocation: undefined,
+      }));
+    }
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -51,7 +62,11 @@ export function CompanyProfilePage() {
     const errors = validateCompanyProfile(companyProfile, companyLogo);
     setValidationErrors(errors);
 
-    if (errors.socialLinks || errors.companyLogo) {
+    if (
+      errors.socialLinks ||
+      errors.companyLogo ||
+      errors.headquartersLocation
+    ) {
       return;
     }
 
@@ -78,6 +93,11 @@ export function CompanyProfilePage() {
         ) : (
           <form className="company-profile" onSubmit={handleSubmit}>
             <CompanyDetailsForm
+              headquartersLocationError={
+                validationErrors.headquartersLocation
+                  ? t("companyProfile.validation.headquartersLocationRequired")
+                  : undefined
+              }
               hasSocialLinksError={Boolean(validationErrors.socialLinks)}
               onFieldChange={updateField}
             />

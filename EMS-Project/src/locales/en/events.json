@@ -1,0 +1,64 @@
+{
+  "aria": "Exhibitor events",
+  "title": "Events",
+  "description": "View your requested events and talks in the fair halls.",
+  "requestEvent": "Request Event",
+  "total_one": "{{count}} event",
+  "total_other": "{{count}} events",
+  "loading": "Loading events…",
+  "statistics": {
+    "aria": "Event request statistics",
+    "total": "Total Events",
+    "approved": "Approved",
+    "pending": "Pending Review",
+    "rejected": "Rejected"
+  },
+  "status": {
+    "approved": "Approved",
+    "pending": "Pending",
+    "rejected": "Rejected",
+    "other": "{{value}}"
+  },
+  "card": {
+    "edit": "Edit",
+    "hall": "Event hall",
+    "hallFallback": "Hall #{{id}}",
+    "date": "Date",
+    "time": "Time",
+    "duration": "Duration",
+    "durationMinutes_one": "{{count}} minute",
+    "durationMinutes_other": "{{count}} minutes",
+    "speakers": "Speakers",
+    "noSpeakers": "No speakers listed",
+    "noRatings": "No ratings yet",
+    "ratingAria": "Rated {{rating}} out of 5",
+    "reviews_one": "({{count}} review)",
+    "reviews_other": "({{count}} reviews)",
+    "eventId": "ID: {{id}}",
+    "hallId": "Hall #{{id}}",
+    "created": "Created {{date}}"
+  },
+  "metrics": {
+    "aria": "Metrics for {{title}}",
+    "qrToken": "QR Token",
+    "qrAlt": "QR code for {{title}}",
+    "qrPending": "Not available",
+    "visitorLeads": "Visitor Leads",
+    "savedByVisitors": "Saved by Visitors"
+  },
+  "empty": {
+    "title": "No events yet",
+    "message": "Your event requests will appear here."
+  },
+  "error": {
+    "title": "Could not load events",
+    "message": "Check your connection or API configuration and try again.",
+    "retry": "Retry"
+  },
+  "pagination": {
+    "aria": "Events pagination",
+    "previous": "Previous page",
+    "next": "Next page",
+    "summary": "Page {{current}} of {{total}}"
+  }
+}

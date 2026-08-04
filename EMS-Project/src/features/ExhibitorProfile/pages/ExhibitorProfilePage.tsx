@@ -8,7 +8,7 @@ import {
   CompanyMediaCard,
   ProfileSidebarCard,
   SocialLinksCard,
-} from "../components/ProfilePage";
+} from "../components";
 import { useCompanyProfile } from "../hooks/useCompanyProfile";
 import { useExhibitorProfile } from "../hooks/useExhibitorProfile";
 import {

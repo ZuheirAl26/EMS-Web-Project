@@ -1,9 +1,13 @@
 .my-booths {
   min-height: 100%;
-  padding: 24px 24px 84px;
+  padding: 24px;
 
   &__intro {
     margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
 
     h1,
     p {
@@ -149,10 +153,6 @@
   }
 
   &__add-button {
-    position: fixed;
-    z-index: 10;
-    inset-block-end: 24px;
-    inset-inline-start: 264px;
     min-width: 118px;
     height: 36px;
     padding: 8px 16px;
@@ -200,11 +200,18 @@
 
 @media (max-width: 980px) {
   .my-booths {
-    padding: 20px 20px 80px;
+    padding: 20px;
 
     &__add-button {
-      inset-block-end: 20px;
-      inset-inline-start: 260px;
+      min-width: auto;
+    }
+  }
+}
+
+@media (max-width: 560px) {
+  .my-booths {
+    &__intro {
+      flex-direction: column;
     }
   }
 }

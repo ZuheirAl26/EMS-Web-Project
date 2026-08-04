@@ -35,19 +35,14 @@ function appendNewCompany(formData: FormData, company: NewCompanyRequest) {
     formData.append(`new_company[gallery][${index}]`, image, image.name);
   });
 
-  if (company.headquarters_lat !== undefined) {
-    formData.append(
-      "new_company[headquarters_lat]",
-      String(company.headquarters_lat),
-    );
-  }
-
-  if (company.headquarters_lng !== undefined) {
-    formData.append(
-      "new_company[headquarters_lng]",
-      String(company.headquarters_lng),
-    );
-  }
+  formData.append(
+    "new_company[headquarters_lat]",
+    String(company.headquarters_lat),
+  );
+  formData.append(
+    "new_company[headquarters_lng]",
+    String(company.headquarters_lng),
+  );
 }
 
 function toRequestBoothFormData(payload: RequestBoothPayload) {

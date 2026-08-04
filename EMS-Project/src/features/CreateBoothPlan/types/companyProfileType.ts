@@ -2,6 +2,8 @@ export interface CompanyProfileDraft {
   companyName: string;
   businessSector: string;
   companyLocation: string;
+  headquartersLatitude: string;
+  headquartersLongitude: string;
   phoneNumber: string;
   yearFounded: string;
   website: string;
@@ -13,5 +15,6 @@ export interface CompanyProfileDraft {
 
 export interface CompanyProfileValidationErrors {
   companyLogo?: string;
+  headquartersLocation?: string;
   socialLinks?: string;
 }

@@ -1,6 +1,6 @@
 import type { MyBoothCardProps } from "../../types/myBoothsType";
-import { BoothDetailsCard } from "./BoothDetailsCard";
-import { BoothQrCard } from "./BoothQrCard";
+import { BoothDetailsCard } from "../BoothDetailsCard/BoothDetailsCard";
+import { BoothQrCard } from "../BoothQrCard/BoothQrCard";
 import "./MyBoothCard.scss";
 
 export function MyBoothCard({ booth }: MyBoothCardProps) {

@@ -6,6 +6,8 @@ const initialCompanyProfile: CompanyProfileDraft = {
   companyName: "",
   businessSector: "",
   companyLocation: "",
+  headquartersLatitude: "",
+  headquartersLongitude: "",
   phoneNumber: "",
   yearFounded: "",
   website: "",

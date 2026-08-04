@@ -96,6 +96,7 @@ export interface MediaUploadProps {
 }
 
 export interface CompanyDetailsFormProps {
+  headquartersLocationError?: string;
   hasSocialLinksError: boolean;
   onFieldChange: (field: keyof CompanyProfileDraft, value: string) => void;
 }

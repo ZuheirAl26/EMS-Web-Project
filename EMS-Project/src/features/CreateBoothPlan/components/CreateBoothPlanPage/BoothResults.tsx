@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { BoothResultsProps } from "../../types/componentType";
 
@@ -9,6 +10,14 @@ export function BoothResults({
   selectedBooth,
 }: BoothResultsProps) {
   const { t } = useTranslation("createBoothPlan");
+  const selectedBoothRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    selectedBoothRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  }, [selectedBooth?.id]);
 
   return (
     <aside className="create-booth-plan__results">
@@ -19,6 +28,13 @@ export function BoothResults({
         </div>
         {isPending ? <span>{t("results.loading")}</span> : null}
       </div>
+
+      {selectedBooth ? (
+        <div className="create-booth-plan__results-selection" role="status">
+          <span>{t("selection.selectedLabel")}</span>
+          <strong>{selectedBooth.number}</strong>
+        </div>
+      ) : null}
 
       {!isPending && booths.length === 0 ? (
         <div className="create-booth-plan__empty">
@@ -44,6 +60,7 @@ export function BoothResults({
               disabled={booth.is_booked}
               key={booth.id}
               onClick={() => onSelect(booth)}
+              ref={isSelected ? selectedBoothRef : null}
               type="button"
             >
               <span>

@@ -97,6 +97,52 @@
       "description": "Description",
       "descriptionPlaceholder": "Brief description of your company..."
     },
+    "businessSectors": {
+      "agriculture": "Agriculture",
+      "arts": "Arts",
+      "construction": "Construction",
+      "culture": "Culture",
+      "education": "Education",
+      "research": "Research",
+      "energy": "Energy",
+      "engineering": "Engineering",
+      "environment": "Environment",
+      "fashion": "Fashion",
+      "finance": "Finance",
+      "food_and_beverage": "Food & Beverage",
+      "government": "Government",
+      "healthcare": "Healthcare",
+      "humanitarian": "Humanitarian",
+      "industrial": "Industrial",
+      "information_technology": "Information Technology",
+      "manufacturing": "Manufacturing",
+      "media": "Media",
+      "non_profit": "Non-profit",
+      "commerce": "Commerce",
+      "social_development": "Social Development",
+      "sports": "Sports",
+      "tech": "Technology",
+      "telecommunications": "Telecommunications",
+      "tourism": "Tourism",
+      "transportation_logistics": "Transportation & Logistics",
+      "entertainment": "Entertainment",
+      "other": "Other"
+    },
+    "locationPicker": {
+      "label": "Headquarters Location",
+      "selected": "Location selected",
+      "notSelected": "No location selected",
+      "help": "Choose the company headquarters directly on the map.",
+      "choose": "Choose on map",
+      "change": "Change location",
+      "modalTitle": "Choose headquarters location",
+      "modalDescription": "Move and zoom the map, then click the exact company location.",
+      "close": "Close location map",
+      "loading": "Loading map…",
+      "clickPrompt": "Click anywhere on the map to place the location marker.",
+      "cancel": "Cancel",
+      "useLocation": "Use this location"
+    },
     "media": {
       "title": "Media & Assets",
       "description": "Your selected files will be included with the company data in the final request.",
@@ -118,7 +164,8 @@
     },
     "validation": {
       "socialLinkRequired": "Add at least one social link: Website, Twitter / X, or LinkedIn.",
-      "logoRequired": "Company logo is required."
+      "logoRequired": "Company logo is required.",
+      "headquartersLocationRequired": "Choose the company headquarters location on the map."
     }
   },
   "review": {

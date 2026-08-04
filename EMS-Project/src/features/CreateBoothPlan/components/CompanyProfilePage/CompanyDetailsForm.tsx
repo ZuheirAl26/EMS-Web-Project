@@ -1,5 +1,4 @@
 import {
-  Briefcase01Icon,
   Calendar03Icon,
   Call02Icon,
   Globe02Icon,
@@ -13,11 +12,14 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { useCreatePlanStore } from "../../store/useCreatePlanStore";
 import type { CompanyDetailsFormProps } from "../../types/componentType";
+import { BusinessSectorSelect } from "./BusinessSectorSelect";
+import { CompanyLocationPicker } from "./CompanyLocationPicker";
 import { ProfileField } from "./ProfileField";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
 export function CompanyDetailsForm({
+  headquartersLocationError,
   hasSocialLinksError,
   onFieldChange,
 }: CompanyDetailsFormProps) {
@@ -38,12 +40,8 @@ export function CompanyDetailsForm({
           required
           value={companyProfile.companyName}
         />
-        <ProfileField
-          icon={Briefcase01Icon}
-          label={t("companyProfile.fields.businessSector")}
+        <BusinessSectorSelect
           onValueChange={(value) => onFieldChange("businessSector", value)}
-          placeholder={t("companyProfile.fields.businessSectorPlaceholder")}
-          required
           value={companyProfile.businessSector}
         />
         <ProfileField
@@ -54,6 +52,15 @@ export function CompanyDetailsForm({
           placeholder={t("companyProfile.fields.companyLocationPlaceholder")}
           required
           value={companyProfile.companyLocation}
+        />
+        <CompanyLocationPicker
+          errorMessage={headquartersLocationError}
+          latitude={companyProfile.headquartersLatitude}
+          longitude={companyProfile.headquartersLongitude}
+          onLocationChange={(latitude, longitude) => {
+            onFieldChange("headquartersLatitude", latitude);
+            onFieldChange("headquartersLongitude", longitude);
+          }}
         />
         <ProfileField
           autoComplete="tel"
