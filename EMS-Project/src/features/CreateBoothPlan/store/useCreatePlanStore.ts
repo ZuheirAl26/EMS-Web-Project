@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import type { CompanyProfileDraft } from "../types/companyProfileType";
 import type { CreatePlanState } from "../types/createPlanType";
+import type { BoothFilterDraft, BoothFilters } from "../types/boothType";
+import { initialBoothFilterDraft } from "../utils/validation";
 
 const initialCompanyProfile: CompanyProfileDraft = {
   companyName: "",
@@ -23,6 +25,8 @@ const initialDraft = {
   companyProfile: initialCompanyProfile,
   companyLogo: null,
   boothBanner: null,
+  draftFilters: initialBoothFilterDraft,
+  filters: {} as BoothFilters,
 };
 
 export const useCreatePlanStore = create<CreatePlanState>((set) => ({
@@ -44,6 +48,23 @@ export const useCreatePlanStore = create<CreatePlanState>((set) => ({
     })),
   setCompanyLogo: (companyLogo) => set({ companyLogo }),
   setBoothBanner: (boothBanner) => set({ boothBanner }),
+
+  setDraftFilters: (
+    updater: BoothFilterDraft | ((prev: BoothFilterDraft) => BoothFilterDraft),
+  ) =>
+    set((state) => ({
+      draftFilters:
+        typeof updater === "function" ? updater(state.draftFilters) : updater,
+    })),
+
+  setFilters: (filters: BoothFilters) => set({ filters }),
+
+  resetFilters: () =>
+    set({
+      draftFilters: initialBoothFilterDraft,
+      filters: {},
+    }),
+
   resetDraft: () =>
     set({
       ...initialDraft,

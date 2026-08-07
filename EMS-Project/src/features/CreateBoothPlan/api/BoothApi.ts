@@ -1,8 +1,5 @@
 import { apiClient } from "../../../api/ApiClient";
-import type {
-  BoothFilters,
-  BoothListResponse,
-} from "../types/boothType";
+import type { BoothFilters, BoothListResponse } from "../types/boothType";
 
 export async function getBooths(
   filters: BoothFilters,

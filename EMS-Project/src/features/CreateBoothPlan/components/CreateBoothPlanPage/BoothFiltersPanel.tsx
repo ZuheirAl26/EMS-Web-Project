@@ -13,6 +13,17 @@ export function BoothFiltersPanel({
 }: BoothFiltersPanelProps) {
   const { t } = useTranslation("createBoothPlan");
 
+  // Extract active sort state for each control
+  const priceSortValue =
+    draftFilters.sort === "price" || draftFilters.sort === "-price"
+      ? draftFilters.sort
+      : "";
+
+  const areaSortValue =
+    draftFilters.sort === "area" || draftFilters.sort === "-area"
+      ? draftFilters.sort
+      : "";
+
   return (
     <form className="create-booth-plan__filters" onSubmit={onSubmit}>
       <div className="create-booth-plan__filter-heading">
@@ -65,22 +76,9 @@ export function BoothFiltersPanel({
         />
       </label>
 
+      {/* Sort by Price */}
       <label>
-        <span>{t("filters.include")}</span>
-        <input
-          onChange={(event) =>
-            onDraftChange((current) => ({
-              ...current,
-              include: event.target.value,
-            }))
-          }
-          placeholder={t("filters.includePlaceholder")}
-          value={draftFilters.include}
-        />
-      </label>
-
-      <label>
-        <span>{t("filters.sort")}</span>
+        <span>{t("filters.sortByPrice")}</span>
         <select
           onChange={(event) =>
             onDraftChange((current) => ({
@@ -88,14 +86,29 @@ export function BoothFiltersPanel({
               sort: event.target.value,
             }))
           }
-          value={draftFilters.sort}
+          value={priceSortValue}
         >
           <option value="">{t("filters.defaultSort")}</option>
           <option value="price">{t("filters.priceLow")}</option>
           <option value="-price">{t("filters.priceHigh")}</option>
+        </select>
+      </label>
+
+      {/* Sort by Area */}
+      <label>
+        <span>{t("filters.sortByArea")}</span>
+        <select
+          onChange={(event) =>
+            onDraftChange((current) => ({
+              ...current,
+              sort: event.target.value,
+            }))
+          }
+          value={areaSortValue}
+        >
+          <option value="">{t("filters.defaultSort")}</option>
           <option value="area">{t("filters.areaSmall")}</option>
           <option value="-area">{t("filters.areaLarge")}</option>
-          <option value="number">{t("filters.numberAscending")}</option>
         </select>
       </label>
 

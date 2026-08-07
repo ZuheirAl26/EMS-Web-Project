@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, type FormEvent } from "react";
+import { useCallback, useMemo, type FormEvent } from "react";
 import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
@@ -12,33 +12,34 @@ import {
 } from "../../components";
 import { useBooths } from "../../hooks/useBooths";
 import { useCreatePlanStore } from "../../store/useCreatePlanStore";
-import type {
-  Booth,
-  BoothFilterDraft,
-  BoothFilters,
-} from "../../types/boothType";
-import {
-  initialBoothFilterDraft,
-  isValidBoothId,
-  toBoothApiFilters,
-} from "../../utils/validation";
+import type { Booth } from "../../types/boothType";
+import { isValidBoothId, toBoothApiFilters } from "../../utils/validation";
 import "./CreateBoothPlanPage.scss";
 
 export function CreateBoothPlanPage() {
   const { t, i18n } = useTranslation("createBoothPlan");
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const setDraftBoothId = useCreatePlanStore((state) => state.setBoothId);
-  const [draftFilters, setDraftFilters] = useState<BoothFilterDraft>(
-    initialBoothFilterDraft,
-  );
-  const [filters, setFilters] = useState<BoothFilters>({});
-  const [selectedBoothId, setSelectedBoothId] = useState<number | null>(() => {
+
+  // 1. Pull filter state directly from Zustand store to preserve across step navigation
+  const {
+    draftFilters,
+    filters,
+    setDraftFilters,
+    setFilters,
+    setBoothId: setDraftBoothId,
+    resetFilters: resetStoreFilters,
+  } = useCreatePlanStore();
+
+  const selectedBoothId = useMemo(() => {
     const boothId = Number(searchParams.get("boothId"));
     return isValidBoothId(boothId) ? boothId : null;
-  });
+  }, [searchParams]);
+
+  // 2. Fetch booths using persistent filters
   const boothsQuery = useBooths(filters);
   const booths = boothsQuery.data?.data ?? [];
+
   const selectedBooth =
     booths.find((booth) => booth.id === selectedBoothId && !booth.is_booked) ??
     null;
@@ -59,11 +60,8 @@ export function CreateBoothPlanPage() {
 
   const handleSelectBooth = useCallback(
     (booth: Booth) => {
-      if (booth.is_booked) {
-        return;
-      }
+      if (booth.is_booked) return;
 
-      setSelectedBoothId(booth.id);
       setDraftBoothId(booth.id);
       setSearchParams(
         (current) => {
@@ -78,7 +76,6 @@ export function CreateBoothPlanPage() {
   );
 
   const clearSelectedBooth = () => {
-    setSelectedBoothId(null);
     setDraftBoothId(null);
     setSearchParams(
       (current) => {
@@ -97,8 +94,7 @@ export function CreateBoothPlanPage() {
   };
 
   const resetFilters = () => {
-    setDraftFilters(initialBoothFilterDraft);
-    setFilters({});
+    resetStoreFilters();
     clearSelectedBooth();
   };
 
