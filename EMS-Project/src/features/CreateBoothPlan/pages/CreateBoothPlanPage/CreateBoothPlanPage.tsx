@@ -1,4 +1,4 @@
-import { useCallback, useMemo, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, type FormEvent } from "react";
 import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,14 @@ export function CreateBoothPlanPage() {
   const { t, i18n } = useTranslation("createBoothPlan");
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const scrollAmount = window.innerHeight * 0.3;
+    window.scrollTo({
+      top: scrollAmount,
+      behavior: "smooth",
+    });
+  }, []);
 
   // 1. Pull filter state directly from Zustand store to preserve across step navigation
   const {

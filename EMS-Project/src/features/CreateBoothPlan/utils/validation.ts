@@ -1,16 +1,10 @@
-import type {
-  BoothFilterDraft,
-  BoothFilters,
-} from "../types/boothType";
+import type { BoothFilterDraft, BoothFilters } from "../types/boothType";
 import { isBusinessSector } from "../types/businessSectorType";
 import type {
   CompanyProfileDraft,
   CompanyProfileValidationErrors,
 } from "../types/companyProfileType";
-import type {
-  ServiceFilterDraft,
-  ServiceFilters,
-} from "../types/serviceType";
+import type { ServiceFilterDraft, ServiceFilters } from "../types/serviceType";
 import type {
   RequestBoothDraft,
   ReviewValidationIssue,
@@ -27,16 +21,14 @@ export const initialBoothFilterDraft: BoothFilterDraft = {
 export const initialServiceFilterDraft: ServiceFilterDraft = {
   name: "",
   sort: "",
-  perPage: "15",
+  perPage: "10",
 };
 
 export function isValidBoothId(value: number): boolean {
   return Number.isInteger(value) && value > 0;
 }
 
-export function toBoothApiFilters(
-  draft: BoothFilterDraft,
-): BoothFilters {
+export function toBoothApiFilters(draft: BoothFilterDraft): BoothFilters {
   return {
     number: draft.number.trim() || undefined,
     booked: draft.booking === "" ? undefined : draft.booking === "true",
@@ -46,9 +38,7 @@ export function toBoothApiFilters(
   };
 }
 
-export function toServiceApiFilters(
-  draft: ServiceFilterDraft,
-): ServiceFilters {
+export function toServiceApiFilters(draft: ServiceFilterDraft): ServiceFilters {
   return {
     name: draft.name.trim() || undefined,
     sort: draft.sort || undefined,

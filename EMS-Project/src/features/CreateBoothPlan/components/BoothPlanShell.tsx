@@ -1,5 +1,6 @@
 import {
   ArrowLeft02Icon,
+  ArrowRight02Icon,
   Building03Icon,
   ClipboardCheckIcon,
   Package02Icon,
@@ -32,14 +33,14 @@ export function BoothPlanShell({ children, currentStep }: BoothPlanShellProps) {
           <span>{t("header.status")}</span>
         </div>
         <Link to="/dashboard/booths">
+          {t("header.back")}
           <HugeiconsIcon
             aria-hidden="true"
             color="currentColor"
-            icon={ArrowLeft02Icon}
+            icon={ArrowRight02Icon}
             size={14}
             strokeWidth={1.8}
           />
-          {t("header.back")}
         </Link>
       </header>
 

@@ -9,6 +9,7 @@ export interface ServiceFilters {
   name?: string;
   sort?: string;
   perPage?: number;
+  page?: number;
 }
 
 export interface ServicePagination {

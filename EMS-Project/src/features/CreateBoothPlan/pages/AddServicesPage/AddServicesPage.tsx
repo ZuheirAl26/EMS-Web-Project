@@ -21,6 +21,7 @@ import {
   toServiceApiFilters,
 } from "../../utils/validation";
 import "./AddServicesPage.scss";
+import { Pagination } from "../../../../components/Pagination/Pagination";
 
 export function AddServicesPage() {
   const { t, i18n } = useTranslation("createBoothPlan");
@@ -28,20 +29,28 @@ export function AddServicesPage() {
   const [searchParams] = useSearchParams();
   const boothId = Number(searchParams.get("boothId"));
   const hasSelectedBooth = isValidBoothId(boothId);
+
   const [draftFilters, setDraftFilters] = useState<ServiceFilterDraft>(
     initialServiceFilterDraft,
   );
   const [filters, setFilters] = useState<ServiceFilters>({
     perPage: Number(initialServiceFilterDraft.perPage),
+    page: 1,
   });
+
   const quantities = useCreatePlanStore((state) => state.serviceQuantities);
   const setServiceQuantity = useCreatePlanStore(
     (state) => state.setServiceQuantity,
   );
   const setDraftBoothId = useCreatePlanStore((state) => state.setBoothId);
+
   const servicesQuery = useServices(filters, hasSelectedBooth);
   const services = servicesQuery.data?.data.data ?? [];
   const pagination = servicesQuery.data?.data;
+
+  const currentPage = filters.page ?? pagination?.current_page ?? 1;
+  const lastPage = pagination?.last_page ?? 1;
+  const perPage = filters.perPage ?? pagination?.per_page ?? 10;
 
   const currencyFormatter = useMemo(
     () =>
@@ -64,12 +73,27 @@ export function AddServicesPage() {
 
   const handleFilterSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setFilters(toServiceApiFilters(draftFilters));
+    setFilters({
+      ...toServiceApiFilters(draftFilters),
+      page: 1,
+    });
   };
 
   const resetFilters = () => {
     setDraftFilters(initialServiceFilterDraft);
-    setFilters({ perPage: Number(initialServiceFilterDraft.perPage) });
+    setFilters({
+      perPage: Number(initialServiceFilterDraft.perPage),
+      page: 1,
+    });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setFilters((prev) => ({ ...prev, page: newPage }));
+  };
+
+  const handlePerPageChange = (newPerPage: number) => {
+    setDraftFilters((prev) => ({ ...prev, perPage: String(newPerPage) }));
+    setFilters((prev) => ({ ...prev, perPage: newPerPage, page: 1 }));
   };
 
   const changeQuantity = (
@@ -131,13 +155,26 @@ export function AddServicesPage() {
                 </button>
               </div>
             ) : (
-              <ServiceList
-                currencyFormatter={currencyFormatter}
-                isPending={servicesQuery.isPending}
-                onQuantityChange={changeQuantity}
-                quantities={quantities}
-                services={services}
-              />
+              <>
+                <ServiceList
+                  currencyFormatter={currencyFormatter}
+                  isPending={servicesQuery.isPending}
+                  onQuantityChange={changeQuantity}
+                  quantities={quantities}
+                  services={services}
+                />
+
+                {(pagination?.total ?? services.length) > 0 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    isFetching={servicesQuery.isFetching}
+                    onPageChange={handlePageChange}
+                    onPerPageChange={handlePerPageChange}
+                    perPage={perPage}
+                    totalPages={lastPage}
+                  />
+                )}
+              </>
             )}
 
             <footer className="create-booth-plan__footer">

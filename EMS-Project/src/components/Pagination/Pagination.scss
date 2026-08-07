@@ -1,0 +1,123 @@
+.app-pagination {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+
+  &__per-page {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      color: var(--color-neutral-600);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    select {
+      height: 36px;
+      padding: 4px 10px;
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-lg);
+      outline: none;
+      background: var(--color-white);
+      color: var(--color-ink);
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+
+      &:focus {
+        border-color: var(--color-primary);
+        box-shadow: var(--shadow-focus);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-inline-start: auto;
+  }
+
+  &__btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    color: var(--color-neutral-600);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+
+    &:hover:not(:disabled):not(&--active) {
+      border-color: var(--color-neutral-300);
+      background: var(--color-neutral-50);
+      color: var(--color-ink);
+    }
+
+    &--active {
+      border-color: var(--color-neutral-300);
+      background: var(--color-neutral-200);
+      color: var(--color-ink);
+      font-weight: 700;
+    }
+
+    &--nav {
+      color: var(--color-neutral-500);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      background: var(--color-neutral-50);
+    }
+  }
+
+  &__ellipsis {
+    min-width: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-neutral-400);
+    font-size: 13px;
+    font-weight: 600;
+    user-select: none;
+  }
+}
+
+[dir="rtl"] {
+  .app-pagination {
+    &__btn--nav svg {
+      transform: scaleX(-1);
+    }
+  }
+}
+
+@media (max-width: 620px) {
+  .app-pagination {
+    flex-direction: column-reverse;
+    align-items: center;
+
+    &__list {
+      margin-inline-start: 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+}

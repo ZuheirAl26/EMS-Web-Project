@@ -1,8 +1,5 @@
 import { apiClient } from "../../../api/ApiClient";
-import type {
-  ServiceFilters,
-  ServiceListResponse,
-} from "../types/serviceType";
+import type { ServiceFilters, ServiceListResponse } from "../types/serviceType";
 
 export async function getServices(
   filters: ServiceFilters,
@@ -14,6 +11,7 @@ export async function getServices(
         "filter[name]": filters.name || undefined,
         sort: filters.sort || undefined,
         per_page: filters.perPage,
+        page: filters.page,
       },
     },
   );

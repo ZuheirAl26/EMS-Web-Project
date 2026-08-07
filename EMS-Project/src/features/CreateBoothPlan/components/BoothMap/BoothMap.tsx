@@ -158,8 +158,8 @@ export function BoothMap({ booths, selectedBoothId, onSelect }: BoothMapProps) {
       }
 
       viewport.scrollTo({
-        left: (viewport.scrollWidth - viewport.clientWidth) / 2,
-        top: (viewport.scrollHeight - viewport.clientHeight) / 2,
+        left: (viewport.scrollWidth - viewport.clientWidth) * 0.45,
+        top: (viewport.scrollHeight - viewport.clientHeight) * 0.29,
       });
       hasCenteredMapRef.current = true;
     });

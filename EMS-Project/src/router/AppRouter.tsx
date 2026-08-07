@@ -18,6 +18,7 @@ import { MyBoothsPage } from "../features/MyBooths/pages";
 import { ExhibitorProfilePage } from "../features/ExhibitorProfile/pages";
 import { EventsPage } from "../features/Events/pages";
 import { DashboardLayout } from "../layouts/DashboardLayout";
+import { ProtectedRoute } from "./guards";
 
 export const AppRouter = () => {
   const location = useLocation();
@@ -42,30 +43,30 @@ export const AppRouter = () => {
         <Route path="/check-email" element={<CheckEmailPage />} />
         <Route path="/verify-email" element={<VerifyAccountPage />} />
 
-        {/* <Route element={<ProtectedRoute />}> */}
-        <Route
-          path="/dashboard/booths/create"
-          element={<CreateBoothPlanPage />}
-        />
-        <Route
-          path="/dashboard/booths/create/services"
-          element={<AddServicesPage />}
-        />
-        <Route
-          path="/dashboard/booths/create/company"
-          element={<CompanyProfilePage />}
-        />
-        <Route
-          path="/dashboard/booths/create/review"
-          element={<ReviewSubmitPage />}
-        />
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route path="booths" element={<MyBoothsPage />} />
-          <Route path="events" element={<EventsPage />} />
-          <Route path="profile" element={<ExhibitorProfilePage />} />
-          <Route path="*" element={null} />
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/dashboard/booths/create"
+            element={<CreateBoothPlanPage />}
+          />
+          <Route
+            path="/dashboard/booths/create/services"
+            element={<AddServicesPage />}
+          />
+          <Route
+            path="/dashboard/booths/create/company"
+            element={<CompanyProfilePage />}
+          />
+          <Route
+            path="/dashboard/booths/create/review"
+            element={<ReviewSubmitPage />}
+          />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route path="booths" element={<MyBoothsPage />} />
+            <Route path="events" element={<EventsPage />} />
+            <Route path="profile" element={<ExhibitorProfilePage />} />
+            <Route path="*" element={null} />
+          </Route>
         </Route>
-        {/* </Route> */}
 
         <Route path="*" element={<div>404 - Page Not Found</div>} />
       </Routes>

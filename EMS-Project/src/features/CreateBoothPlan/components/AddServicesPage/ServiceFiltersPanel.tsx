@@ -13,6 +13,17 @@ export function ServiceFiltersPanel({
 }: ServiceFiltersPanelProps) {
   const { t } = useTranslation("createBoothPlan");
 
+  // Extract active sort state for each control
+  const nameSortValue =
+    draftFilters.sort === "name" || draftFilters.sort === "-name"
+      ? draftFilters.sort
+      : "";
+
+  const priceSortValue =
+    draftFilters.sort === "price" || draftFilters.sort === "-price"
+      ? draftFilters.sort
+      : "";
+
   return (
     <form className="add-services__filters" onSubmit={onSubmit}>
       <div className="add-services__filter-heading">
@@ -25,6 +36,7 @@ export function ServiceFiltersPanel({
         {isFetching ? <span>{t("services.filters.updating")}</span> : null}
       </div>
 
+      {/* Service Name Input */}
       <label>
         <span>{t("services.filters.name")}</span>
         <input
@@ -39,8 +51,9 @@ export function ServiceFiltersPanel({
         />
       </label>
 
+      {/* Sort by Name */}
       <label>
-        <span>{t("services.filters.sort")}</span>
+        <span>{t("services.filters.sortByName")}</span>
         <select
           onChange={(event) =>
             onDraftChange((current) => ({
@@ -48,32 +61,29 @@ export function ServiceFiltersPanel({
               sort: event.target.value,
             }))
           }
-          value={draftFilters.sort}
+          value={nameSortValue}
         >
           <option value="">{t("services.filters.defaultSort")}</option>
           <option value="name">{t("services.filters.nameAscending")}</option>
           <option value="-name">{t("services.filters.nameDescending")}</option>
-          <option value="price">{t("services.filters.priceLow")}</option>
-          <option value="-price">{t("services.filters.priceHigh")}</option>
         </select>
       </label>
 
+      {/* Sort by Price */}
       <label>
-        <span>{t("services.filters.perPage")}</span>
+        <span>{t("services.filters.sortByPrice")}</span>
         <select
           onChange={(event) =>
             onDraftChange((current) => ({
               ...current,
-              perPage: event.target.value,
+              sort: event.target.value,
             }))
           }
-          value={draftFilters.perPage}
+          value={priceSortValue}
         >
-          {[5, 10, 15, 25, 50].map((value) => (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ))}
+          <option value="">{t("services.filters.defaultSort")}</option>
+          <option value="price">{t("services.filters.priceLow")}</option>
+          <option value="-price">{t("services.filters.priceHigh")}</option>
         </select>
       </label>
 
