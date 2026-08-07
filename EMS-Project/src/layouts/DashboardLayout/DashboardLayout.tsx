@@ -1,10 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  NavLink,
-  Outlet,
-  useLocation,
-} from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowRight01Icon,
@@ -22,6 +18,8 @@ import { LogoutDialog } from "../../features/ExhibitorAuth/components";
 import { useLogout } from "../../features/ExhibitorAuth/hooks/useLogout";
 import { useAuthStore } from "../../store/AuthStore";
 import "./DashboardLayout.scss";
+import { useExhibitorProfile } from "../../features/ExhibitorProfile/hooks/useExhibitorProfile";
+import { resolveMediaUrl } from "../../features/ExhibitorProfile/utils/profileUtils";
 
 const navigationItems = [
   {
@@ -72,7 +70,21 @@ export function DashboardLayout() {
   const user = useAuthStore((state) => state.user);
   const logoutMutation = useLogout();
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
-  const accountName = user?.name?.trim() || t("account.fallbackName");
+  const [avatarError, setAvatarError] = useState(false);
+
+  const exhibitorQuery = useExhibitorProfile();
+  const exhibitor = exhibitorQuery.data?.data;
+  const avatarUrl = useMemo(() => {
+    return resolveMediaUrl(exhibitor?.avatar ?? null);
+  }, [exhibitor?.avatar]);
+
+  useEffect(() => {
+    setAvatarError(false);
+  }, [avatarUrl]);
+
+  const accountName =
+    exhibitor?.name?.trim() || user?.name?.trim() || t("account.fallbackName");
+
   const initials = useMemo(() => getInitials(accountName), [accountName]);
   const activeItem =
     navigationItems.find((item) =>
@@ -133,7 +145,16 @@ export function DashboardLayout() {
             to="/dashboard/profile"
           >
             <div className="dashboard-sidebar__avatar" aria-hidden="true">
-              {initials}
+              {avatarUrl && !avatarError ? (
+                <img
+                  alt={accountName}
+                  className="dashboard-sidebar__avatar-img"
+                  onError={() => setAvatarError(true)}
+                  src={avatarUrl}
+                />
+              ) : (
+                initials
+              )}
             </div>
             <div className="dashboard-sidebar__account-copy">
               <strong>{accountName}</strong>
@@ -166,9 +187,7 @@ export function DashboardLayout() {
               size={12}
               strokeWidth={1.8}
             />
-            <span aria-current="page">
-              {t(`header.pages.${activePageId}`)}
-            </span>
+            <span aria-current="page">{t(`header.pages.${activePageId}`)}</span>
           </div>
 
           <div className="dashboard-header__actions">
@@ -190,7 +209,16 @@ export function DashboardLayout() {
               className="dashboard-header__avatar"
               to="/dashboard/profile"
             >
-              {initials}
+              {avatarUrl && !avatarError ? (
+                <img
+                  alt={accountName}
+                  className="dashboard-sidebar__avatar-img"
+                  onError={() => setAvatarError(true)}
+                  src={avatarUrl}
+                />
+              ) : (
+                initials
+              )}
             </NavLink>
           </div>
         </header>

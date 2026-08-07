@@ -1,5 +1,4 @@
 import {
-  ArrowLeft02Icon,
   ArrowRight02Icon,
   Building03Icon,
   ClipboardCheckIcon,
