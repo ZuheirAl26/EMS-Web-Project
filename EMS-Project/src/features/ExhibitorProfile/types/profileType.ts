@@ -9,6 +9,18 @@ export interface ExhibitorProfile {
   is_verified: boolean;
 }
 
+export interface UpdateExhibitorProfilePayload {
+  name: string;
+  avatar?: File | null;
+  avatarPreviewUrl?: string | null;
+}
+
+export interface EditProfileDialogProps {
+  exhibitor: ExhibitorProfile;
+  onClose: () => void;
+  open: boolean;
+}
+
 export interface ExhibitorProfileResponse {
   status: boolean;
   message: string;

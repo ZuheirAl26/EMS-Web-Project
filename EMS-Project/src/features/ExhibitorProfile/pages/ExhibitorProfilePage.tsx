@@ -6,6 +6,7 @@ import {
   AccountInformation,
   CompanyAboutCard,
   CompanyMediaCard,
+  EditProfileDialog,
   ProfileSidebarCard,
   SocialLinksCard,
 } from "../components";
@@ -16,12 +17,16 @@ import {
   getCompanyOptions,
 } from "../utils/profileUtils";
 import "./ExhibitorProfilePage.scss";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Edit02Icon } from "@hugeicons/core-free-icons";
 
 export function ExhibitorProfilePage() {
   const { t } = useTranslation("dashboard");
   const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(
     null,
   );
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+
   const exhibitorQuery = useExhibitorProfile();
   const boothsQuery = useMyBooths(1);
   const booths = useMemo(
@@ -75,8 +80,25 @@ export function ExhibitorProfilePage() {
   return (
     <section aria-label={t("profile.aria")} className="exhibitor-profile">
       <header className="exhibitor-profile__intro">
-        <h1>{t("profile.title")}</h1>
-        <p>{t("profile.description")}</p>
+        <div>
+          <h1>{t("profile.title")}</h1>
+          <p>{t("profile.description")}</p>
+        </div>
+
+        <button
+          className="exhibitor-profile__edit-btn"
+          onClick={() => setIsEditProfileOpen(true)}
+          type="button"
+        >
+          <HugeiconsIcon
+            aria-hidden="true"
+            color="currentColor"
+            icon={Edit02Icon}
+            size={13}
+            strokeWidth={1.9}
+          />
+          {t("profile.edit.button")}
+        </button>
       </header>
 
       {activeCompanyId === null ? (
@@ -126,6 +148,12 @@ export function ExhibitorProfilePage() {
           </div>
         </div>
       )}
+
+      <EditProfileDialog
+        exhibitor={exhibitor}
+        onClose={() => setIsEditProfileOpen(false)}
+        open={isEditProfileOpen}
+      />
     </section>
   );
 }

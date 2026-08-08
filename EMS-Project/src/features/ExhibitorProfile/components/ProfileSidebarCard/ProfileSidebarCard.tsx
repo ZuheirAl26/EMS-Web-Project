@@ -5,6 +5,8 @@ import type { ProfileSidebarCardProps } from "../../types/profileType";
 import { getInitials, resolveMediaUrl } from "../../utils/profileUtils";
 import { ActiveCompanySelector } from "../ActiveCompanySelector/ActiveCompanySelector";
 import "./ProfileSidebarCard.scss";
+import { useState } from "react";
+import { ImageLightbox } from "../../../../components/ImageLightbox/ImageLightbox";
 
 export function ProfileSidebarCard({
   boothSummary,
@@ -15,6 +17,7 @@ export function ProfileSidebarCard({
   selectedCompanyId,
 }: ProfileSidebarCardProps) {
   const { t, i18n } = useTranslation("dashboard");
+  const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const avatarUrl = resolveMediaUrl(exhibitor.avatar);
   const logoUrl = resolveMediaUrl(company?.logo ?? null);
   const numberFormatter = new Intl.NumberFormat(
@@ -38,16 +41,23 @@ export function ProfileSidebarCard({
     <aside className="profile-sidebar-card">
       <div className="profile-sidebar-card__identity">
         <div className="profile-sidebar-card__banner" />
-        <div className="profile-sidebar-card__avatar">
-          {avatarUrl ? (
+        {avatarUrl ? (
+          <button
+            aria-label={t("profile.viewAvatar", { name: exhibitor.name })}
+            className="profile-sidebar-card__avatar"
+            onClick={() => setIsAvatarOpen(true)}
+            type="button"
+          >
             <img
               alt={t("profile.avatarAlt", { name: exhibitor.name })}
               src={avatarUrl}
             />
-          ) : (
+          </button>
+        ) : (
+          <div className="profile-sidebar-card__avatar">
             <span aria-hidden="true">{getInitials(exhibitor.name)}</span>
-          )}
-        </div>
+          </div>
+        )}
         <h2>{exhibitor.name}</h2>
         <p>{t("profile.role")}</p>
         <strong>{company?.name || t("profile.noCompany")}</strong>
@@ -116,6 +126,12 @@ export function ProfileSidebarCard({
           <dd>{boothSummary.count}</dd>
         </div>
       </dl>
+      <ImageLightbox
+        alt={t("profile.avatarAlt", { name: exhibitor.name })}
+        onClose={() => setIsAvatarOpen(false)}
+        open={isAvatarOpen}
+        src={avatarUrl}
+      />
     </aside>
   );
 }

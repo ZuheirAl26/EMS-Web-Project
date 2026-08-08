@@ -1,10 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getExhibitorProfile } from "../api/ProfileApi";
-import { profileKeys } from "../api/ProfileKeys";
+import { getExhibitorProfileQueryOptions } from "../api/ProfileQueryOptions";
 
 export function useExhibitorProfile() {
-  return useQuery({
-    queryKey: profileKeys.exhibitor,
-    queryFn: getExhibitorProfile,
-  });
+  return useQuery(getExhibitorProfileQueryOptions());
 }

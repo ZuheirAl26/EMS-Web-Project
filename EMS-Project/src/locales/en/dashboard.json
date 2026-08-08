@@ -160,6 +160,21 @@
       "missing": "Not uploaded",
       "noGallery": "No gallery images",
       "galleryAlt": "Company gallery image {{index}}"
+    },
+    "viewAvatar": "View {{name}}'s profile picture",
+    "edit": {
+      "button": "Edit Profile",
+      "title": "Edit Profile",
+      "description": "Update your personal name and avatar.",
+      "nameLabel": "Full Name",
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "errorMsg": "We couldn't update your profile. Please try again.",
+      "validation": {
+        "nameRequired": "Please enter your full name.",
+        "avatarType": "Please upload a valid image file."
+      }
     }
   }
 }
