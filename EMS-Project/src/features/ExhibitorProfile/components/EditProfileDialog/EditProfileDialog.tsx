@@ -1,6 +1,7 @@
-import { HugeiconsIcon } from "@hugeicons/react";
 import { ImageIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useEditProfileForm } from "../../hooks/useEditProfileForm";
+import { useSendPasswordResetLink } from "../../hooks/useSendPasswordResetLink";
 import type { EditProfileDialogProps } from "../../types/profileType";
 import { getInitials } from "../../utils/profileUtils";
 import ModalOverlay from "../../../ExhibitorAuth/components/ModalOverlay/ModalOverlay";
@@ -22,6 +23,13 @@ export function EditProfileDialog({
     handleSubmit,
     t,
   } = useEditProfileForm(exhibitor, onClose);
+
+  const {
+    sendResetLink,
+    isPending: isResetLinkPending,
+    isSent: isResetLinkSent,
+    errorMessage: resetLinkError,
+  } = useSendPasswordResetLink(exhibitor.email);
 
   if (!open) {
     return null;
@@ -97,6 +105,43 @@ export function EditProfileDialog({
               {errors.name}
             </span>
           ) : null}
+
+          <div className="edit-profile-dialog__divider" />
+
+          <div className="edit-profile-dialog__password">
+            <span className="edit-profile-dialog__password-label">
+              {t("profile.edit.password.label")}
+            </span>
+            <div className="edit-profile-dialog__password-field">
+              <input disabled readOnly type="password" value="••••••••" />
+            </div>
+            <p className="edit-profile-dialog__password-hint">
+              {t("profile.edit.password.description")}
+            </p>
+
+            {resetLinkError ? (
+              <span className="edit-profile-dialog__field-error" role="alert">
+                {resetLinkError}
+              </span>
+            ) : null}
+
+            {isResetLinkSent ? (
+              <p className="edit-profile-dialog__password-sent" role="status">
+                {t("profile.edit.password.sent", { email: exhibitor.email })}
+              </p>
+            ) : (
+              <button
+                className="edit-profile-dialog__password-link"
+                disabled={isResetLinkPending}
+                onClick={sendResetLink}
+                type="button"
+              >
+                {isResetLinkPending
+                  ? t("profile.edit.password.sending")
+                  : t("profile.edit.password.sendLink")}
+              </button>
+            )}
+          </div>
 
           <div className="edit-profile-dialog__actions">
             <button disabled={isPending} onClick={onClose} type="button">
