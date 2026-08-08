@@ -174,6 +174,14 @@
       "validation": {
         "nameRequired": "Please enter your full name.",
         "avatarType": "Please upload a valid image file."
+      },
+      "password": {
+        "label": "Password",
+        "description": "For your security, we don't display your current password. We'll email you a secure link to set a new one.",
+        "sendLink": "Send reset password link",
+        "sending": "Sending...",
+        "sent": "A reset link has been sent to {{email}}. Check your inbox.",
+        "errorMsg": "We couldn't send the reset link. Please try again."
       }
     }
   }
