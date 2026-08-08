@@ -7,6 +7,10 @@ import {
 import { profileKeys } from "./ProfileKeys";
 import { isValidCompanyId } from "../utils/validation";
 import type { ProfileCompanyOption } from "../types/profileType";
+import {
+  readCachedExhibitorProfile,
+  writeCachedExhibitorProfile,
+} from "../utils/profileCache";
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 const THIRTY_MINUTES = 30 * 60 * 1000;
@@ -14,7 +18,18 @@ const THIRTY_MINUTES = 30 * 60 * 1000;
 export function getExhibitorProfileQueryOptions() {
   return queryOptions({
     queryKey: profileKeys.exhibitor,
-    queryFn: getExhibitorProfile,
+    queryFn: async () => {
+      const response = await getExhibitorProfile();
+      writeCachedExhibitorProfile(response.data);
+      return response;
+    },
+    initialData: () => {
+      const cached = readCachedExhibitorProfile();
+      return cached
+        ? { status: true, message: "cached", data: cached }
+        : undefined;
+    },
+    initialDataUpdatedAt: 0,
     staleTime: FIVE_MINUTES,
     gcTime: THIRTY_MINUTES,
   });

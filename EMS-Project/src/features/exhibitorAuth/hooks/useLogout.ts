@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../store/AuthStore";
 import { getApiErrorMessage } from "../../../utils/apiError";
 import { logoutApi } from "../api/Authapi";
+import { clearCachedExhibitorProfile } from "../../ExhibitorProfile/utils/profileCache";
 
 export function useLogout() {
   const { t } = useTranslation("dashboard");
@@ -20,6 +21,7 @@ export function useLogout() {
     },
     onSuccess: () => {
       clearAuth();
+      clearCachedExhibitorProfile();
       navigate("/login", { replace: true });
     },
     onError: (error: unknown) => {

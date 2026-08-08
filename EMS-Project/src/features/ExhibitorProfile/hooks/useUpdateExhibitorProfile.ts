@@ -8,6 +8,7 @@ import type {
   UpdateExhibitorProfilePayload,
 } from "../types/profileType";
 import { getApiErrorMessage } from "../../../utils/apiError";
+import { writeCachedExhibitorProfile } from "../utils/profileCache";
 
 export function useUpdateExhibitorProfile(onSuccess?: () => void) {
   const { t } = useTranslation("dashboard");
@@ -54,6 +55,7 @@ export function useUpdateExhibitorProfile(onSuccess?: () => void) {
 
     onSuccess: (response) => {
       queryClient.setQueryData(profileKeys.exhibitor, response);
+      writeCachedExhibitorProfile(response.data);
       onSuccess?.();
     },
   });
