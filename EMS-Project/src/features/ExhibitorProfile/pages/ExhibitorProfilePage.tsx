@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EmptyState, Loader } from "../../../components";
+import { EmptyState } from "../../../components";
 import { useMyBooths } from "../../MyBooths/hooks/useMyBooths";
 import {
   AccountInformation,
@@ -8,17 +8,16 @@ import {
   CompanyMediaCard,
   EditProfileDialog,
   ProfileSidebarCard,
+  ProfileSkeleton,
   SocialLinksCard,
 } from "../components";
 import { useCompanyProfile } from "../hooks/useCompanyProfile";
 import { useExhibitorProfile } from "../hooks/useExhibitorProfile";
-import {
-  getCompanyBoothSummary,
-  getCompanyOptions,
-} from "../utils/profileUtils";
+import { getCompanyBoothSummary } from "../utils/profileUtils";
 import "./ExhibitorProfilePage.scss";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Edit02Icon } from "@hugeicons/core-free-icons";
+import { useCompanyLookup } from "../hooks/useCompanyLookup";
 
 export function ExhibitorProfilePage() {
   const { t } = useTranslation("dashboard");
@@ -29,11 +28,13 @@ export function ExhibitorProfilePage() {
 
   const exhibitorQuery = useExhibitorProfile();
   const boothsQuery = useMyBooths(1);
+  const companyLookupQuery = useCompanyLookup();
   const booths = useMemo(
     () => boothsQuery.data?.data.data ?? [],
     [boothsQuery.data],
   );
-  const companies = useMemo(() => getCompanyOptions(booths), [booths]);
+  const companies = companyLookupQuery.data?.data ?? [];
+
   const activeCompanyId =
     selectedCompanyId !== null &&
     companies.some((company) => company.id === selectedCompanyId)
@@ -45,16 +46,29 @@ export function ExhibitorProfilePage() {
     [activeCompanyId, booths],
   );
 
-  if (exhibitorQuery.isPending || boothsQuery.isPending) {
+  if (
+    exhibitorQuery.isPending ||
+    boothsQuery.isPending ||
+    companyLookupQuery.isPending
+  ) {
     return (
-      <section className="exhibitor-profile exhibitor-profile--state">
-        <Loader />
-        <p>{t("profile.loading")}</p>
+      <section aria-label={t("profile.aria")} className="exhibitor-profile">
+        <header className="exhibitor-profile__intro">
+          <div>
+            <h1>{t("profile.title")}</h1>
+            <p>{t("profile.description")}</p>
+          </div>
+        </header>
+        <ProfileSkeleton />
       </section>
     );
   }
 
-  if (exhibitorQuery.isError || boothsQuery.isError) {
+  if (
+    exhibitorQuery.isError ||
+    boothsQuery.isError ||
+    companyLookupQuery.isError
+  ) {
     return (
       <section className="exhibitor-profile exhibitor-profile--state">
         <EmptyState
@@ -66,6 +80,7 @@ export function ExhibitorProfilePage() {
           onClick={() => {
             void exhibitorQuery.refetch();
             void boothsQuery.refetch();
+            void companyLookupQuery.refetch();
           }}
           type="button"
         >
@@ -107,10 +122,7 @@ export function ExhibitorProfilePage() {
           title={t("profile.noCompaniesTitle")}
         />
       ) : companyQuery.isPending ? (
-        <div className="exhibitor-profile__company-state">
-          <Loader />
-          <p>{t("profile.companyLoading")}</p>
-        </div>
+        <ProfileSkeleton />
       ) : companyQuery.isError ? (
         <div className="exhibitor-profile__company-state">
           <EmptyState

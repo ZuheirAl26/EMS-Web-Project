@@ -5,3 +5,4 @@ export { Input } from "./Input";
 export { Loader } from "./Loader";
 export { Modal } from "./Modal";
 export { Table } from "./Table";
+export { Skeleton } from "./Skeleton/Skeleton";

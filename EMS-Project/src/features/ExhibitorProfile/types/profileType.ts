@@ -73,6 +73,17 @@ export interface CompanyBoothSummary {
   totalArea: number;
 }
 
+export interface CompanyLookupOption {
+  id: number;
+  label: string;
+}
+
+export interface CompanyLookupResponse {
+  status: boolean;
+  message: string;
+  data: CompanyLookupOption[];
+}
+
 export interface ActiveCompanySelectorProps {
   activeCompany: ExhibitorCompany | null;
   companies: ProfileCompanyOption[];

@@ -1,5 +1,6 @@
 import { apiClient } from "../../../api/ApiClient";
 import type {
+  CompanyLookupResponse,
   CompanyProfileResponse,
   ExhibitorProfileResponse,
   UpdateExhibitorProfilePayload,
@@ -58,6 +59,20 @@ export async function updateExhibitorProfile(
   if (!response.data.status) {
     throw new Error(
       response.data.message || "The profile could not be updated.",
+    );
+  }
+
+  return response.data;
+}
+
+export async function getCompanyLookup(): Promise<CompanyLookupResponse> {
+  const response = await apiClient.get<CompanyLookupResponse>(
+    "/v1/exhibitor/lookup/companies",
+  );
+
+  if (!response.data.status) {
+    throw new Error(
+      response.data.message || "The companies could not be loaded.",
     );
   }
 

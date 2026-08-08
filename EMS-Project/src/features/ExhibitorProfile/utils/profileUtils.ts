@@ -1,8 +1,4 @@
-import type {
-  CompanyBoothSummary,
-  ProfileBooth,
-  ProfileCompanyOption,
-} from "../types/profileType";
+import type { CompanyBoothSummary, ProfileBooth } from "../types/profileType";
 
 export function getInitials(value: string) {
   return value
@@ -30,16 +26,6 @@ export function resolveMediaUrl(path: string | null) {
   } catch {
     return path;
   }
-}
-
-export function getCompanyOptions(booths: ProfileBooth[]) {
-  const companies = new Map<number, ProfileCompanyOption>();
-
-  booths.forEach((booth) => {
-    companies.set(booth.company.id, booth.company);
-  });
-
-  return Array.from(companies.values());
 }
 
 export function getCompanyBoothSummary(
