@@ -9,6 +9,18 @@ export interface ExhibitorProfile {
   is_verified: boolean;
 }
 
+export interface UpdateExhibitorProfilePayload {
+  name: string;
+  avatar?: File | null;
+  avatarPreviewUrl?: string | null;
+}
+
+export interface EditProfileDialogProps {
+  exhibitor: ExhibitorProfile;
+  onClose: () => void;
+  open: boolean;
+}
+
 export interface ExhibitorProfileResponse {
   status: boolean;
   message: string;
@@ -59,6 +71,17 @@ export interface CompanyBoothSummary {
   hallNumber: string | null;
   boothNumber: string | null;
   totalArea: number;
+}
+
+export interface CompanyLookupOption {
+  id: number;
+  label: string;
+}
+
+export interface CompanyLookupResponse {
+  status: boolean;
+  message: string;
+  data: CompanyLookupOption[];
 }
 
 export interface ActiveCompanySelectorProps {

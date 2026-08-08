@@ -1,7 +1,9 @@
 import { apiClient } from "../../../api/ApiClient";
 import type {
+  CompanyLookupResponse,
   CompanyProfileResponse,
   ExhibitorProfileResponse,
+  UpdateExhibitorProfilePayload,
 } from "../types/profileType";
 
 export async function getExhibitorProfile(): Promise<ExhibitorProfileResponse> {
@@ -10,7 +12,9 @@ export async function getExhibitorProfile(): Promise<ExhibitorProfileResponse> {
   );
 
   if (!response.data.status) {
-    throw new Error(response.data.message || "The profile could not be loaded.");
+    throw new Error(
+      response.data.message || "The profile could not be loaded.",
+    );
   }
 
   return response.data;
@@ -26,6 +30,49 @@ export async function getCompanyProfile(
   if (!response.data.status) {
     throw new Error(
       response.data.message || "The company profile could not be loaded.",
+    );
+  }
+
+  return response.data;
+}
+
+export async function updateExhibitorProfile(
+  payload: UpdateExhibitorProfilePayload,
+): Promise<ExhibitorProfileResponse> {
+  const formData = new FormData();
+  formData.append("name", payload.name);
+
+  if (payload.avatar) {
+    formData.append("avatar", payload.avatar, payload.avatar.name);
+  }
+
+  const response = await apiClient.post<ExhibitorProfileResponse>(
+    "/v1/exhibitor/profile",
+    formData,
+    {
+      headers: {
+        "Content-Type": undefined,
+      },
+    },
+  );
+
+  if (!response.data.status) {
+    throw new Error(
+      response.data.message || "The profile could not be updated.",
+    );
+  }
+
+  return response.data;
+}
+
+export async function getCompanyLookup(): Promise<CompanyLookupResponse> {
+  const response = await apiClient.get<CompanyLookupResponse>(
+    "/v1/exhibitor/lookup/companies",
+  );
+
+  if (!response.data.status) {
+    throw new Error(
+      response.data.message || "The companies could not be loaded.",
     );
   }
 

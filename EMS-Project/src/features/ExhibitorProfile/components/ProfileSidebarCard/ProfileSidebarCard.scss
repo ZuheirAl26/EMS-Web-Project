@@ -77,6 +77,25 @@
     );
     color: var(--color-white);
     box-shadow: var(--shadow-theme-md);
+    padding: 0;
+    font: inherit;
+
+    &:where(button) {
+      cursor: pointer;
+      transition:
+        transform 120ms ease,
+        box-shadow 120ms ease;
+
+      &:hover {
+        transform: scale(1.04);
+        box-shadow: var(--shadow-theme-lg);
+      }
+
+      &:focus-visible {
+        outline: 3px solid var(--color-primary-a20);
+        outline-offset: 3px;
+      }
+    }
 
     img {
       width: 100%;

@@ -1,12 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCompanyProfile } from "../api/ProfileApi";
-import { profileKeys } from "../api/ProfileKeys";
-import { isValidCompanyId } from "../utils/validation";
+import { getCompanyProfileQueryOptions } from "../api/ProfileQueryOptions";
 
 export function useCompanyProfile(companyId: number | null) {
-  return useQuery({
-    queryKey: profileKeys.company(companyId ?? 0),
-    queryFn: () => getCompanyProfile(companyId as number),
-    enabled: isValidCompanyId(companyId),
-  });
+  return useQuery(getCompanyProfileQueryOptions(companyId));
 }

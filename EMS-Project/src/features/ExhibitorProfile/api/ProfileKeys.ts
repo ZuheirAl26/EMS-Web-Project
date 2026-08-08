@@ -3,4 +3,5 @@ export const profileKeys = {
   companies: ["exhibitor-company-profile"] as const,
   company: (companyId: number) =>
     [...profileKeys.companies, companyId] as const,
+  companyLookup: ["exhibitor-company-lookup"] as const,
 };
