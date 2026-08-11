@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { BoothResultsProps } from "../../types/componentType";
+import { BoothResultsSkeleton } from "./BoothResultsSkeleton";
 
 export function BoothResults({
   booths,
@@ -19,6 +20,10 @@ export function BoothResults({
     });
   }, [selectedBooth?.id]);
 
+  if (isPending) {
+    return <BoothResultsSkeleton />;
+  }
+
   return (
     <aside className="create-booth-plan__results">
       <div className="create-booth-plan__results-heading">
@@ -26,7 +31,6 @@ export function BoothResults({
           <strong>{t("results.title")}</strong>
           <span>{t("results.count", { count: booths.length })}</span>
         </div>
-        {isPending ? <span>{t("results.loading")}</span> : null}
       </div>
 
       {selectedBooth ? (
@@ -36,7 +40,7 @@ export function BoothResults({
         </div>
       ) : null}
 
-      {!isPending && booths.length === 0 ? (
+      {booths.length === 0 ? (
         <div className="create-booth-plan__empty">
           <strong>{t("results.emptyTitle")}</strong>
           <span>{t("results.emptyMessage")}</span>

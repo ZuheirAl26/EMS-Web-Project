@@ -50,7 +50,7 @@ export function AddServicesPage() {
 
   const currentPage = filters.page ?? pagination?.current_page ?? 1;
   const lastPage = pagination?.last_page ?? 1;
-  const perPage = filters.perPage ?? pagination?.per_page ?? 10;
+  const perPage = filters.perPage ?? pagination?.per_page ?? 5;
 
   const currencyFormatter = useMemo(
     () =>
@@ -166,6 +166,7 @@ export function AddServicesPage() {
 
                 {(pagination?.total ?? services.length) > 0 && (
                   <Pagination
+                    className="add-services__pagination"
                     currentPage={currentPage}
                     isFetching={servicesQuery.isFetching}
                     onPageChange={handlePageChange}
