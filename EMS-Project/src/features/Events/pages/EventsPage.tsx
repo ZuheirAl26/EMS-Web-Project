@@ -6,8 +6,8 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
-import { EmptyState, Loader } from "../../../components";
-import { EventCard, EventStatisticsCards } from "../components";
+import { EmptyState } from "../../../components";
+import { EventCard, EventsSkeleton, EventStatisticsCards } from "../components";
 import { useEventStatistics } from "../hooks/useEventStatistics";
 import { useEvents } from "../hooks/useEvents";
 import "./EventsPage.scss";
@@ -44,10 +44,7 @@ export function EventsPage() {
       ) : null}
 
       {eventsQuery.isPending ? (
-        <div className="events-page__state" role="status">
-          <Loader />
-          <span>{t("loading")}</span>
-        </div>
+        <EventsSkeleton showStatistics={statisticsQuery.isPending} />
       ) : eventsQuery.isError ? (
         <div
           className="events-page__state events-page__state--error"

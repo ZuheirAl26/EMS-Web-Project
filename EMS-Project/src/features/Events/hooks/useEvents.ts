@@ -1,11 +1,6 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getEvents } from "../api/EventsApi";
-import { eventsKeys } from "../api/EventsKeys";
+import { useQuery } from "@tanstack/react-query";
+import { eventsListQueryOptions } from "../api/EventsQueryOptions";
 
 export function useEvents(page: number) {
-  return useQuery({
-    queryKey: eventsKeys.list(page),
-    queryFn: () => getEvents(page),
-    placeholderData: keepPreviousData,
-  });
+  return useQuery(eventsListQueryOptions(page));
 }

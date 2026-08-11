@@ -15,16 +15,15 @@
     border: 1px solid var(--color-neutral-200);
     border-radius: var(--radius-2xl);
     background: var(--color-white);
-    box-shadow: var(--shadow-xs-strong);
+    box-shadow: var(--shadow-sm);
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease,
       border-color 0.2s ease;
 
     &:hover {
-      border-color: var(--color-primary-a30);
-      box-shadow: var(--shadow-sm);
-      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl-strong);
+      transform: translateY(-6px);
     }
 
     dt {
@@ -36,7 +35,7 @@
 
     dd {
       margin: 0;
-      font-size: 22px;
+      font-size: 24px;
       line-height: 28px;
       font-weight: 700;
     }
@@ -45,16 +44,32 @@
       color: var(--color-eminence);
     }
 
+    &--total:hover {
+      border-color: var(--color-eminence-a10);
+    }
+
     &--approved dd {
       color: var(--color-primary);
     }
 
+    &--approved:hover {
+      border-color: var(--color-primary-a30);
+    }
+
     &--pending dd {
-      color: #f59e0b;
+      color: #d97706;
+    }
+
+    &--pending:hover {
+      border-color: #f59e0b;
     }
 
     &--rejected dd {
       color: var(--color-danger);
+    }
+
+    &--rejected:hover {
+      border-color: var(--color-danger-border);
     }
   }
 }

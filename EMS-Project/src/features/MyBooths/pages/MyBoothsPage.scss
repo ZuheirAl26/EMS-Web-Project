@@ -65,16 +65,6 @@
     line-height: 18px;
     text-align: center;
 
-    .loader {
-      width: 28px;
-      height: 28px;
-      display: block;
-      border: 3px solid var(--color-primary-a20);
-      border-top-color: var(--color-primary);
-      border-radius: var(--radius-round);
-      animation: my-booths-spin 700ms linear infinite;
-    }
-
     &--error {
       border-color: var(--color-danger-border);
       background: var(--color-danger-surface);
@@ -183,12 +173,6 @@
       outline: 3px solid var(--color-primary-a20);
       outline-offset: 2px;
     }
-  }
-}
-
-@keyframes my-booths-spin {
-  to {
-    transform: rotate(360deg);
   }
 }
 

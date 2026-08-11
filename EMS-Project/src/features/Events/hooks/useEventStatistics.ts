@@ -1,10 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getEventStatistics } from "../api/EventsApi";
-import { eventsKeys } from "../api/EventsKeys";
+import { eventStatisticsQueryOptions } from "../api/EventsQueryOptions";
 
 export function useEventStatistics() {
-  return useQuery({
-    queryKey: eventsKeys.statistics(),
-    queryFn: getEventStatistics,
-  });
+  return useQuery(eventStatisticsQueryOptions());
 }

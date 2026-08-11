@@ -5,6 +5,32 @@ import type {
 
 const MINUTE_IN_MILLISECONDS = 60_000;
 
+export function resolveEventMediaUrl(path: string | null | undefined) {
+  if (!path) {
+    return null;
+  }
+
+  if (/^(https?:|data:|blob:)/i.test(path)) {
+    return path;
+  }
+
+  try {
+    return new URL(path, import.meta.env.VITE_API_URL).toString();
+  } catch {
+    return path;
+  }
+}
+
+export function getEventQrUrl({
+  qr_code_url,
+  qr_token_url,
+}: {
+  qr_code_url?: string | null;
+  qr_token_url?: string | null;
+}) {
+  return resolveEventMediaUrl(qr_code_url || qr_token_url);
+}
+
 export function getEventStatusTone(status: string): EventStatusTone {
   if (status === "approved" || status === "pending" || status === "rejected") {
     return status;

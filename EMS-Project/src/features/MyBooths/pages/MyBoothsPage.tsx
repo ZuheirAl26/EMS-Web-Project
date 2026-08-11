@@ -7,12 +7,12 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { EmptyState, Loader } from "../../../components";
+import { EmptyState } from "../../../components";
 import { usePrefetchBooths } from "../../CreateBoothPlan/hooks/usePrefetchBooths";
 import { useMyBooths } from "../hooks/useMyBooths";
 import type { MyBoothsLocationState } from "../types/navigationType";
 import "./MyBoothsPage.scss";
-import { MyBoothCard } from "../components";
+import { MyBoothCard, MyBoothsSkeleton } from "../components";
 
 export function MyBoothsPage() {
   const { t } = useTranslation("dashboard");
@@ -57,10 +57,7 @@ export function MyBoothsPage() {
       ) : null}
 
       {myBoothsQuery.isPending ? (
-        <div className="my-booths__state" role="status">
-          <Loader />
-          <span>{t("myBooths.loading")}</span>
-        </div>
+        <MyBoothsSkeleton />
       ) : myBoothsQuery.isError ? (
         <div className="my-booths__state my-booths__state--error" role="alert">
           <strong>{t("myBooths.errorTitle")}</strong>
