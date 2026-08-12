@@ -8,10 +8,10 @@ import {
   Calendar03Icon,
   DashboardSquare01Icon,
   Logout03Icon,
-  Message02Icon,
   Notification02Icon,
   UserAdd01Icon,
   UserGroupIcon,
+  UserIcon,
 } from "@hugeicons/core-free-icons";
 import logo from "../../assets/logo.png";
 import { LogoutDialog } from "../../features/ExhibitorAuth/components";
@@ -20,6 +20,7 @@ import { useAuthStore } from "../../store/AuthStore";
 import "./DashboardLayout.scss";
 import { useExhibitorProfile } from "../../features/ExhibitorProfile/hooks/useExhibitorProfile";
 import { resolveMediaUrl } from "../../features/ExhibitorProfile/utils/profileUtils";
+import { AccountMenu } from "../components/AccountMenu";
 
 const navigationItems = [
   {
@@ -48,9 +49,14 @@ const navigationItems = [
     icon: Calendar03Icon,
   },
   {
-    id: "contact",
-    path: "/dashboard/contact",
-    icon: Message02Icon,
+    id: "profile",
+    path: "/dashboard/profile",
+    icon: UserIcon,
+  },
+  {
+    id: "notification",
+    path: "/dashboard/notifications",
+    icon: Notification02Icon,
   },
 ] as const;
 
@@ -92,9 +98,6 @@ export function DashboardLayout() {
         ? location.pathname === item.path
         : location.pathname.startsWith(item.path),
     ) ?? navigationItems[0];
-  const activePageId = location.pathname.startsWith("/dashboard/profile")
-    ? "profile"
-    : activeItem.id;
 
   const handleLogout = () => {
     setIsLogoutDialogOpen(true);
@@ -139,28 +142,13 @@ export function DashboardLayout() {
         </div>
 
         <div className="dashboard-sidebar__account">
-          <NavLink
-            aria-label={t("account.openProfile")}
-            className="dashboard-sidebar__profile-link"
-            to="/dashboard/profile"
-          >
-            <div className="dashboard-sidebar__avatar" aria-hidden="true">
-              {avatarUrl && !avatarError ? (
-                <img
-                  alt={accountName}
-                  className="dashboard-sidebar__avatar-img"
-                  onError={() => setAvatarError(true)}
-                  src={avatarUrl}
-                />
-              ) : (
-                initials
-              )}
-            </div>
-            <div className="dashboard-sidebar__account-copy">
-              <strong>{accountName}</strong>
-              <span>{t("account.role")}</span>
-            </div>
-          </NavLink>
+          <AccountMenu
+            accountName={accountName}
+            avatarError={avatarError}
+            avatarUrl={avatarUrl}
+            initials={initials}
+            onAvatarError={() => setAvatarError(true)}
+          />
           <button
             aria-label={t("account.logout")}
             className="dashboard-sidebar__logout"
@@ -187,7 +175,9 @@ export function DashboardLayout() {
               size={12}
               strokeWidth={1.8}
             />
-            <span aria-current="page">{t(`header.pages.${activePageId}`)}</span>
+            <span aria-current="page">
+              {t(`header.pages.${activeItem.id}`)}
+            </span>
           </div>
 
           <div className="dashboard-header__actions">

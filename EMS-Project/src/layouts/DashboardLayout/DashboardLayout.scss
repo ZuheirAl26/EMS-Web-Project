@@ -130,8 +130,7 @@
   &__account {
     min-height: 73px;
     padding: 21px 20px 20px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 22px;
+    display: flex;
     align-items: center;
     gap: 10px;
     border-top: 1px solid var(--color-border);
@@ -150,59 +149,6 @@
     &:focus-visible {
       outline: 3px solid rgba(10, 135, 130, 0.24);
       outline-offset: 3px;
-    }
-  }
-
-  &__avatar {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    min-height: 32px;
-    flex-shrink: 0;
-    display: grid;
-    place-items: center;
-    border-radius: 999px;
-    background: #f1eafa;
-    color: var(--color-eminence);
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 700;
-    text-decoration: none;
-    overflow: hidden;
-
-    img,
-    &-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-  }
-
-  &__account-copy {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-
-    strong,
-    span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    strong {
-      color: var(--color-ebony);
-      font-size: 11.5px;
-      line-height: 16px;
-      font-weight: 700;
-    }
-
-    span {
-      color: var(--color-text-muted-light);
-      font-size: 9.5px;
-      line-height: 15px;
     }
   }
 

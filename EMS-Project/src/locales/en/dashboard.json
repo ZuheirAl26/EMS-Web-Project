@@ -12,12 +12,13 @@
     "visitors": "Visitors Info",
     "team": "Team & Staff",
     "events": "Events",
-    "contact": "Contact Admin"
+    "profile": "Profile",
+    "notification": "Notifications"
   },
   "account": {
     "fallbackName": "Exhibitor Account",
     "role": "Booth Manager",
-    "openProfile": "Open my profile",
+    "openMenu": "Open account menu",
     "logout": "Log out",
     "logoutDialog": {
       "title": "Log out?",
@@ -26,6 +27,13 @@
       "confirm": "Log out",
       "loggingOut": "Logging out…",
       "error": "We could not log you out. Please try again."
+    },
+    "menu": {
+      "theme": "Theme",
+      "themeLight": "Light",
+      "themeDark": "Dark",
+      "language": "Language",
+      "contactAdmin": "Contact Admin"
     }
   },
   "header": {
@@ -37,8 +45,8 @@
       "visitors": "Visitors Info",
       "team": "Team & Staff",
       "events": "Events",
-      "contact": "Contact Admin",
-      "profile": "My Profile"
+      "profile": "My Profile",
+      "notification": "Notifications"
     }
   },
   "myBooths": {
