@@ -40,9 +40,12 @@
   },
   "metrics": {
     "aria": "Metrics for {{title}}",
+    "title": "Visitor Engagement",
+    "liveData": "Live data",
     "qrToken": "QR Token",
     "qrAlt": "QR code for {{title}}",
     "qrPending": "Not available",
+    "download": "Download",
     "visitorLeads": "Visitor Leads",
     "savedByVisitors": "Saved by Visitors"
   },

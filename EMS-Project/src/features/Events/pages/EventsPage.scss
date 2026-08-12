@@ -94,16 +94,6 @@
     line-height: 18px;
     text-align: center;
 
-    .loader {
-      width: 28px;
-      height: 28px;
-      display: block;
-      border: 3px solid var(--color-primary-a20);
-      border-top-color: var(--color-primary);
-      border-radius: var(--radius-round);
-      animation: events-spin 700ms linear infinite;
-    }
-
     &--error {
       border-color: var(--color-danger-border);
       background: var(--color-danger-surface);
@@ -161,12 +151,6 @@
       font-size: 12px;
       line-height: 18px;
     }
-  }
-}
-
-@keyframes events-spin {
-  to {
-    transform: rotate(360deg);
   }
 }
 

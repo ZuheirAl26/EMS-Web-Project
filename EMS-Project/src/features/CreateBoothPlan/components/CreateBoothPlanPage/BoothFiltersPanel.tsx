@@ -1,8 +1,17 @@
+import { useState } from "react";
 import { Refresh01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import type { BookingFilter } from "../../types/boothType";
 import type { BoothFiltersPanelProps } from "../../types/componentType";
+
+const HALL_TYPES = [
+  "exhibition",
+  "restaurant",
+  "mosque",
+  "bathroom",
+  "parking",
+] as const;
 
 export function BoothFiltersPanel({
   draftFilters,
@@ -12,17 +21,20 @@ export function BoothFiltersPanel({
   onSubmit,
 }: BoothFiltersPanelProps) {
   const { t } = useTranslation("createBoothPlan");
-
-  // Extract active sort state for each control
+  const [hallType, setHallType] = useState("");
   const priceSortValue =
     draftFilters.sort === "price" || draftFilters.sort === "-price"
       ? draftFilters.sort
       : "";
-
   const areaSortValue =
     draftFilters.sort === "area" || draftFilters.sort === "-area"
       ? draftFilters.sort
       : "";
+
+  const handleReset = () => {
+    setHallType("");
+    onReset();
+  };
 
   return (
     <form className="create-booth-plan__filters" onSubmit={onSubmit}>
@@ -64,27 +76,21 @@ export function BoothFiltersPanel({
 
       <label>
         <span>{t("filters.hallType")}</span>
-        <input
-          onChange={(event) =>
-            onDraftChange((current) => ({
-              ...current,
-              hallType: event.target.value,
-            }))
-          }
-          placeholder={t("filters.hallTypePlaceholder")}
-          value={draftFilters.hallType}
-        />
+        <select onChange={(event) => setHallType(event.target.value)} value={hallType}>
+          <option value="">{t("filters.allHallTypes")}</option>
+          {HALL_TYPES.map((type) => (
+            <option key={type} value={type}>
+              {t(`filters.hallTypes.${type}`)}
+            </option>
+          ))}
+        </select>
       </label>
 
-      {/* Sort by Price */}
       <label>
         <span>{t("filters.sortByPrice")}</span>
         <select
           onChange={(event) =>
-            onDraftChange((current) => ({
-              ...current,
-              sort: event.target.value,
-            }))
+            onDraftChange((current) => ({ ...current, sort: event.target.value }))
           }
           value={priceSortValue}
         >
@@ -94,15 +100,11 @@ export function BoothFiltersPanel({
         </select>
       </label>
 
-      {/* Sort by Area */}
       <label>
         <span>{t("filters.sortByArea")}</span>
         <select
           onChange={(event) =>
-            onDraftChange((current) => ({
-              ...current,
-              sort: event.target.value,
-            }))
+            onDraftChange((current) => ({ ...current, sort: event.target.value }))
           }
           value={areaSortValue}
         >
@@ -114,7 +116,7 @@ export function BoothFiltersPanel({
 
       <div className="create-booth-plan__filter-actions">
         <button type="submit">{t("filters.apply")}</button>
-        <button onClick={onReset} type="button">
+        <button onClick={handleReset} type="button">
           <HugeiconsIcon
             aria-hidden="true"
             color="currentColor"

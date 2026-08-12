@@ -52,9 +52,12 @@
   },
   "metrics": {
     "aria": "إحصائيات {{title}}",
+    "title": "تفاعل الزوار",
+    "liveData": "بيانات مباشرة",
     "qrToken": "رمز QR",
     "qrAlt": "رمز QR لفعالية {{title}}",
     "qrPending": "غير متوفر",
+    "download": "تنزيل",
     "visitorLeads": "بيانات الزوار",
     "savedByVisitors": "حفظها الزوار"
   },

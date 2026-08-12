@@ -4,7 +4,11 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
+import { Skeleton } from "../../../../components";
 import type { ServiceListProps } from "../../types/componentType";
+import "./ServiceList.scss";
+
+const SERVICE_PLACEHOLDERS = [0, 1, 2, 3, 4];
 
 export function ServiceList({
   currencyFormatter,
@@ -17,8 +21,25 @@ export function ServiceList({
 
   if (isPending) {
     return (
-      <div className="add-services__loading" role="status">
-        {t("services.loading")}
+      <div className="service-list-skeleton" role="status">
+        <span className="service-list-skeleton__sr-only">
+          {t("services.loading")}
+        </span>
+        <div aria-hidden="true" className="service-list-skeleton__list">
+          {SERVICE_PLACEHOLDERS.map((index) => (
+            <article className="service-list-skeleton__item" key={index}>
+              <div>
+                <Skeleton height={16} width="42%" />
+                <Skeleton height={12} width={66} />
+              </div>
+              <div>
+                <Skeleton borderRadius="var(--radius-round)" height={30} width={30} />
+                <Skeleton height={18} width={18} />
+                <Skeleton borderRadius="var(--radius-round)" height={30} width={30} />
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     );
   }

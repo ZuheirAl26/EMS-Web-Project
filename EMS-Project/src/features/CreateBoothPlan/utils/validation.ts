@@ -21,7 +21,7 @@ export const initialBoothFilterDraft: BoothFilterDraft = {
 export const initialServiceFilterDraft: ServiceFilterDraft = {
   name: "",
   sort: "",
-  perPage: "10",
+  perPage: "5",
 };
 
 export function isValidBoothId(value: number): boolean {

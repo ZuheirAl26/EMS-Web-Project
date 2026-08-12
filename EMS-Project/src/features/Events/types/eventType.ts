@@ -29,6 +29,7 @@ export interface ExhibitorEvent {
   duration: number;
   description: string;
   qr_token: string | null;
+  qr_code_url?: string | null;
   qr_token_url?: string | null;
   eventable: EventOwner;
   speakers: EventSpeaker[];
