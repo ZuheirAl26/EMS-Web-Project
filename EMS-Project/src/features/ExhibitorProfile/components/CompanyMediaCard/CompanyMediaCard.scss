@@ -111,19 +111,86 @@
   }
 
   &__gallery {
-    padding: 10px;
+    position: relative;
+    min-height: 180px;
+    overflow: hidden;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-
-    img {
-      width: 100%;
-      height: 66px;
-      border-radius: var(--radius-lg);
-      object-fit: cover;
+    place-items: center;
+    padding: 8px 16px 16px 8px;
+    background: var(--color-neutral-100);
+    isolation: isolate;
+  }
+  &__gallery-image {
+    grid-area: 1 / 1;
+    max-width: calc(100% - 96px);
+    max-height: 156px;
+    display: block;
+    border: 1px solid var(--color-primary-a30);
+    border-radius: var(--radius-xl);
+    background: var(--color-white);
+    object-fit: contain;
+    object-position: center;
+  }
+  &__gallery-image--active {
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 8px 18px rgb(0 0 0 / 14%);
+  }
+  &__gallery-image--stacked {
+    z-index: 0;
+    opacity: 0.45;
+    transform: translate(10px, 9px) rotate(1.5deg);
+  }
+  &__gallery-preload {
+    display: none;
+  }
+  &__gallery-controls {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  &__gallery-nav {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-round);
+    background: var(--color-white);
+    color: var(--color-primary);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
+    cursor: pointer;
+    pointer-events: auto;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      color 160ms ease;
+    &:hover {
+      background: var(--color-primary);
+      color: var(--color-white);
+      box-shadow: 0 6px 16px rgb(10 135 130 / 28%);
+    }
+    &:active {
+      transform: scale(0.96);
+    }
+    &:focus-visible {
+      outline: 3px solid var(--color-primary-a30);
+      outline-offset: 2px;
     }
   }
-
+  [dir="rtl"] &__gallery-nav--previous,
+  [dir="rtl"] &__gallery-nav--next {
+    svg {
+      transform: scaleX(-1);
+    }
+  }
   &__empty {
     border-color: var(--color-neutral-200);
     background: var(--color-page);

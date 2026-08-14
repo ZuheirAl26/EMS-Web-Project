@@ -167,7 +167,10 @@
       "uploaded": "Uploaded",
       "missing": "Not uploaded",
       "noGallery": "No gallery images",
-      "galleryAlt": "Company gallery image {{index}}"
+      "galleryAlt": "Company gallery image {{index}}",
+      "previousImage": "Previous gallery image",
+      "nextImage": "Next gallery image",
+      "imagePosition": "Image {{current}} of {{total}}"
     },
     "viewAvatar": "View {{name}}'s profile picture",
     "edit": {

@@ -159,7 +159,10 @@
       "uploaded": "تم الرفع",
       "missing": "غير مرفوع",
       "noGallery": "لا توجد صور في المعرض",
-      "galleryAlt": "صورة الشركة {{index}}"
+      "galleryAlt": "صورة الشركة {{index}}",
+      "previousImage": "صورة المعرض السابقة",
+      "nextImage": "صورة المعرض التالية",
+      "imagePosition": "الصورة {{current}} من {{total}}"
     }
   }
 }
