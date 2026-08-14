@@ -63,5 +63,90 @@
     "previous": "Previous page",
     "next": "Next page",
     "summary": "Page {{current}} of {{total}}"
+  },
+  "request": {
+    "backToEvents": "Back to Events",
+    "stepsAria": "Event request progress",
+    "steps": {
+      "hall": "1. Choose hall",
+      "details": "2. Event details"
+    },
+    "stepOne": "Step 1 of 2",
+    "stepTwo": "Step 2 of 2",
+    "selectTitle": "Choose an event hall",
+    "selectDescription": "Select the hall where you would like to host your event.",
+    "loadingHalls": "Loading event halls…",
+    "hallsErrorTitle": "Unable to load event halls",
+    "hallsError": "Please check the connection and try again.",
+    "retry": "Retry",
+    "hallListAria": "Available event halls",
+    "availableHalls": "Available halls",
+    "hallCount_one": "{{count}} hall",
+    "hallCount_other": "{{count}} halls",
+    "area": "{{area}} m²",
+    "perHour": "per hour",
+    "selectHint": "Choose a hall to continue.",
+    "selectedHall": "Hall {{number}} selected",
+    "continue": "Continue",
+    "detailsTitle": "Request an event",
+    "detailsDescription": "Add your event details, schedule, speakers, optional company, and logo.",
+    "selectedHallLabel": "Selected hall",
+    "areaLabel": "Area",
+    "changeHall": "Change hall",
+    "fields": {
+      "title": "Event title",
+      "type": "Event type",
+      "company": "Company",
+      "startAt": "Date & time",
+      "duration": "Duration (minutes)",
+      "logo": "Event logo",
+      "description": "Description",
+      "speakers": "Speakers"
+    },
+    "placeholders": {
+      "title": "Enter the event title",
+      "duration": "For example, 90",
+      "description": "Describe the event for the fair directory",
+      "speaker": "Speaker full name"
+    },
+    "individual": "No company — request as an individual",
+    "uploadLogo": "Upload an event logo (optional)",
+    "characterCount": "{{count}} / 500 characters",
+    "speakersHelp": "Add every person who will speak at this event.",
+    "speakerAria": "Speaker {{index}} name",
+    "removeSpeaker": "Remove speaker {{index}}",
+    "addSpeaker": "Add another speaker",
+    "back": "Back",
+    "submit": "Submit request",
+    "submitting": "Submitting…",
+    "error": "We could not submit the event request. Please try again.",
+    "validation": {
+      "title": "Enter an event title.",
+      "description": "Enter an event description.",
+      "startAt": "Choose the event date and time.",
+      "duration": "Enter a duration greater than zero.",
+      "speakers": "Add at least one speaker.",
+      "logo": "Upload a valid image file."
+    },
+    "types": {
+      "conference": "Conference",
+      "workshop": "Workshop",
+      "lecture": "Lecture",
+      "other": "Other"
+    },
+    "map": {
+      "title": "Event hall map",
+      "hint": "Select a highlighted event hall on the map or from the hall list.",
+      "aria": "Interactive exhibition event hall map",
+      "fallbackAlt": "Exhibition event hall map",
+      "zoomOut": "Zoom out",
+      "zoomIn": "Zoom in",
+      "zoomLevel": "Map zoom level",
+      "hallAria": "Hall {{number}}, {{area}} square metres",
+      "mappingWarning": "Some event halls are not yet mapped in the current plan asset. Use the hall list to select them.",
+      "legend": "Event hall map legend",
+      "available": "Available",
+      "selected": "Selected"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Add01Icon,
   ArrowLeft01Icon,
@@ -14,6 +15,7 @@ import "./EventsPage.scss";
 
 export function EventsPage() {
   const { t } = useTranslation("events");
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const eventsQuery = useEvents(page);
   const statisticsQuery = useEventStatistics();
@@ -27,7 +29,7 @@ export function EventsPage() {
           <h1>{t("title")}</h1>
           <p>{t("description")}</p>
         </div>
-        <button className="events-page__request-button" type="button">
+        <button className="events-page__request-button" onClick={() => navigate("/dashboard/events/request")} type="button">
           <HugeiconsIcon
             aria-hidden="true"
             color="currentColor"
