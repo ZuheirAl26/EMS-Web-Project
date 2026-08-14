@@ -92,24 +92,43 @@ export function MyBoothsPage() {
         >
           <button
             aria-label={t("myBooths.pagination.previous")}
-            disabled={pagination.current_page <= 1 || myBoothsQuery.isFetching}
+            disabled={
+              pagination.current_page <= 1 || myBoothsQuery.isFetching
+            }
             onClick={() => setPage((currentPage) => currentPage - 1)}
             type="button"
           >
             <HugeiconsIcon
               aria-hidden="true"
-              color="currentColor"
               icon={ArrowLeft01Icon}
               size={16}
               strokeWidth={1.8}
             />
           </button>
-          <span>
-            {t("myBooths.pagination.summary", {
-              current: pagination.current_page,
-              total: pagination.last_page,
-            })}
-          </span>
+
+          {Array.from(
+            { length: pagination.last_page },
+            (_, index) => index + 1,
+          ).map((pageNumber) => {
+            const isCurrentPage = pageNumber === pagination.current_page;
+
+            return (
+              <button
+                aria-current={isCurrentPage ? "page" : undefined}
+                aria-label={t("myBooths.pagination.page", { page: pageNumber })}
+                className={
+                  isCurrentPage ? "my-booths__pagination-page--active" : undefined
+                }
+                disabled={myBoothsQuery.isFetching}
+                key={pageNumber}
+                onClick={() => setPage(pageNumber)}
+                type="button"
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
+
           <button
             aria-label={t("myBooths.pagination.next")}
             disabled={
@@ -121,7 +140,6 @@ export function MyBoothsPage() {
           >
             <HugeiconsIcon
               aria-hidden="true"
-              color="currentColor"
               icon={ArrowRight01Icon}
               size={16}
               strokeWidth={1.8}

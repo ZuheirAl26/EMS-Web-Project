@@ -127,7 +127,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
 
     button {
       width: 34px;
@@ -139,7 +140,24 @@
       border-radius: var(--radius-lg);
       background: var(--color-white);
       color: var(--color-neutral-600);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
+      transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+
+      &:hover:not(:disabled) {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+      }
+
+      &:focus-visible {
+        outline: 3px solid var(--color-primary-a20);
+        outline-offset: 2px;
+      }
 
       &:disabled {
         cursor: not-allowed;
@@ -147,10 +165,12 @@
       }
     }
 
-    span {
-      color: var(--color-neutral-500);
-      font-size: 12px;
-      line-height: 18px;
+    &-page--active {
+      border-color: var(--color-primary) !important;
+      background: var(--color-primary) !important;
+      color: var(--color-white) !important;
+      cursor: default !important;
+      opacity: 1 !important;
     }
   }
 

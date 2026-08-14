@@ -109,12 +109,28 @@ export function EventsPage() {
               strokeWidth={1.8}
             />
           </button>
-          <span>
-            {t("pagination.summary", {
-              current: pagination.current_page,
-              total: pagination.last_page,
-            })}
-          </span>
+          {Array.from(
+            { length: pagination.last_page },
+            (_, index) => index + 1,
+          ).map((pageNumber) => {
+            const isCurrentPage = pageNumber === pagination.current_page;
+
+            return (
+              <button
+                aria-current={isCurrentPage ? "page" : undefined}
+                aria-label={t("pagination.page", { page: pageNumber })}
+                className={
+                  isCurrentPage ? "events-page__pagination-page--active" : undefined
+                }
+                disabled={eventsQuery.isFetching}
+                key={pageNumber}
+                onClick={() => setPage(pageNumber)}
+                type="button"
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
           <button
             aria-label={t("pagination.next")}
             disabled={
