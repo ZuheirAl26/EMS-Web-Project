@@ -40,7 +40,20 @@ export function EventsPage() {
         </button>
       </header>
 
-      {statisticsQuery.data ? (
+      {statisticsQuery.isError ? (
+        <div
+          className="events-page__statistics-state events-page__state--error"
+          role="alert"
+        >
+          <span>{t("error.message")}</span>
+          <button
+            onClick={() => void statisticsQuery.refetch()}
+            type="button"
+          >
+            {t("error.retry")}
+          </button>
+        </div>
+      ) : statisticsQuery.data ? (
         <EventStatisticsCards statistics={statisticsQuery.data.data} />
       ) : null}
 
