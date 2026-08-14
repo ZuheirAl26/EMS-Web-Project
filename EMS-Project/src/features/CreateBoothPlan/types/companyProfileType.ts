@@ -1,7 +1,6 @@
 export interface CompanyProfileDraft {
   companyName: string;
   businessSector: string;
-  companyLocation: string;
   headquartersLatitude: string;
   headquartersLongitude: string;
   phoneNumber: string;

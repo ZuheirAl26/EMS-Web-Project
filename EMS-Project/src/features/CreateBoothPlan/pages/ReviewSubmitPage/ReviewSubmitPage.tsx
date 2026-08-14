@@ -39,7 +39,7 @@ export function ReviewSubmitPage() {
   const storedBoothId = useCreatePlanStore((state) => state.boothId);
   const companyProfile = useCreatePlanStore((state) => state.companyProfile);
   const companyLogo = useCreatePlanStore((state) => state.companyLogo);
-  const boothBanner = useCreatePlanStore((state) => state.boothBanner);
+  const companyGallery = useCreatePlanStore((state) => state.companyGallery);
   const serviceQuantities = useCreatePlanStore(
     (state) => state.serviceQuantities,
   );
@@ -95,7 +95,7 @@ export function ReviewSubmitPage() {
 
   const draft: RequestBoothDraft = {
     boothId,
-    boothBanner,
+    companyGallery,
     companyLogo,
     companyProfile,
     serviceQuantities,

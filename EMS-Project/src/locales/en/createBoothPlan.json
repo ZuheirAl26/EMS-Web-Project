@@ -37,6 +37,12 @@
     "selectedUnits_other": "{{count}} service units selected",
     "back": "Back",
     "continue": "Continue",
+    "pagination": {
+      "aria": "Service pages",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {{page}}"
+    },
     "nextStepPending": "Your service choices are saved for this step. Send the company-profile endpoint to connect the next tab.",
     "missingBoothTitle": "Choose a booth first",
     "missingBoothMessage": "The services step needs a selected booth before it can continue.",
@@ -82,8 +88,6 @@
       "companyNamePlaceholder": "Your company name",
       "businessSector": "Business Sector",
       "businessSectorPlaceholder": "e.g. Technology",
-      "companyLocation": "Company Location",
-      "companyLocationPlaceholder": "e.g. Damascus, Syria",
       "phoneNumber": "Phone Number",
       "phoneNumberPlaceholder": "+963 11 XXX XXXX",
       "yearFounded": "Year Founded",
@@ -127,17 +131,16 @@
       "transportation_logistics": "Transportation & Logistics",
       "entertainment": "Entertainment",
       "other": "Other"
-    },
-    "locationPicker": {
-      "label": "Headquarters Location",
+    },    "locationPicker": {
+      "label": "Company Location",
       "selected": "Location selected",
       "notSelected": "No location selected",
-      "help": "Choose the company headquarters directly on the map.",
+      "help": "Choose the company location directly on the map.",
       "choose": "Choose on map",
       "change": "Change location",
-      "modalTitle": "Choose headquarters location",
+      "modalTitle": "Choose company location",
       "modalDescription": "Move and zoom the map, then click the exact company location.",
-      "close": "Close location map",
+      "close": "Close company location map",
       "loading": "Loading map…",
       "clickPrompt": "Click anywhere on the map to place the location marker.",
       "cancel": "Cancel",
@@ -147,25 +150,33 @@
       "title": "Media & Assets",
       "description": "Your selected files will be included with the company data in the final request.",
       "logo": "Company Logo",
-      "banner": "Booth Banner",
+      "banner": "Company Banner",
       "logoHelp": "PNG, JPG, WebP, or SVG",
-      "bannerHelp": "Recommended: 1920×480px",
-      "dropBanner": "Drop banner image here",
+      "bannerHelp": "Select up to 10 PNG, JPG, or WebP images",
+      "dropBanner": "Drop up to 10 Company Banner images here",
+      "bannerLimitReached": "Maximum of {{count}} images reached. Remove an image to add another.",
+      "removeImage": "Remove {{name}}",
+      "selectedImages": "Selected Company Banner images",
       "uploaded": "Uploaded",
       "missing": "Missing"
     },
     "directory": {
-      "button": "Company directory",
-      "title": "Existing company profiles",
-      "description": "Selecting a saved company will fill the form automatically when the directory endpoint is connected.",
-      "selectLabel": "Company profile",
-      "empty": "No saved company profiles loaded",
-      "useCompany": "Use company"
+      "button": "Existing Companies",
+      "title": "Existing Companies",
+      "description": "Select an existing company to fill the available company profile fields automatically.",
+      "selectLabel": "Company",
+      "empty": "Select a company",
+      "loading": "Loading existing companies…",
+      "loadingDetails": "Loading company details…",
+      "error": "Could not load existing companies.",
+      "detailsError": "Could not load the selected company details.",
+      "fallback": "Company #{{id}}",
+      "retry": "Retry"
     },
     "validation": {
       "socialLinkRequired": "Add at least one social link: Website, Twitter / X, or LinkedIn.",
       "logoRequired": "Company logo is required.",
-      "headquartersLocationRequired": "Choose the company headquarters location on the map."
+      "headquartersLocationRequired": "Choose the company location on the map."
     }
   },
   "review": {

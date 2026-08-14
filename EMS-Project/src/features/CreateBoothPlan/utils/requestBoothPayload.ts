@@ -56,7 +56,7 @@ export function buildRequestBoothPayload(
     !isValidLatitude(draft.companyProfile.headquartersLatitude) ||
     !isValidLongitude(draft.companyProfile.headquartersLongitude)
   ) {
-    throw new Error("Valid company headquarters coordinates are required.");
+    throw new Error("Valid company coordinates are required.");
   }
 
   payload.new_company = {
@@ -69,7 +69,7 @@ export function buildRequestBoothPayload(
     headquarters_lat: Number(draft.companyProfile.headquartersLatitude),
     headquarters_lng: Number(draft.companyProfile.headquartersLongitude),
     logo: draft.companyLogo,
-    gallery: draft.boothBanner ? [draft.boothBanner] : [],
+    gallery: draft.companyGallery,
   };
 
   return payload;

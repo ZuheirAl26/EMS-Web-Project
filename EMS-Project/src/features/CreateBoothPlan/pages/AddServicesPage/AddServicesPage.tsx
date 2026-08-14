@@ -21,7 +21,7 @@ import {
   toServiceApiFilters,
 } from "../../utils/validation";
 import "./AddServicesPage.scss";
-import { Pagination } from "../../../../components/Pagination/Pagination";
+import { Pagination } from "../../../../components";
 
 export function AddServicesPage() {
   const { t, i18n } = useTranslation("createBoothPlan");
@@ -50,7 +50,6 @@ export function AddServicesPage() {
 
   const currentPage = filters.page ?? pagination?.current_page ?? 1;
   const lastPage = pagination?.last_page ?? 1;
-  const perPage = filters.perPage ?? pagination?.per_page ?? 5;
 
   const currencyFormatter = useMemo(
     () =>
@@ -89,11 +88,6 @@ export function AddServicesPage() {
 
   const handlePageChange = (newPage: number) => {
     setFilters((prev) => ({ ...prev, page: newPage }));
-  };
-
-  const handlePerPageChange = (newPerPage: number) => {
-    setDraftFilters((prev) => ({ ...prev, perPage: String(newPerPage) }));
-    setFilters((prev) => ({ ...prev, perPage: newPerPage, page: 1 }));
   };
 
   const changeQuantity = (
@@ -169,9 +163,14 @@ export function AddServicesPage() {
                     className="add-services__pagination"
                     currentPage={currentPage}
                     isFetching={servicesQuery.isFetching}
+                    labels={{
+                      ariaLabel: t("services.pagination.aria"),
+                      nextLabel: t("services.pagination.next"),
+                      pageLabel: (page) =>
+                        t("services.pagination.page", { page }),
+                      previousLabel: t("services.pagination.previous"),
+                    }}
                     onPageChange={handlePageChange}
-                    onPerPageChange={handlePerPageChange}
-                    perPage={perPage}
                     totalPages={lastPage}
                   />
                 )}

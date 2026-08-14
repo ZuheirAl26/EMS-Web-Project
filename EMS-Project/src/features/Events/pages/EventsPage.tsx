@@ -1,13 +1,11 @@
 import { useState } from "react";
 import {
   Add01Icon,
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
   Calendar03Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
-import { EmptyState } from "../../../components";
+import { EmptyState, Pagination } from "../../../components";
 import { EventCard, EventsSkeleton, EventStatisticsCards } from "../components";
 import { useEventStatistics } from "../hooks/useEventStatistics";
 import { useEvents } from "../hooks/useEvents";
@@ -90,65 +88,19 @@ export function EventsPage() {
         </div>
       )}
 
-      {pagination && pagination.last_page > 1 ? (
-        <nav
-          aria-label={t("pagination.aria")}
-          className="events-page__pagination"
-        >
-          <button
-            aria-label={t("pagination.previous")}
-            disabled={pagination.current_page <= 1 || eventsQuery.isFetching}
-            onClick={() => setPage((currentPage) => currentPage - 1)}
-            type="button"
-          >
-            <HugeiconsIcon
-              aria-hidden="true"
-              color="currentColor"
-              icon={ArrowLeft01Icon}
-              size={16}
-              strokeWidth={1.8}
-            />
-          </button>
-          {Array.from(
-            { length: pagination.last_page },
-            (_, index) => index + 1,
-          ).map((pageNumber) => {
-            const isCurrentPage = pageNumber === pagination.current_page;
-
-            return (
-              <button
-                aria-current={isCurrentPage ? "page" : undefined}
-                aria-label={t("pagination.page", { page: pageNumber })}
-                className={
-                  isCurrentPage ? "events-page__pagination-page--active" : undefined
-                }
-                disabled={eventsQuery.isFetching}
-                key={pageNumber}
-                onClick={() => setPage(pageNumber)}
-                type="button"
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-          <button
-            aria-label={t("pagination.next")}
-            disabled={
-              pagination.current_page >= pagination.last_page ||
-              eventsQuery.isFetching
-            }
-            onClick={() => setPage((currentPage) => currentPage + 1)}
-            type="button"
-          >
-            <HugeiconsIcon
-              aria-hidden="true"
-              color="currentColor"
-              icon={ArrowRight01Icon}
-              size={16}
-              strokeWidth={1.8}
-            />
-          </button>
-        </nav>
+      {pagination ? (
+        <Pagination
+          currentPage={pagination.current_page}
+          isFetching={eventsQuery.isFetching}
+          labels={{
+            ariaLabel: t("pagination.aria"),
+            nextLabel: t("pagination.next"),
+            pageLabel: (page) => t("pagination.page", { page }),
+            previousLabel: t("pagination.previous"),
+          }}
+          onPageChange={setPage}
+          totalPages={pagination.last_page}
+        />
       ) : null}
     </section>
   );

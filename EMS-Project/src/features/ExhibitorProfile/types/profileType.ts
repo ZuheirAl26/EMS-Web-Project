@@ -79,7 +79,8 @@ export interface CompanyBoothSummary {
 
 export interface CompanyLookupOption {
   id: number;
-  label: string;
+  label?: string;
+  name?: string;
 }
 
 export interface CompanyLookupResponse {

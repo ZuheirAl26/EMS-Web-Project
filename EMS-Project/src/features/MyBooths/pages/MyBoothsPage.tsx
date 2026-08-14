@@ -1,14 +1,12 @@
 import { useState } from "react";
 import {
   Add01Icon,
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
   Store01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { EmptyState } from "../../../components";
+import { EmptyState, Pagination } from "../../../components";
 import { usePrefetchBooths } from "../../CreateBoothPlan/hooks/usePrefetchBooths";
 import { useMyBooths } from "../hooks/useMyBooths";
 import type { MyBoothsLocationState } from "../types/navigationType";
@@ -85,67 +83,19 @@ export function MyBoothsPage() {
         </div>
       )}
 
-      {pagination && pagination.last_page > 1 ? (
-        <nav
-          aria-label={t("myBooths.pagination.aria")}
-          className="my-booths__pagination"
-        >
-          <button
-            aria-label={t("myBooths.pagination.previous")}
-            disabled={
-              pagination.current_page <= 1 || myBoothsQuery.isFetching
-            }
-            onClick={() => setPage((currentPage) => currentPage - 1)}
-            type="button"
-          >
-            <HugeiconsIcon
-              aria-hidden="true"
-              icon={ArrowLeft01Icon}
-              size={16}
-              strokeWidth={1.8}
-            />
-          </button>
-
-          {Array.from(
-            { length: pagination.last_page },
-            (_, index) => index + 1,
-          ).map((pageNumber) => {
-            const isCurrentPage = pageNumber === pagination.current_page;
-
-            return (
-              <button
-                aria-current={isCurrentPage ? "page" : undefined}
-                aria-label={t("myBooths.pagination.page", { page: pageNumber })}
-                className={
-                  isCurrentPage ? "my-booths__pagination-page--active" : undefined
-                }
-                disabled={myBoothsQuery.isFetching}
-                key={pageNumber}
-                onClick={() => setPage(pageNumber)}
-                type="button"
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-
-          <button
-            aria-label={t("myBooths.pagination.next")}
-            disabled={
-              pagination.current_page >= pagination.last_page ||
-              myBoothsQuery.isFetching
-            }
-            onClick={() => setPage((currentPage) => currentPage + 1)}
-            type="button"
-          >
-            <HugeiconsIcon
-              aria-hidden="true"
-              icon={ArrowRight01Icon}
-              size={16}
-              strokeWidth={1.8}
-            />
-          </button>
-        </nav>
+      {pagination ? (
+        <Pagination
+          currentPage={pagination.current_page}
+          isFetching={myBoothsQuery.isFetching}
+          labels={{
+            ariaLabel: t("myBooths.pagination.aria"),
+            nextLabel: t("myBooths.pagination.next"),
+            pageLabel: (page) => t("myBooths.pagination.page", { page }),
+            previousLabel: t("myBooths.pagination.previous"),
+          }}
+          onPageChange={setPage}
+          totalPages={pagination.last_page}
+        />
       ) : null}
     </section>
   );

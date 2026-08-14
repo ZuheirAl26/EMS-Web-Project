@@ -3,7 +3,6 @@ import {
   Call02Icon,
   Globe02Icon,
   Linkedin01Icon,
-  Location01Icon,
   NewTwitterIcon,
   OfficeIcon,
   TextAlignLeftIcon,
@@ -43,15 +42,6 @@ export function CompanyDetailsForm({
         <BusinessSectorSelect
           onValueChange={(value) => onFieldChange("businessSector", value)}
           value={companyProfile.businessSector}
-        />
-        <ProfileField
-          autoComplete="street-address"
-          icon={Location01Icon}
-          label={t("companyProfile.fields.companyLocation")}
-          onValueChange={(value) => onFieldChange("companyLocation", value)}
-          placeholder={t("companyProfile.fields.companyLocationPlaceholder")}
-          required
-          value={companyProfile.companyLocation}
         />
         <CompanyLocationPicker
           errorMessage={headquartersLocationError}

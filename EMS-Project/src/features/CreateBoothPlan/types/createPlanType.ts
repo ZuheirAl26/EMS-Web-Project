@@ -8,7 +8,7 @@ export interface CreatePlanState {
   serviceQuantities: Record<number, number>;
   companyProfile: CompanyProfileDraft;
   companyLogo: File | null;
-  boothBanner: File | null;
+  companyGallery: File[];
   setBoothId: (boothId: number | null) => void;
   setServiceQuantity: (serviceId: number, quantity: number) => void;
   updateCompanyProfile: (
@@ -16,7 +16,7 @@ export interface CreatePlanState {
     value: string,
   ) => void;
   setCompanyLogo: (file: File | null) => void;
-  setBoothBanner: (file: File | null) => void;
+  setCompanyGallery: (files: File[]) => void;
   resetDraft: () => void;
   setDraftFilters: (
     updater: BoothFilterDraft | ((prev: BoothFilterDraft) => BoothFilterDraft),

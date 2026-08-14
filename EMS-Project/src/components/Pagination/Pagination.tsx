@@ -1,81 +1,97 @@
 import { useMemo } from "react";
-import { ArrowLeft02Icon, ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useTranslation } from "react-i18next";
 import "./Pagination.scss";
 
-export interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  perPage: number;
-  onPageChange: (page: number) => void;
-  onPerPageChange: (perPage: number) => void;
-  isFetching?: boolean;
-  perPageOptions?: number[];
-  showPerPage?: boolean;
-  className?: string;
+export interface PaginationLabels {
+  ariaLabel: string;
+  nextLabel: string;
+  pageLabel: (page: number) => string;
+  perPageLabel?: string;
+  previousLabel: string;
 }
 
+export interface PaginationProps {
+  className?: string;
+  currentPage: number;
+  isFetching?: boolean;
+  labels?: PaginationLabels;
+  onPageChange: (page: number) => void;
+  onPerPageChange?: (perPage: number) => void;
+  perPage?: number;
+  perPageOptions?: number[];
+  showPerPage?: boolean;
+  totalPages: number;
+}
+
+const defaultLabels: PaginationLabels = {
+  ariaLabel: "Pagination",
+  nextLabel: "Next page",
+  pageLabel: (page) => `Page ${page}`,
+  perPageLabel: "Per page",
+  previousLabel: "Previous page",
+};
+
 export function Pagination({
+  className = "",
   currentPage,
-  totalPages,
-  perPage,
+  isFetching = false,
+  labels = defaultLabels,
   onPageChange,
   onPerPageChange,
-  isFetching = false,
+  perPage,
   perPageOptions = [5, 10, 15, 25, 50],
-  showPerPage = true,
-  className = "",
+  showPerPage = false,
+  totalPages,
 }: PaginationProps) {
-  const { t } = useTranslation();
-
   const pageNumbers = useMemo(() => {
     if (totalPages <= 7) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
+      return Array.from({ length: totalPages }, (_, index) => index + 1);
     }
 
-    const pages: (number | string)[] = [];
-
     if (currentPage <= 4) {
-      pages.push(1, 2, 3, 4, 5, "...", totalPages);
-    } else if (currentPage >= totalPages - 3) {
-      pages.push(
+      return [1, 2, 3, 4, 5, "…", totalPages];
+    }
+
+    if (currentPage >= totalPages - 3) {
+      return [
         1,
-        "...",
+        "…",
         totalPages - 4,
         totalPages - 3,
         totalPages - 2,
         totalPages - 1,
         totalPages,
-      );
-    } else {
-      pages.push(
-        1,
-        "...",
-        currentPage - 1,
-        currentPage,
-        currentPage + 1,
-        "...",
-        totalPages,
-      );
+      ];
     }
 
-    return pages;
+    return [1, "…", currentPage - 1, currentPage, currentPage + 1, "…", totalPages];
   }, [currentPage, totalPages]);
 
-  if (totalPages <= 0) {
+  const hasPerPageControl = Boolean(showPerPage && onPerPageChange && perPage);
+  const hasPageNavigation = totalPages > 1;
+
+  if (!hasPerPageControl && !hasPageNavigation) {
     return null;
   }
 
+  const paginationClassName = [
+    "app-pagination",
+    hasPerPageControl ? "app-pagination--with-per-page" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div className={`app-pagination ${className}`.trim()}>
-      {/* Optional Per-Page Selector */}
-      {showPerPage && (
+    <nav aria-label={labels.ariaLabel} className={paginationClassName}>
+      {hasPerPageControl ? (
         <div className="app-pagination__per-page">
-          <span>{t("common.pagination.perPage", "Per page")}</span>
+          <span>{labels.perPageLabel}</span>
           <select
+            aria-label={labels.perPageLabel}
             disabled={isFetching}
-            onChange={(e) => onPerPageChange(Number(e.target.value))}
+            onChange={(event) => onPerPageChange(Number(event.target.value))}
             value={perPage}
           >
             {perPageOptions.map((option) => (
@@ -85,75 +101,71 @@ export function Pagination({
             ))}
           </select>
         </div>
-      )}
+      ) : null}
 
-      {/* Numbered Page Buttons Box Layout */}
-      <div className="app-pagination__list">
-        {/* Previous Button */}
-        <button
-          aria-label={t("common.pagination.prev", "Previous page")}
-          className="app-pagination__btn app-pagination__btn--nav"
-          disabled={currentPage <= 1 || isFetching}
-          onClick={() => onPageChange(currentPage - 1)}
-          type="button"
-        >
-          <HugeiconsIcon
-            aria-hidden="true"
-            color="currentColor"
-            icon={ArrowLeft02Icon}
-            size={16}
-            strokeWidth={1.8}
-          />
-        </button>
+      {hasPageNavigation ? (
+        <div className="app-pagination__list">
+          <button
+            aria-label={labels.previousLabel}
+            className="app-pagination__button app-pagination__button--navigation"
+            disabled={currentPage <= 1 || isFetching}
+            onClick={() => onPageChange(currentPage - 1)}
+            type="button"
+          >
+            <HugeiconsIcon
+              aria-hidden="true"
+              icon={ArrowLeft01Icon}
+              size={16}
+              strokeWidth={1.8}
+            />
+          </button>
 
-        {/* Page Numbers */}
-        {pageNumbers.map((page, index) => {
-          if (typeof page === "string") {
+          {pageNumbers.map((page, index) => {
+            if (typeof page === "string") {
+              return (
+                <span className="app-pagination__ellipsis" key={`ellipsis-${index}`}>
+                  {page}
+                </span>
+              );
+            }
+
+            const isCurrentPage = page === currentPage;
+
             return (
-              <span
-                key={`ellipsis-${index}`}
-                className="app-pagination__ellipsis"
+              <button
+                aria-current={isCurrentPage ? "page" : undefined}
+                aria-label={labels.pageLabel(page)}
+                className={
+                  isCurrentPage
+                    ? "app-pagination__button app-pagination__button--active"
+                    : "app-pagination__button"
+                }
+                disabled={isFetching}
+                key={page}
+                onClick={() => onPageChange(page)}
+                type="button"
               >
                 {page}
-              </span>
+              </button>
             );
-          }
+          })}
 
-          const isActive = page === currentPage;
-
-          return (
-            <button
-              key={page}
-              aria-current={isActive ? "page" : undefined}
-              className={`app-pagination__btn ${
-                isActive ? "app-pagination__btn--active" : ""
-              }`}
-              disabled={isFetching}
-              onClick={() => onPageChange(page)}
-              type="button"
-            >
-              {page}
-            </button>
-          );
-        })}
-
-        {/* Next Button */}
-        <button
-          aria-label={t("common.pagination.next", "Next page")}
-          className="app-pagination__btn app-pagination__btn--nav"
-          disabled={currentPage >= totalPages || isFetching}
-          onClick={() => onPageChange(currentPage + 1)}
-          type="button"
-        >
-          <HugeiconsIcon
-            aria-hidden="true"
-            color="currentColor"
-            icon={ArrowRight02Icon}
-            size={16}
-            strokeWidth={1.8}
-          />
-        </button>
-      </div>
-    </div>
+          <button
+            aria-label={labels.nextLabel}
+            className="app-pagination__button app-pagination__button--navigation"
+            disabled={currentPage >= totalPages || isFetching}
+            onClick={() => onPageChange(currentPage + 1)}
+            type="button"
+          >
+            <HugeiconsIcon
+              aria-hidden="true"
+              icon={ArrowRight01Icon}
+              size={16}
+              strokeWidth={1.8}
+            />
+          </button>
+        </div>
+      ) : null}
+    </nav>
   );
 }
