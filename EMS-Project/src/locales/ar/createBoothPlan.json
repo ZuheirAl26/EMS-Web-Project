@@ -225,6 +225,14 @@
     "number": "رقم الجناح",
     "numberPlaceholder": "الرقم الدقيق، مثال SE_01",
     "booking": "حالة الحجز",
+    "allHallTypes": "كل أنواع الصالات",
+    "hallTypes": {
+      "exhibition": "معرض",
+      "restaurant": "مطعم",
+      "mosque": "مسجد",
+      "bathroom": "دورة مياه",
+      "parking": "موقف سيارات"
+    },
     "hallType": "نوع الصالة",
     "hallTypePlaceholder": "أدخل نوع الصالة",
     "include": "تضمين",

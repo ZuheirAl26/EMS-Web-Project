@@ -218,6 +218,14 @@
     "numberPlaceholder": "Exact number, e.g. SE_01",
     "booking": "Booking status",
     "all": "All booths",
+    "allHallTypes": "All hall types",
+    "hallTypes": {
+      "exhibition": "Exhibition",
+      "restaurant": "Restaurant",
+      "mosque": "Mosque",
+      "bathroom": "Bathroom",
+      "parking": "Parking"
+    },
     "hallType": "Hall type",
     "hallTypePlaceholder": "Enter hall type",
     "sortByPrice": "Sort by price",
