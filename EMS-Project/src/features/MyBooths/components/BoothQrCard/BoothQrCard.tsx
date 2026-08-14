@@ -8,11 +8,12 @@ import { useTranslation } from "react-i18next";
 import type { BoothQrCardProps } from "../../types/myBoothsType";
 import {
   downloadQrPng,
+  printQrPng,
   resolveQrImageUrl,
 } from "../../utils/qrActions";
 import "./BoothQrCard.scss";
 
-type QrAction = "download";
+type QrAction = "download" | "print";
 
 export function BoothQrCard({
   boothNumber,
@@ -36,6 +37,23 @@ export function BoothQrCard({
 
     try {
       await downloadQrPng(qrToken, `booth-${boothNumber}-qr.png`);
+    } catch {
+      setActionError(t("myBooths.qr.actionError"));
+    } finally {
+      setActiveAction(null);
+    }
+  };
+
+  const runQrPrint = async () => {
+    if (!qrToken) {
+      return;
+    }
+
+    setActiveAction("print");
+    setActionError(null);
+
+    try {
+      await printQrPng(qrToken, boothNumber);
     } catch {
       setActionError(t("myBooths.qr.actionError"));
     } finally {
@@ -70,8 +88,8 @@ export function BoothQrCard({
 
         <div className="booth-qr-card__actions">
           <button
-            disabled={!canUseQr}
-            onClick={() => window.print()}
+            disabled={!canUseQr || activeAction !== null}
+            onClick={() => void runQrPrint()}
             type="button"
           >
             <HugeiconsIcon
