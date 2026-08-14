@@ -10,7 +10,7 @@ export function MyBoothCard({ booth }: MyBoothCardProps) {
       <BoothQrCard
         boothNumber={booth.number}
         qrToken={booth.qr_token}
-        qrUrl={booth.qr_token_url ?? null}
+        qrUrl={booth.qr_code_url || null}
       />
     </article>
   );

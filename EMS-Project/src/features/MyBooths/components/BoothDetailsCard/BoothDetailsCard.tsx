@@ -72,13 +72,13 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
         <h3>{t("myBooths.details.servicesBooked")}</h3>
         {booth.services.length > 0 ? (
           <ul>
-            {booth.services.map((service) => (
+            {booth.services.map((service, index) => (
               <li
                 aria-label={t("myBooths.details.serviceQuantity", {
                   name: service.name,
                   quantity: service.quantity,
                 })}
-                key={service.id}
+                key={`${service.id}-${index}`}
               >
                 {service.name}
               </li>

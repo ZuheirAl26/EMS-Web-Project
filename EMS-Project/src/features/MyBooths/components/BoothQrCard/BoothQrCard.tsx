@@ -6,7 +6,11 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import type { BoothQrCardProps } from "../../types/myBoothsType";
-import { downloadQrImage, printQrImage } from "../../utils/qrActions";
+import {
+  downloadQrImage,
+  printQrImage,
+  resolveQrImageUrl,
+} from "../../utils/qrActions";
 import "./BoothQrCard.scss";
 
 type QrAction = "download" | "print";
@@ -20,7 +24,8 @@ export function BoothQrCard({
   const [activeAction, setActiveAction] = useState<QrAction | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [hasImageError, setHasImageError] = useState(false);
-  const canUseQr = Boolean(qrUrl) && !hasImageError;
+  const resolvedQrUrl = qrUrl ? resolveQrImageUrl(qrUrl) : null;
+  const canUseQr = Boolean(resolvedQrUrl) && !hasImageError;
 
   const runQrAction = async (action: QrAction) => {
     if (!qrUrl) {
@@ -32,10 +37,10 @@ export function BoothQrCard({
 
     try {
       if (action === "download") {
-        await downloadQrImage(qrUrl, `booth-${boothNumber}-qr.png`);
+        await downloadQrImage(resolvedQrUrl, `booth-${boothNumber}-qr.svg`);
       } else {
         await printQrImage(
-          qrUrl,
+          resolvedQrUrl,
           t("myBooths.qr.printTitle", { number: boothNumber }),
         );
       }
@@ -58,11 +63,11 @@ export function BoothQrCard({
 
       <div className="booth-qr-card__content">
         <div className="booth-qr-card__image-frame">
-          {qrUrl && !hasImageError ? (
+          {resolvedQrUrl && !hasImageError ? (
             <img
               alt={t("myBooths.qr.alt", { number: boothNumber })}
               onError={() => setHasImageError(true)}
-              src={qrUrl}
+              src={resolvedQrUrl}
             />
           ) : (
             <span>{t("myBooths.qr.unavailable")}</span>

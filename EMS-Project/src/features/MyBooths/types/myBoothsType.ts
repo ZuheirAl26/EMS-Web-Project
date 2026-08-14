@@ -25,7 +25,7 @@ export interface MyBooth {
   id: number;
   number: string;
   qr_token: string | null;
-  qr_token_url?: string | null;
+  qr_code_url: string | null;
   area: number;
   price: string;
   svg_id: string;

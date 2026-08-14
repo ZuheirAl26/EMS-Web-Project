@@ -1,5 +1,16 @@
 import { apiClient } from "../../../api/ApiClient";
 
+export function resolveQrImageUrl(qrUrl: string) {
+  if (/^(https?:|data:|blob:)/i.test(qrUrl)) {
+    return qrUrl;
+  }
+  try {
+    return new URL(qrUrl, import.meta.env.VITE_API_URL).toString();
+  } catch {
+    return qrUrl;
+  }
+}
+
 async function getQrImageBlob(qrUrl: string) {
   const response = await apiClient.get<Blob>(qrUrl, {
     responseType: "blob",
