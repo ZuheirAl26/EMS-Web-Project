@@ -35,6 +35,10 @@ export interface CompanySocialLinks {
   [platform: string]: string | undefined;
 }
 
+export interface CompanyGalleryItem {
+  id: number;
+  url: string;
+}
 export interface ExhibitorCompany {
   id: number;
   name: string;
@@ -47,7 +51,7 @@ export interface ExhibitorCompany {
   headquarters_lng: number;
   status: string;
   logo: string | null;
-  gallery: unknown[];
+  gallery: CompanyGalleryItem[];
 }
 
 export interface CompanyProfileData {

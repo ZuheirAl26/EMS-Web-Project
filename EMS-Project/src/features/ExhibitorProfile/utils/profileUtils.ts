@@ -1,4 +1,8 @@
-import type { CompanyBoothSummary, ProfileBooth } from "../types/profileType";
+import type {
+  CompanyBoothSummary,
+  CompanyGalleryItem,
+  ProfileBooth,
+} from "../types/profileType";
 
 export function getInitials(value: string) {
   return value
@@ -49,10 +53,9 @@ export function formatCoordinates(latitude: number, longitude: number) {
   return `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
 }
 
-export function getGalleryUrls(gallery: unknown[]) {
+export function getGalleryUrls(gallery: CompanyGalleryItem[]) {
   return gallery
-    .filter((item): item is string => typeof item === "string")
-    .map(resolveMediaUrl)
+    .map((item) => resolveMediaUrl(item.url))
     .filter((url): url is string => Boolean(url));
 }
 
