@@ -64,7 +64,12 @@ export function useRegisterForm() {
       return;
     }
 
-    registerMutation.mutate({ name: fullName, email, password });
+    registerMutation.mutate({
+      name: fullName,
+      email,
+      password,
+      password_confirmation: confirmPassword,
+    });
   };
 
   return {

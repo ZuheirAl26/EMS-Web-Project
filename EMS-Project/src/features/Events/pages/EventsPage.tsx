@@ -3,6 +3,7 @@ import {
   Add01Icon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
+  Calendar03Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
@@ -58,6 +59,9 @@ export function EventsPage() {
         </div>
       ) : events.length === 0 ? (
         <div className="events-page__empty">
+          <span aria-hidden="true" className="events-page__empty-icon">
+            <HugeiconsIcon icon={Calendar03Icon} size={26} strokeWidth={1.7} />
+          </span>
           <EmptyState message={t("empty.message")} title={t("empty.title")} />
         </div>
       ) : (

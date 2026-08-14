@@ -3,6 +3,7 @@ import {
   Add01Icon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
+  Store01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
@@ -68,6 +69,9 @@ export function MyBoothsPage() {
         </div>
       ) : booths.length === 0 ? (
         <div className="my-booths__empty">
+          <span aria-hidden="true" className="my-booths__empty-icon">
+            <HugeiconsIcon icon={Store01Icon} size={26} strokeWidth={1.7} />
+          </span>
           <EmptyState
             message={t("myBooths.emptyMessage")}
             title={t("myBooths.emptyTitle")}

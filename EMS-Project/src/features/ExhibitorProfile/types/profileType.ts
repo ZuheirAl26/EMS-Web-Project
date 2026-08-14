@@ -105,7 +105,7 @@ export interface ProfileSidebarCardProps {
 }
 
 export interface AccountInformationProps {
-  company: ExhibitorCompany;
+  company: ExhibitorCompany | null;
   exhibitor: ExhibitorProfile;
 }
 
