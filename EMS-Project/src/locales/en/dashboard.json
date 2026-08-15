@@ -55,10 +55,16 @@
     "description": "View your confirmed booth details and download your QR code for visitors.",
     "filters": {
       "label": "Filter by status",
-      "all": "All statuses",
+      "all": "All Booths",
       "pending": "Pending",
       "approved": "Approved",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "descriptions": {
+        "all": "Every booking",
+        "pending": "Needs review",
+        "approved": "Ready for visitors",
+        "rejected": "Needs attention"
+      }
     },
     "fairName": "Damascus International Fair 2026",
     "addBooth": "Add Booth",

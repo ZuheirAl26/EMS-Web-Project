@@ -1,7 +1,11 @@
 import { useState } from "react";
 import {
   Add01Icon,
+  CancelCircleIcon,
+  CheckmarkCircle02Icon,
+  Clock01Icon,
   Store01Icon,
+  Tick02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
@@ -26,6 +30,13 @@ export function MyBoothsPage() {
   const pagination = myBoothsQuery.data?.data;
   const booths = pagination?.data ?? [];
   const visibleBooths = booths.filter((booth) => booth.status !== null);
+  const filterCards = [
+    { icon: Store01Icon, key: "all", status: null },
+    { icon: Clock01Icon, key: "pending", status: "pending" },
+    { icon: CheckmarkCircle02Icon, key: "approved", status: "approved" },
+    { icon: CancelCircleIcon, key: "rejected", status: "rejected" },
+  ] as const;
+
   const handleStatusFilterChange = (nextStatus: MyBoothStatus | null) => {
     if (nextStatus === statusFilter) {
       return;
@@ -65,38 +76,42 @@ export function MyBoothsPage() {
         className="my-booths__filters"
         role="group"
       >
-        <button
-          aria-pressed={statusFilter === null}
-          className="my-booths__filter-card"
-          onClick={() => handleStatusFilterChange(null)}
-          type="button"
-        >
-          {t("myBooths.filters.all")}
-        </button>
-        <button
-          aria-pressed={statusFilter === "pending"}
-          className="my-booths__filter-card"
-          onClick={() => handleStatusFilterChange("pending")}
-          type="button"
-        >
-          {t("myBooths.filters.pending")}
-        </button>
-        <button
-          aria-pressed={statusFilter === "approved"}
-          className="my-booths__filter-card"
-          onClick={() => handleStatusFilterChange("approved")}
-          type="button"
-        >
-          {t("myBooths.filters.approved")}
-        </button>
-        <button
-          aria-pressed={statusFilter === "rejected"}
-          className="my-booths__filter-card"
-          onClick={() => handleStatusFilterChange("rejected")}
-          type="button"
-        >
-          {t("myBooths.filters.rejected")}
-        </button>
+        {filterCards.map((filter) => {
+          const isSelected = statusFilter === filter.status;
+
+          return (
+            <button
+              aria-pressed={isSelected}
+              className={`my-booths__filter-card my-booths__filter-card--${filter.key}`}
+              key={filter.key}
+              onClick={() => handleStatusFilterChange(filter.status)}
+              type="button"
+            >
+              <span className="my-booths__filter-content">
+                <span className="my-booths__filter-icon" aria-hidden="true">
+                  <HugeiconsIcon
+                    icon={filter.icon}
+                    size={18}
+                    strokeWidth={1.8}
+                  />
+                </span>
+                <span className="my-booths__filter-copy">
+                  <strong>{t(`myBooths.filters.${filter.key}`)}</strong>
+                  <small>{t(`myBooths.filters.descriptions.${filter.key}`)}</small>
+                </span>
+              </span>
+              {isSelected ? (
+                <HugeiconsIcon
+                  aria-hidden="true"
+                  className="my-booths__filter-selected"
+                  icon={Tick02Icon}
+                  size={16}
+                  strokeWidth={2}
+                />
+              ) : null}
+            </button>
+          );
+        })}
       </div>
 
       {requestMessage ? (

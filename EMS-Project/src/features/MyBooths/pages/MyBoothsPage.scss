@@ -131,44 +131,103 @@
   }
 
   &__filter-card {
-    min-height: 52px;
-    padding: 10px 12px;
+    min-height: 68px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     border: 1px solid var(--color-neutral-200);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-lg);
     background: var(--color-white);
-    color: var(--color-neutral-500);
+    color: var(--color-ink);
     font: inherit;
-    font-size: 12px;
-    font-weight: 700;
-    text-align: center;
+    text-align: start;
     cursor: pointer;
     box-shadow: var(--shadow-xs);
     transition:
       border-color 160ms ease,
-      background-color 160ms ease,
-      color 160ms ease,
+      box-shadow 160ms ease,
       transform 160ms ease;
 
     &:hover {
       border-color: var(--color-primary-a30);
-      color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
     }
 
     &:active {
-      transform: scale(0.97);
+      transform: scale(0.98);
     }
 
     &[aria-pressed="true"] {
       border-color: var(--color-primary);
-      background: var(--color-primary-surface);
-      color: var(--color-primary);
-      box-shadow: 0 5px 14px var(--color-primary-a15);
+      box-shadow: 0 0 0 1px var(--color-primary-a20), var(--shadow-sm);
     }
 
     &:focus-visible {
       outline: 3px solid var(--color-primary-a20);
       outline-offset: 2px;
     }
+  }
+
+  &__filter-content {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__filter-icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-surface);
+    color: var(--color-primary);
+  }
+
+  &__filter-card--pending .my-booths__filter-icon {
+    background: var(--color-warning-surface);
+    color: var(--color-warning-text);
+  }
+
+  &__filter-card--approved .my-booths__filter-icon {
+    background: var(--color-success-surface-muted);
+    color: var(--color-success-dark);
+  }
+
+  &__filter-card--rejected .my-booths__filter-icon {
+    background: var(--color-danger-a10);
+    color: var(--color-danger);
+  }
+
+  &__filter-copy {
+    min-width: 0;
+    display: grid;
+    gap: 2px;
+
+    strong {
+      color: var(--color-ink);
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 700;
+    }
+
+    small {
+      overflow: hidden;
+      color: var(--color-neutral-500);
+      font-size: 10px;
+      line-height: 14px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &__filter-selected {
+    flex: 0 0 auto;
+    color: var(--color-primary);
   }
 
   &__add-button {

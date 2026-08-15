@@ -1,3 +1,10 @@
+import {
+  Calendar03Icon,
+  CancelCircleIcon,
+  CheckmarkCircle02Icon,
+  Clock01Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import type { EventStatisticsCardsProps } from "../../types/eventType";
 import "./EventStatisticsCards.scss";
@@ -9,14 +16,26 @@ export function EventStatisticsCards({
 }: EventStatisticsCardsProps) {
   const { t } = useTranslation("events");
   const cards = [
-    { key: "total", status: null, value: statistics.total_requests },
     {
+      icon: Calendar03Icon,
+      key: "total",
+      status: null,
+      value: statistics.total_requests,
+    },
+    {
+      icon: CheckmarkCircle02Icon,
       key: "approved",
       status: "approved",
       value: statistics.approved_requests,
     },
-    { key: "pending", status: "pending", value: statistics.pending_requests },
     {
+      icon: Clock01Icon,
+      key: "pending",
+      status: "pending",
+      value: statistics.pending_requests,
+    },
+    {
+      icon: CancelCircleIcon,
       key: "rejected",
       status: "rejected",
       value: statistics.rejected_requests,
@@ -37,10 +56,15 @@ export function EventStatisticsCards({
           onClick={() => onStatusChange(card.status)}
           type="button"
         >
-          <span className="event-statistics__label">
-            {t(`statistics.${card.key}`)}
+          <span className="event-statistics__icon" aria-hidden="true">
+            <HugeiconsIcon icon={card.icon} size={20} strokeWidth={1.8} />
           </span>
-          <strong className="event-statistics__value">{card.value}</strong>
+          <span className="event-statistics__content">
+            <span className="event-statistics__label">
+              {t(`statistics.${card.key}`)}
+            </span>
+            <strong className="event-statistics__value">{card.value}</strong>
+          </span>
         </button>
       ))}
     </div>

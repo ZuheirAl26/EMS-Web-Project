@@ -10,7 +10,7 @@
     "aria": "Event request statistics",
     "total": "Total Events",
     "approved": "Approved",
-    "pending": "Pending Review",
+    "pending": "Pending",
     "rejected": "Rejected"
   },
   "status": {
