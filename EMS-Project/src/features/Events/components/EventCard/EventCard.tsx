@@ -16,7 +16,6 @@ import {
   formatCreatedDate,
   formatEventDate,
   formatEventTimeRange,
-  getEventDurationMinutes,
   getEventStatusTone,
   getEventStatusTranslationKey,
   resolveEventMediaUrl,
@@ -32,7 +31,7 @@ export function EventCard({ event }: EventCardProps) {
   });
   const statusTone = getEventStatusTone(event.status);
   const statusKey = getEventStatusTranslationKey(event.status);
-  const durationMinutes = getEventDurationMinutes(event.start_at, event.end_at);
+  const durationMinutes = event.duration * 60;
   const roundedRating = Math.round(event.average_rating ?? 0);
   const eventLogoUrl = resolveEventMediaUrl(event.logo);
   const statusIcon =

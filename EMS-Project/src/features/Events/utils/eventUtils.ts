@@ -88,19 +88,6 @@ export function formatEventTimeRange(
   return `${formatter.format(start)} – ${formatter.format(end)}`;
 }
 
-export function getEventDurationMinutes(
-  startAt: string,
-  endAt: string,
-): number | null {
-  const difference = new Date(endAt).getTime() - new Date(startAt).getTime();
-
-  if (!Number.isFinite(difference) || difference <= 0) {
-    return null;
-  }
-
-  return Math.round(difference / MINUTE_IN_MILLISECONDS);
-}
-
 export function formatCreatedDate(value: string, locale: string): string {
   const date = new Date(value);
 

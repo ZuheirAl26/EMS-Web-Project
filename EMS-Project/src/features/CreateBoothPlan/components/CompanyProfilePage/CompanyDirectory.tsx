@@ -40,6 +40,12 @@ export function CompanyDirectory({
     }
 
     onCompanySelected(selectedCompany);
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
     hydratedCompanyIdRef.current = selectedCompany.id;
   }, [onCompanySelected, selectedCompany, selectedCompanyId]);
 
