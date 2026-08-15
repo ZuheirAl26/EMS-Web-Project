@@ -14,6 +14,7 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
   const hallNumber = booth.hall_id?.number ?? "—";
   const companyName = booth.company?.name ?? "—";
   const services = booth.services ?? [];
+  const boothStatus = booth.status ?? (booth.is_booked ? "approved" : "pending");
   const details = [
     [t("myBooths.details.fair"), t("myBooths.fairName")],
     [
@@ -42,10 +43,10 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
         </h2>
         <span
           className={`booth-details-card__status booth-details-card__status--${
-            booth.is_booked ? "approved" : "pending"
+            boothStatus
           }`}
         >
-          {booth.is_booked ? (
+          {boothStatus === "approved" ? (
             <HugeiconsIcon
               aria-hidden="true"
               color="currentColor"
@@ -55,9 +56,11 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
             />
           ) : null}
           {t(
-            booth.is_booked
+            boothStatus === "approved"
               ? "myBooths.details.statusApproved"
-              : "myBooths.details.statusPending",
+              : boothStatus === "rejected"
+                ? "myBooths.details.statusRejected"
+                : "myBooths.details.statusPending",
           )}
         </span>
       </header>

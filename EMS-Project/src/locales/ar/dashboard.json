@@ -64,6 +64,7 @@
       "title": "تفاصيل الجناح",
       "statusApproved": "مقبول",
       "statusPending": "قيد الانتظار",
+      "statusRejected": "مرفوض",
       "fair": "المعرض",
       "hall": "القاعة",
       "hallValue": "القاعة {{number}}",

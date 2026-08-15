@@ -72,6 +72,7 @@
       "title": "Booth Details",
       "statusApproved": "Approved",
       "statusPending": "Pending",
+      "statusRejected": "Rejected",
       "fair": "Fair",
       "hall": "Hall",
       "hallValue": "Hall {{number}}",
