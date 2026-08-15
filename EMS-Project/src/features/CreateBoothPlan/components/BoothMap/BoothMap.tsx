@@ -17,14 +17,6 @@ export function BoothMap({ booths, selectedBoothId, onSelect }: BoothMapProps) {
   const { t } = useTranslation("createBoothPlan");
   const objectRef = useRef<HTMLObjectElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const panStateRef = useRef<{
-    pointerX: number;
-    pointerY: number;
-    scrollLeft: number;
-    scrollTop: number;
-  } | null>(null);
-  const suppressSelectionRef = useRef(false);
-  const suppressSelectionTimerRef = useRef<number | null>(null);
   const hasCenteredMapRef = useRef(false);
   const [zoom, setZoom] = useState(INITIAL_ZOOM);
   const [mapLoadRevision, setMapLoadRevision] = useState(0);
@@ -84,114 +76,6 @@ export function BoothMap({ booths, selectedBoothId, onSelect }: BoothMapProps) {
     }
 
     const cleanups: Array<() => void> = [];
-    const viewport = viewportRef.current;
-
-    const endPan = () => {
-      if (panStateRef.current === null) {
-        return;
-      }
-
-      panStateRef.current = null;
-      viewport?.classList.remove("booth-map__viewport--dragging");
-    };
-
-    const beginPan = (event: MouseEvent) => {
-      if (event.button !== 0 || !viewport) {
-        return;
-      }
-
-      panStateRef.current = {
-        pointerX: event.clientX,
-        pointerY: event.clientY,
-        scrollLeft: viewport.scrollLeft,
-        scrollTop: viewport.scrollTop,
-      };
-      suppressSelectionRef.current = false;
-      viewport.classList.add("booth-map__viewport--dragging");
-      event.preventDefault();
-    };
-
-    const movePan = (event: MouseEvent) => {
-      const panState = panStateRef.current;
-
-      if (!panState || !viewport) {
-        return;
-      }
-
-      const horizontalDistance = event.clientX - panState.pointerX;
-      const verticalDistance = event.clientY - panState.pointerY;
-
-      if (
-        !suppressSelectionRef.current &&
-        Math.hypot(horizontalDistance, verticalDistance) > 4
-      ) {
-        suppressSelectionRef.current = true;
-      }
-
-      viewport.scrollLeft = panState.scrollLeft - horizontalDistance;
-      viewport.scrollTop = panState.scrollTop - verticalDistance;
-      event.preventDefault();
-    };
-
-    const finishPan = () => {
-      const shouldSuppressSelection = suppressSelectionRef.current;
-      endPan();
-
-      if (!shouldSuppressSelection) {
-        return;
-      }
-
-      if (suppressSelectionTimerRef.current !== null) {
-        window.clearTimeout(suppressSelectionTimerRef.current);
-      }
-
-      suppressSelectionTimerRef.current = window.setTimeout(() => {
-        suppressSelectionRef.current = false;
-        suppressSelectionTimerRef.current = null;
-      }, 0);
-    };
-
-    const zoomWithWheel = (event: WheelEvent) => {
-      if (event.deltaY === 0) {
-        return;
-      }
-
-      event.preventDefault();
-      setZoom((currentZoom) => {
-        const direction = event.deltaY < 0 ? 1 : -1;
-        return Math.min(
-          MAX_ZOOM,
-          Math.max(MIN_ZOOM, currentZoom + direction * ZOOM_STEP),
-        );
-      });
-    };
-
-    viewport?.addEventListener("mousedown", beginPan);
-    viewport?.addEventListener("mousemove", movePan);
-    viewport?.addEventListener("wheel", zoomWithWheel, { passive: false });
-    mapDocument.addEventListener("mousedown", beginPan);
-    mapDocument.addEventListener("mousemove", movePan);
-    mapDocument.addEventListener("mouseup", finishPan);
-    window.addEventListener("mousemove", movePan);
-    window.addEventListener("mouseup", finishPan);
-    cleanups.push(() => {
-      viewport?.removeEventListener("mousedown", beginPan);
-      viewport?.removeEventListener("mousemove", movePan);
-      viewport?.removeEventListener("wheel", zoomWithWheel);
-      mapDocument.removeEventListener("mousedown", beginPan);
-      mapDocument.removeEventListener("mousemove", movePan);
-      mapDocument.removeEventListener("mouseup", finishPan);
-      window.removeEventListener("mousemove", movePan);
-      window.removeEventListener("mouseup", finishPan);
-      endPan();
-
-      if (suppressSelectionTimerRef.current !== null) {
-        window.clearTimeout(suppressSelectionTimerRef.current);
-        suppressSelectionTimerRef.current = null;
-      }
-      suppressSelectionRef.current = false;
-    });
-
     let matchedBooths = 0;
 
     booths.forEach((booth) => {
@@ -225,11 +109,6 @@ export function BoothMap({ booths, selectedBoothId, onSelect }: BoothMapProps) {
       }
 
       const handleSelect = () => {
-        if (suppressSelectionRef.current) {
-          suppressSelectionRef.current = false;
-          return;
-        }
-
         if (!booth.is_booked) {
           onSelect(booth);
         }

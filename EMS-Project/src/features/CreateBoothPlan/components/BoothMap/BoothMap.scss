@@ -72,19 +72,13 @@
   }
 
   &__viewport {
-    cursor: grab;
     height: 520px;
     overflow: auto;
-    user-select: none;
     background:
       linear-gradient(var(--color-page) 1px, transparent 1px),
       linear-gradient(90deg, var(--color-page) 1px, transparent 1px),
       var(--color-white);
     background-size: 24px 24px;
-  }
-
-  &__viewport--dragging {
-    cursor: grabbing;
   }
 
   &__surface {
