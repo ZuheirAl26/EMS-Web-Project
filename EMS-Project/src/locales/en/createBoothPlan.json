@@ -173,6 +173,11 @@
       "fallback": "Company #{{id}}",
       "retry": "Retry"
     },
+    "existingCompany": {
+      "title": "Existing company selected",
+      "description": "{{name}} is already registered. Its information is read-only here. Continue to the next step, choose another company below, or add a new one.",
+      "addNew": "Add a new company"
+    },
     "validation": {
       "socialLinkRequired": "Add at least one social link: Website, Twitter / X, or LinkedIn.",
       "logoRequired": "Company logo is required.",

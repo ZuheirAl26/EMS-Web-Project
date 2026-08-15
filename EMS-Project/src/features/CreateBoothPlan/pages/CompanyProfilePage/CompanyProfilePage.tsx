@@ -93,6 +93,34 @@ export function CompanyProfilePage() {
     [updateCompanyProfile],
   );
 
+  const isExistingCompanySelected = selectedExistingCompany !== null;
+
+  const handleStartNewCompany = () => {
+    setSelectedExistingCompany(null);
+
+    const createPlanStore = useCreatePlanStore.getState();
+    (
+      [
+        "directoryCompanyId",
+        "companyName",
+        "businessSector",
+        "headquartersLatitude",
+        "headquartersLongitude",
+        "phoneNumber",
+        "yearFounded",
+        "website",
+        "twitter",
+        "linkedin",
+        "description",
+      ] as const
+    ).forEach((field) => {
+      createPlanStore.updateCompanyProfile(field, "");
+    });
+    createPlanStore.setCompanyLogo(null);
+    createPlanStore.setCompanyGallery([]);
+    setValidationErrors({});
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const hasExistingCompany = Boolean(
@@ -133,7 +161,35 @@ export function CompanyProfilePage() {
           </div>
         ) : (
           <form className="company-profile" onSubmit={handleSubmit}>
-            <CompanyDetailsForm
+            {isExistingCompanySelected ? (
+              <section
+                aria-live="polite"
+                className="company-profile__existing-company-notice"
+                role="status"
+              >
+                <div className="company-profile__existing-company-copy">
+                  <strong>{t("companyProfile.existingCompany.title")}</strong>
+                  <span>
+                    {t("companyProfile.existingCompany.description", {
+                      name: selectedExistingCompany.name,
+                    })}
+                  </span>
+                </div>
+                <button
+                  className="company-profile__existing-company-reset"
+                  onClick={handleStartNewCompany}
+                  type="button"
+                >
+                  {t("companyProfile.existingCompany.addNew")}
+                </button>
+              </section>
+            ) : null}
+
+            <fieldset
+              className="company-profile__editor"
+              disabled={isExistingCompanySelected}
+            >
+              <CompanyDetailsForm
               headquartersLocationError={
                 validationErrors.headquartersLocation
                   ? t("companyProfile.validation.headquartersLocationRequired")
@@ -161,6 +217,8 @@ export function CompanyProfilePage() {
                 }))
               }
             />
+
+            </fieldset>
 
             <CompanyDirectory
               onCompanySelected={hydrateExistingCompany}
