@@ -49,6 +49,35 @@
       "notification": "Notifications"
     }
   },
+  "invite": {
+    "title": "Team & Staff",
+    "description": "Invite colleagues to co-manage your pavilion with the same dashboard access.",
+    "form": {
+      "title": "Invite a Team Member",
+      "email": "Email Address",
+      "emailPlaceholder": "colleague@company.com",
+      "role": "Role",
+      "assignBooth": "Assign to booth",
+      "boothPlaceholder": "Select a booth…",
+      "loadingBooths": "Loading booths…",
+      "boothOption": "Hall {{hall}} · Booth {{number}}",
+      "send": "Send Invitation"
+    },
+    "roles": {
+      "boothManager": {
+        "title": "Booth Manager",
+        "description": "Manages a specific booth"
+      },
+      "companyManager": {
+        "title": "Company Manager",
+        "description": "Full company-wide access"
+      }
+    },
+    "currentTeam": {
+      "aria": "Current team members",
+      "title": "Current Team ({{count}})"
+    }
+  },
   "myBooths": {
     "aria": "My Booths and QR",
     "title": "My Booths & QR Code",

@@ -17,6 +17,7 @@ import {
 import { MyBoothsPage } from "../features/MyBooths/pages";
 import { ExhibitorProfilePage } from "../features/ExhibitorProfile/pages";
 import { EventsPage } from "../features/Events/pages";
+import { InvitePage } from "../features/Invite/pages/InvitePage";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { ProtectedRoute } from "./guards";
 
@@ -63,6 +64,7 @@ export const AppRouter = () => {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="booths" element={<MyBoothsPage />} />
             <Route path="events" element={<EventsPage />} />
+            <Route path="team" element={<InvitePage />} />
             <Route path="profile" element={<ExhibitorProfilePage />} />
             <Route path="*" element={null} />
           </Route>

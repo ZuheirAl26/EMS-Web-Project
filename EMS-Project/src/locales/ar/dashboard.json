@@ -41,6 +41,35 @@
       "profile": "ملفي الشخصي"
     }
   },
+  "invite": {
+    "title": "الفريق والموظفون",
+    "description": "ادعُ زملاءك للمشاركة في إدارة أجنحتك من خلال وصول لوحة التحكم.",
+    "form": {
+      "title": "دعوة عضو إلى الفريق",
+      "email": "عنوان البريد الإلكتروني",
+      "emailPlaceholder": "colleague@company.com",
+      "role": "الدور",
+      "assignBooth": "تعيين إلى جناح",
+      "boothPlaceholder": "اختر جناحًا…",
+      "loadingBooths": "جارٍ تحميل الأجنحة…",
+      "boothOption": "القاعة {{hall}} · الجناح {{number}}",
+      "send": "إرسال الدعوة"
+    },
+    "roles": {
+      "boothManager": {
+        "title": "مدير الجناح",
+        "description": "يدير جناحًا محددًا"
+      },
+      "companyManager": {
+        "title": "مدير الشركة",
+        "description": "صلاحية كاملة على مستوى الشركة"
+      }
+    },
+    "currentTeam": {
+      "aria": "أعضاء الفريق الحاليون",
+      "title": "الفريق الحالي ({{count}})"
+    }
+  },
   "myBooths": {
     "aria": "أجنحتي ورمز QR",
     "title": "أجنحتي ورموز QR",
