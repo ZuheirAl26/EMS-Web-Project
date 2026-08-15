@@ -145,7 +145,7 @@
       "role": "Role",
       "companyName": "Company name",
       "businessSector": "Business sector",
-      "location": "Headquarters coordinates",
+      "location": "Company Location",
       "phone": "Phone number",
       "email": "Email address",
       "yearFounded": "Year founded",

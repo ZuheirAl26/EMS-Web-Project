@@ -22,8 +22,7 @@ export function CompanyDirectory({
   const companyOptions = companies.map((company) => ({
     id: company.id,
     label:
-      company.label?.trim() ||
-      company.name?.trim() ||
+      company.name.trim() ||
       t("companyProfile.directory.fallback", { id: company.id }),
   }));
   const selectedCompanyId = Number(directoryCompanyId) || null;

@@ -58,7 +58,10 @@ export function getCompanyLookupQueryOptions() {
       message: response.message,
       data: response.data.map((option) => ({
         id: option.id,
-        name: option.label,
+        name:
+          option.name?.trim() ||
+          option.label?.trim() ||
+          String(option.id),
       })),
     }),
   });
