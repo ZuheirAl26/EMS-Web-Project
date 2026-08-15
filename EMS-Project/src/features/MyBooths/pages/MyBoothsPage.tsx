@@ -25,6 +25,7 @@ export function MyBoothsPage() {
     ?.requestMessage;
   const pagination = myBoothsQuery.data?.data;
   const booths = pagination?.data ?? [];
+  const visibleBooths = booths.filter((booth) => booth.status !== null);
   const handleStatusFilterChange = (nextStatus: MyBoothStatus | null) => {
     if (nextStatus === statusFilter) {
       return;
@@ -114,7 +115,7 @@ export function MyBoothsPage() {
             {t("myBooths.retry")}
           </button>
         </div>
-      ) : booths.length === 0 ? (
+      ) : visibleBooths.length === 0 ? (
         <div className="my-booths__empty">
           <span aria-hidden="true" className="my-booths__empty-icon">
             <HugeiconsIcon icon={Store01Icon} size={26} strokeWidth={1.7} />
@@ -126,7 +127,7 @@ export function MyBoothsPage() {
         </div>
       ) : (
         <div className="my-booths__list">
-          {booths.map((booth) => (
+          {visibleBooths.map((booth) => (
             <MyBoothCard booth={booth} key={booth.id} />
           ))}
         </div>
