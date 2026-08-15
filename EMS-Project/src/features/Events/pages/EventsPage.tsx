@@ -7,6 +7,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { EmptyState, Pagination } from "../../../components";
 import { EventCard, EventsSkeleton, EventStatisticsCards } from "../components";
+import type { EventFilterStatus } from "../types/eventType";
 import { useEventStatistics } from "../hooks/useEventStatistics";
 import { useEvents } from "../hooks/useEvents";
 import "./EventsPage.scss";
@@ -14,10 +15,21 @@ import "./EventsPage.scss";
 export function EventsPage() {
   const { t } = useTranslation("events");
   const [page, setPage] = useState(1);
-  const eventsQuery = useEvents(page);
+  const [statusFilter, setStatusFilter] = useState<EventFilterStatus | null>(
+    null,
+  );
+  const eventsQuery = useEvents(page, statusFilter);
   const statisticsQuery = useEventStatistics();
   const pagination = eventsQuery.data?.data;
   const events = pagination?.data ?? [];
+  const handleStatusFilterChange = (nextStatus: EventFilterStatus | null) => {
+    if (nextStatus === statusFilter) {
+      return;
+    }
+
+    setStatusFilter(nextStatus);
+    setPage(1);
+  };
 
   return (
     <section aria-label={t("aria")} className="events-page">
@@ -52,7 +64,11 @@ export function EventsPage() {
           </button>
         </div>
       ) : statisticsQuery.data ? (
-        <EventStatisticsCards statistics={statisticsQuery.data.data} />
+        <EventStatisticsCards
+          onStatusChange={handleStatusFilterChange}
+          selectedStatus={statusFilter}
+          statistics={statisticsQuery.data.data}
+        />
       ) : null}
 
       {eventsQuery.isPending ? (

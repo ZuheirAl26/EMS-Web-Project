@@ -10,6 +10,7 @@ import { EmptyState, Pagination } from "../../../components";
 import { usePrefetchBooths } from "../../CreateBoothPlan/hooks/usePrefetchBooths";
 import { useMyBooths } from "../hooks/useMyBooths";
 import type { MyBoothsLocationState } from "../types/navigationType";
+import type { MyBoothStatus } from "../types/myBoothsType";
 import "./MyBoothsPage.scss";
 import { MyBoothCard, MyBoothsSkeleton } from "../components";
 
@@ -17,12 +18,21 @@ export function MyBoothsPage() {
   const { t } = useTranslation("dashboard");
   const location = useLocation();
   const [page, setPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState<MyBoothStatus | null>(null);
   const prefetchBooths = usePrefetchBooths();
-  const myBoothsQuery = useMyBooths(page);
+  const myBoothsQuery = useMyBooths(page, statusFilter);
   const requestMessage = (location.state as MyBoothsLocationState | null)
     ?.requestMessage;
   const pagination = myBoothsQuery.data?.data;
   const booths = pagination?.data ?? [];
+  const handleStatusFilterChange = (nextStatus: MyBoothStatus | null) => {
+    if (nextStatus === statusFilter) {
+      return;
+    }
+
+    setStatusFilter(nextStatus);
+    setPage(1);
+  };
 
   return (
     <section className="my-booths" aria-label={t("myBooths.aria")}>
@@ -48,6 +58,45 @@ export function MyBoothsPage() {
           <span>{t("myBooths.addBooth")}</span>
         </Link>
       </header>
+
+      <div
+        aria-label={t("myBooths.filters.label")}
+        className="my-booths__filters"
+        role="group"
+      >
+        <button
+          aria-pressed={statusFilter === null}
+          className="my-booths__filter-card"
+          onClick={() => handleStatusFilterChange(null)}
+          type="button"
+        >
+          {t("myBooths.filters.all")}
+        </button>
+        <button
+          aria-pressed={statusFilter === "pending"}
+          className="my-booths__filter-card"
+          onClick={() => handleStatusFilterChange("pending")}
+          type="button"
+        >
+          {t("myBooths.filters.pending")}
+        </button>
+        <button
+          aria-pressed={statusFilter === "approved"}
+          className="my-booths__filter-card"
+          onClick={() => handleStatusFilterChange("approved")}
+          type="button"
+        >
+          {t("myBooths.filters.approved")}
+        </button>
+        <button
+          aria-pressed={statusFilter === "rejected"}
+          className="my-booths__filter-card"
+          onClick={() => handleStatusFilterChange("rejected")}
+          type="button"
+        >
+          {t("myBooths.filters.rejected")}
+        </button>
+      </div>
 
       {requestMessage ? (
         <p className="my-booths__success" role="status">

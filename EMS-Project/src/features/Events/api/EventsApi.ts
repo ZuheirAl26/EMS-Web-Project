@@ -1,14 +1,18 @@
 import { apiClient } from "../../../api/ApiClient";
 import type {
+  EventFilterStatus,
   EventsResponse,
   EventStatisticsResponse,
 } from "../types/eventType";
 
-export async function getEvents(page: number): Promise<EventsResponse> {
+export async function getEvents(
+  page: number,
+  status: EventFilterStatus | null,
+): Promise<EventsResponse> {
   const response = await apiClient.get<EventsResponse>(
     "/v1/exhibitor/events",
     {
-      params: { page },
+      params: status ? { page, "filter[status]": status } : { page },
     },
   );
 

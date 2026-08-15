@@ -30,9 +30,10 @@ export interface MyBooth {
   price: string;
   svg_id: string;
   is_booked: boolean;
-  hall_id: MyBoothHall;
-  company: MyBoothCompany;
-  services: MyBoothService[];
+  status: MyBoothStatus | null;
+  hall_id: MyBoothHall | null;
+  company: MyBoothCompany | null;
+  services: MyBoothService[] | null;
   created_at: string;
 }
 
@@ -43,6 +44,14 @@ export interface MyBoothsPagination {
   total: number;
   last_page: number;
 }
+
+export const MY_BOOTH_STATUSES = [
+  "pending",
+  "approved",
+  "rejected",
+] as const;
+
+export type MyBoothStatus = (typeof MY_BOOTH_STATUSES)[number];
 
 export interface MyBoothsResponse {
   status: boolean;

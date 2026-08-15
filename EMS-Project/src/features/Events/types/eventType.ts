@@ -78,15 +78,15 @@ export interface EventMetricsProps {
   numberFormatter: Intl.NumberFormat;
 }
 
+export type EventFilterStatus = "approved" | "pending" | "rejected";
+
 export interface EventStatisticsCardsProps {
   statistics: EventStatistics;
+  selectedStatus: EventFilterStatus | null;
+  onStatusChange: (status: EventFilterStatus | null) => void;
 }
 
-export type EventStatusTone =
-  | "approved"
-  | "pending"
-  | "rejected"
-  | "neutral";
+export type EventStatusTone = EventFilterStatus | "neutral";
 
 export type EventStatusTranslationKey =
   | "status.approved"

@@ -53,6 +53,13 @@
     "aria": "My Booths and QR",
     "title": "My Booths & QR Code",
     "description": "View your confirmed booth details and download your QR code for visitors.",
+    "filters": {
+      "label": "Filter by status",
+      "all": "All statuses",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
     "fairName": "Damascus International Fair 2026",
     "addBooth": "Add Booth",
     "loading": "Loading your booths…",

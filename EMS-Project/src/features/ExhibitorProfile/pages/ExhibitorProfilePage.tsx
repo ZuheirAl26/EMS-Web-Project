@@ -45,19 +45,24 @@ export function ExhibitorProfilePage() {
     () => getCompanyBoothSummary(booths, activeCompanyId),
     [activeCompanyId, booths],
   );
+  const handleCompanyChange = (companyId: number) => {
+    if (companyId === activeCompanyId) {
+      return;
+    }
+
+    setSelectedCompanyId(companyId);
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  };
   const company = companyQuery.data?.data.company ?? null;
   const isCompanyLoading =
     companyLookupQuery.isPending ||
     (activeCompanyId !== null && companyQuery.isPending);
-  const isCompanyError = companyLookupQuery.isError || companyQuery.isError;
-  const reloadCompanyData = () => {
-    void companyLookupQuery.refetch();
-    if (activeCompanyId !== null) {
-      void companyQuery.refetch();
-    }
-  };
-
-  if (exhibitorQuery.isPending) {
+  if (exhibitorQuery.isPending || isCompanyLoading) {
     return (
       <section aria-label={t("profile.aria")} className="exhibitor-profile">
         <header className="exhibitor-profile__intro">
@@ -123,28 +128,12 @@ export function ExhibitorProfilePage() {
           companies={companies}
           company={company}
           exhibitor={exhibitor}
-          onCompanyChange={setSelectedCompanyId}
+          onCompanyChange={handleCompanyChange}
           selectedCompanyId={activeCompanyId}
         />
         <div className="exhibitor-profile__details">
           <AccountInformation company={company} exhibitor={exhibitor} />
-          {isCompanyLoading ? (
-            <ProfileSkeleton />
-          ) : isCompanyError ? (
-            <div className="exhibitor-profile__company-state">
-              <EmptyState
-                message={t("profile.companyErrorMessage")}
-                title={t("profile.companyErrorTitle")}
-              />
-              <button
-                className="exhibitor-profile__retry"
-                onClick={reloadCompanyData}
-                type="button"
-              >
-                {t("profile.retry")}
-              </button>
-            </div>
-          ) : company ? (
+          {company ? (
             <>
               <CompanyAboutCard company={company} />
               <SocialLinksCard links={company.social_links} />
