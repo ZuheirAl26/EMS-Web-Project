@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { boothKeys } from "../api/BoothKeys";
+import { myBoothsKeys } from "../../MyBooths/api/MyBoothsKeys";
 import { requestBooth } from "../api/RequestBoothApi";
 import { useCreatePlanStore } from "../store/useCreatePlanStore";
 import type { RequestBoothDraft } from "../types/requestBoothType";
@@ -38,16 +39,13 @@ export function useRequestBooth() {
         getApiErrorMessage(error, t("review.errors.submit")),
       );
     },
-    onSettled: (data, error) => {
-      if (error || !data?.status) {
-        return;
-      }
-
+    onSettled: () => {
       void Promise.all([
         queryClient.invalidateQueries({ queryKey: boothKeys.all }),
-        queryClient.invalidateQueries({ queryKey: ["my-booths"] }),
+        queryClient.invalidateQueries({ queryKey: myBoothsKeys.all }),
       ]);
     },
+
   });
 
   return {
