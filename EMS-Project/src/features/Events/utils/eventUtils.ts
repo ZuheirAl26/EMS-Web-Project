@@ -3,8 +3,6 @@ import type {
   EventStatusTranslationKey,
 } from "../types/eventType";
 
-const MINUTE_IN_MILLISECONDS = 60_000;
-
 export function resolveEventMediaUrl(path: string | null | undefined) {
   if (!path) {
     return null;

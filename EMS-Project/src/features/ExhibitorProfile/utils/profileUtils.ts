@@ -37,13 +37,13 @@ export function getCompanyBoothSummary(
   companyId: number | null,
 ): CompanyBoothSummary {
   const companyBooths = companyId
-    ? booths.filter((booth) => booth.company.id === companyId)
+    ? booths.filter((booth) => booth.company?.id === companyId)
     : [];
   const firstBooth = companyBooths[0];
 
   return {
     count: companyBooths.length,
-    hallNumber: firstBooth?.hall_id.number ?? null,
+    hallNumber: firstBooth?.hall_id?.number ?? null,
     boothNumber: firstBooth?.number ?? null,
     totalArea: companyBooths.reduce((total, booth) => total + booth.area, 0),
   };

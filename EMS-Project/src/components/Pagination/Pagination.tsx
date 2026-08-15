@@ -91,7 +91,7 @@ export function Pagination({
           <select
             aria-label={labels.perPageLabel}
             disabled={isFetching}
-            onChange={(event) => onPerPageChange(Number(event.target.value))}
+            onChange={(event) => onPerPageChange?.(Number(event.target.value))}
             value={perPage}
           >
             {perPageOptions.map((option) => (
@@ -134,7 +134,7 @@ export function Pagination({
             return (
               <button
                 aria-current={isCurrentPage ? "page" : undefined}
-                aria-label={labels.pageLabel(page)}
+                aria-label={labels.pageLabel?.(page) ?? String(page)}
                 className={
                   isCurrentPage
                     ? "app-pagination__button app-pagination__button--active"
