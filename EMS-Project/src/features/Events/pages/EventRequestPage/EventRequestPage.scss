@@ -1116,46 +1116,15 @@
 }
 
 .event-request-page {
-  // Refine the native scheduling controls.
-  &__date-time {
-    input {
-      cursor: pointer;
-      transition:
-        border-color 160ms ease,
-        box-shadow 160ms ease,
-        background-color 160ms ease;
-
-      &::-webkit-calendar-picker-indicator {
-        border-radius: var(--radius-md);
-        background-color: var(--color-primary-surface);
-        opacity: 0.85;
-        transition: background-color 160ms ease, opacity 160ms ease;
-      }
-    }
-
-    &:focus-within input {
-      border-color: var(--color-primary);
-      background-color: var(--color-primary-a05);
-      box-shadow: var(--shadow-focus-sm);
-
-      &::-webkit-calendar-picker-indicator {
-        background-color: var(--color-primary-a10);
-        opacity: 1;
-      }
-    }
-
-    &:focus-within .event-request-page__date-time-icon {
-      color: var(--color-primary-dark);
-    }
-  }
-
   &__duration-input {
-    padding-inline-end: 42px !important;
+    direction: ltr;
+    padding-inline-start: 11px !important;
+    padding-inline-end: 10px !important;
     appearance: auto;
 
     &::-webkit-inner-spin-button {
       min-height: 28px;
-      margin-inline-start: 8px;
+      margin: 0;
       opacity: 1;
     }
   }

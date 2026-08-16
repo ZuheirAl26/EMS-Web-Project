@@ -5,7 +5,6 @@ import {
   ArrowLeft02Icon,
   ArrowRight02Icon,
   Cancel01Icon,
-  Calendar03Icon,
   ImageUpload01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -22,6 +21,7 @@ import type {
   EventType,
 } from "../../types/eventType";
 import { getApiErrorMessage } from "../../../../utils/apiError";
+import { EventDateTimePicker } from "./EventDateTimePicker";
 import { EventDetailsSkeleton, EventHallSelectionSkeleton } from "./EventRequestSkeletons";
 import "./EventRequestPage.scss";
 
@@ -145,7 +145,7 @@ export function EventRequestPage() {
     if (!title.trim()) nextErrors.title = t("request.validation.title");
     if (!description.trim()) nextErrors.description = t("request.validation.description");
     if (!startAt) nextErrors.startAt = t("request.validation.startAt");
-    if (!Number.isFinite(durationHours) || durationHours < 1 || durationHours > 4) nextErrors.duration = t("request.validation.duration");
+    if (!Number.isFinite(durationHours) || !Number.isInteger(durationHours) || durationHours < 1 || durationHours > 4) nextErrors.duration = t("request.validation.duration");
     if (!normalizedSpeakers.length) nextErrors.speakers = t("request.validation.speakers");
 
     setErrors(nextErrors);
@@ -323,10 +323,23 @@ export function EventRequestPage() {
               </label>
               <label className={errors.startAt ? "event-request-page__field event-request-page__field--error" : "event-request-page__field"}>
                 <span>{t("request.fields.startAt")}<em>*</em></span>
-                <div className="event-request-page__date-time">
-          <input min={minStartAt} type="datetime-local" value={startAt} onChange={(event) => setStartAt(event.target.value)} />
-          <HugeiconsIcon aria-hidden="true" className="event-request-page__date-time-icon" icon={Calendar03Icon} size={18} strokeWidth={1.8} />
-        </div>
+                <EventDateTimePicker
+  labels={{
+    close: t("request.picker.close"),
+    dialog: t("request.picker.dialog"),
+    done: t("request.picker.done"),
+    hour: t("request.picker.hour"),
+    minute: t("request.picker.minute"),
+    nextMonth: t("request.picker.nextMonth"),
+    placeholder: t("request.picker.placeholder"),
+    previousMonth: t("request.picker.previousMonth"),
+    time: t("request.picker.time"),
+  }}
+  locale={locale}
+  min={minStartAt}
+  onChange={setStartAt}
+  value={startAt}
+/>
                 {errors.startAt ? <small>{errors.startAt}</small> : null}
               </label>
               <label className={errors.duration ? "event-request-page__field event-request-page__field--error" : "event-request-page__field"}>

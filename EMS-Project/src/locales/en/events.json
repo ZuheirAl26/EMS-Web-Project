@@ -97,6 +97,17 @@
     "priceLabel": "Price per hour",
     "svgIdLabel": "Event hall number",
     "changeHall": "Change hall",
+    "picker": {
+      "close": "Close",
+      "dialog": "Choose event date and time",
+      "done": "Done",
+      "hour": "Hour",
+      "minute": "Minute",
+      "nextMonth": "Next month",
+      "placeholder": "Select date and time",
+      "previousMonth": "Previous month",
+      "time": "Time"
+    },
     "fields": {
       "title": "Event title",
       "type": "Event type",
