@@ -5,6 +5,7 @@ import {
   ArrowLeft02Icon,
   ArrowRight02Icon,
   Cancel01Icon,
+  Calendar03Icon,
   ImageUpload01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -126,6 +127,7 @@ export function EventRequestPage() {
     }
 
     const nextErrors: FormErrors = {};
+    const durationHours = Number(duration);
     const normalizedSpeakers = speakers
       .map((speaker) => speaker.trim())
       .filter(Boolean)
@@ -134,7 +136,7 @@ export function EventRequestPage() {
     if (!title.trim()) nextErrors.title = t("request.validation.title");
     if (!description.trim()) nextErrors.description = t("request.validation.description");
     if (!startAt) nextErrors.startAt = t("request.validation.startAt");
-    if (!duration || Number(duration) <= 0) nextErrors.duration = t("request.validation.duration");
+    if (!Number.isFinite(durationHours) || durationHours < 1 || durationHours > 4) nextErrors.duration = t("request.validation.duration");
     if (!normalizedSpeakers.length) nextErrors.speakers = t("request.validation.speakers");
 
     setErrors(nextErrors);
@@ -149,7 +151,7 @@ export function EventRequestPage() {
       title: title.trim(),
       description: description.trim(),
       start_at: startAt,
-      duration: Number(duration),
+      duration: durationHours,
       logo,
       speakers: normalizedSpeakers,
     };
@@ -169,8 +171,8 @@ export function EventRequestPage() {
     <main className="event-request-page">
       <header className="event-request-page__header">
         <Link className="event-request-page__back" to="/dashboard/events">
-          <HugeiconsIcon aria-hidden="true" color="currentColor" icon={ArrowLeft02Icon} size={14} strokeWidth={1.8} />
           {t("request.backToEvents")}
+          <HugeiconsIcon aria-hidden="true" color="currentColor" icon={ArrowRight02Icon} size={14} strokeWidth={1.8} />
         </Link>
       </header>
 
@@ -190,7 +192,7 @@ export function EventRequestPage() {
         {step === 1 ? (
         <section className="event-request-page__card" aria-labelledby="event-request-title">
           <div className="event-request-page__intro">
-            <span>{t("request.stepOne")}</span>
+
             <h1 id="event-request-title">{t("request.selectTitle")}</h1>
             <p>{t("request.selectDescription")}</p>
           </div>
@@ -209,9 +211,18 @@ export function EventRequestPage() {
               <EventHallMap halls={halls} onSelect={selectHall} selectedHallId={selectedHallId} />
               <aside className="event-request-page__hall-list" aria-label={t("request.hallListAria")}>
                 <div className="event-request-page__hall-list-heading">
-                  <strong>{t("request.availableHalls")}</strong>
-                  <span>{t("request.hallCount", { count: halls.length })}</span>
+                  <div>
+              <strong>{t("request.availableHalls")}</strong>
+              <span>{t("request.hallCount", { count: halls.length })}</span>
+            </div>
                 </div>
+                {selectedHall ? (
+                  <div className="event-request-page__hall-list-selection" role="status">
+                    <span>{t("request.selectedHallLabel")}</span>
+                    <strong>{selectedHall.number}</strong>
+                  </div>
+                ) : null}
+
                 <div className="event-request-page__hall-options">
                   {halls.map((hall) => {
                     const selected = selectedHallId === hall.id;
@@ -233,7 +244,28 @@ export function EventRequestPage() {
             </div>
           ) : null}
 
-          <footer className="event-request-page__footer">
+          {selectedHall ? (
+          <div className="event-request-page__selection-summary" aria-live="polite">
+            <div>
+              <span>{t("request.selectedHallLabel")}</span>
+              <strong>{selectedHall.number}</strong>
+            </div>
+            <dl>
+              <div>
+                <dt>{t("request.areaLabel")}</dt>
+                <dd>{t("request.area", { area: selectedHall.area })}</dd>
+              </div>
+              <div>
+                <dt>{t("request.priceLabel")}</dt>
+                <dd>{priceFormatter.format(Number(selectedHall.price_per_hour))}</dd>
+              </div>
+              <div>
+                <dt>{t("request.svgIdLabel")}</dt>
+                <dd>{selectedHall.svg_id}</dd>
+              </div>
+            </dl>
+          </div>
+        ) : null}<footer className="event-request-page__footer">
             <span role="status">{selectedHall ? t("request.selectedHall", { number: selectedHall.number }) : t("request.selectHint")}</span>
             <button disabled={!selectedHall} onClick={continueToDetails} type="button">
               {t("request.continue")}
@@ -279,12 +311,15 @@ export function EventRequestPage() {
               </label>
               <label className={errors.startAt ? "event-request-page__field event-request-page__field--error" : "event-request-page__field"}>
                 <span>{t("request.fields.startAt")}<em>*</em></span>
-                <input type="datetime-local" value={startAt} onChange={(event) => setStartAt(event.target.value)} />
+                <div className="event-request-page__date-time">
+          <input type="datetime-local" value={startAt} onChange={(event) => setStartAt(event.target.value)} />
+          <HugeiconsIcon aria-hidden="true" className="event-request-page__date-time-icon" icon={Calendar03Icon} size={18} strokeWidth={1.8} />
+        </div>
                 {errors.startAt ? <small>{errors.startAt}</small> : null}
               </label>
               <label className={errors.duration ? "event-request-page__field event-request-page__field--error" : "event-request-page__field"}>
                 <span>{t("request.fields.duration")}<em>*</em></span>
-                <input min="1" type="number" value={duration} onChange={(event) => setDuration(event.target.value)} placeholder={t("request.placeholders.duration")} />
+                <input inputMode="decimal" max="4" min="1" step="0.5" type="number" value={duration} onChange={(event) => setDuration(event.target.value)} placeholder={t("request.placeholders.duration")} />
                 {errors.duration ? <small>{errors.duration}</small> : null}
               </label>
               <label className={errors.logo ? "event-request-page__field event-request-page__field--error" : "event-request-page__field"}>
@@ -324,7 +359,10 @@ export function EventRequestPage() {
 
             {apiError ? <p className="event-request-page__submit-error" role="alert">{apiError}</p> : null}
             <footer className="event-request-page__footer">
-              <button className="event-request-page__secondary" onClick={() => setStep(1)} type="button">{t("request.back")}</button>
+              <button className="event-request-page__secondary" onClick={() => setStep(1)} type="button">
+              <HugeiconsIcon aria-hidden="true" color="currentColor" icon={ArrowLeft02Icon} size={16} strokeWidth={1.8} />
+              {t("request.back")}
+            </button>
               <button aria-busy={requestMutation.isPending} disabled={requestMutation.isPending} type="submit">
                 {requestMutation.isPending ? t("request.submitting") : t("request.submit")}
               </button>

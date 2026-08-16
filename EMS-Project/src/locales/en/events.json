@@ -93,20 +93,22 @@
     "detailsDescription": "Add your event details, schedule, speakers, optional company, and logo.",
     "selectedHallLabel": "Selected hall",
     "areaLabel": "Area",
+    "priceLabel": "Price per hour",
+    "svgIdLabel": "SVG ID",
     "changeHall": "Change hall",
     "fields": {
       "title": "Event title",
       "type": "Event type",
       "company": "Company",
       "startAt": "Date & time",
-      "duration": "Duration (minutes)",
+      "duration": "Duration (hours)",
       "logo": "Event logo",
       "description": "Description",
       "speakers": "Speakers"
     },
     "placeholders": {
       "title": "Enter the event title",
-      "duration": "For example, 90",
+      "duration": "For example, 2",
       "description": "Describe the event for the fair directory",
       "speaker": "Speaker full name"
     },
@@ -125,7 +127,7 @@
       "title": "Enter an event title.",
       "description": "Enter an event description.",
       "startAt": "Choose the event date and time.",
-      "duration": "Enter a duration greater than zero.",
+      "duration": "Enter a duration from 1 to 4 hours.",
       "speakers": "Add at least one speaker.",
       "logo": "Upload a valid image file."
     },
