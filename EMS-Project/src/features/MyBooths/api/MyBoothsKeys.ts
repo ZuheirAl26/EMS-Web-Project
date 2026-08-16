@@ -1,7 +1,8 @@
-import type { MyBoothStatus } from "../types/myBoothsType";
+import type { BoothRequestStatus } from "../types/myBoothsType";
 
 export const myBoothsKeys = {
   all: ["my-booths"] as const,
-  list: (page: number, status: MyBoothStatus | null) =>
-    [...myBoothsKeys.all, "list", status ?? "all", page] as const,
+  list: (page: number) => [...myBoothsKeys.all, "owned", page] as const,
+  requests: (page: number, status: BoothRequestStatus) =>
+    [...myBoothsKeys.all, "requests", status, page] as const,
 };

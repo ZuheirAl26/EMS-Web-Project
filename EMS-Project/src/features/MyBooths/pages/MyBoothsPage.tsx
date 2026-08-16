@@ -2,52 +2,93 @@ import { useState } from "react";
 import {
   Add01Icon,
   CancelCircleIcon,
-  CheckmarkCircle02Icon,
   Clock01Icon,
   Store01Icon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { EmptyState, Pagination } from "../../../components";
+import { useBooths } from "../../CreateBoothPlan/hooks/useBooths";
 import { usePrefetchBooths } from "../../CreateBoothPlan/hooks/usePrefetchBooths";
+import {
+  BoothRequestCard,
+  MyBoothCard,
+  MyBoothsSkeleton,
+} from "../components";
+import { useBoothRequests } from "../hooks/useBoothRequests";
 import { useMyBooths } from "../hooks/useMyBooths";
-import type { MyBoothsLocationState } from "../types/navigationType";
-import type { MyBoothStatus } from "../types/myBoothsType";
+import type { BoothRequestStatus } from "../types/myBoothsType";
 import "./MyBoothsPage.scss";
-import { MyBoothCard, MyBoothsSkeleton } from "../components";
+
+type BoothsView = "owned" | BoothRequestStatus;
+
+interface MyBoothsLocationState {
+  requestMessage?: string;
+}
 
 export function MyBoothsPage() {
   const { t } = useTranslation("dashboard");
   const location = useLocation();
-  const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<MyBoothStatus | null>(null);
   const prefetchBooths = usePrefetchBooths();
-  const myBoothsQuery = useMyBooths(page, statusFilter);
+  const [page, setPage] = useState(1);
+  const [view, setView] = useState<BoothsView>("owned");
+  const ownedBoothsQuery = useMyBooths(page);
+  const boothRequestsQuery = useBoothRequests(
+    page,
+    view === "owned" ? null : view,
+  );
+  const activeQuery = view === "owned" ? ownedBoothsQuery : boothRequestsQuery;
+  const requestBoothCatalogQuery = useBooths({}, view !== "owned");
+  const ownedPagination = ownedBoothsQuery.data?.data;
+  const requestsPagination = boothRequestsQuery.data?.data;
+  const pagination = view === "owned" ? ownedPagination : requestsPagination;
   const requestMessage = (location.state as MyBoothsLocationState | null)
     ?.requestMessage;
-  const pagination = myBoothsQuery.data?.data;
-  const booths = pagination?.data ?? [];
-  const visibleBooths = booths.filter((booth) => booth.status !== null);
-  const filterCards = [
-    { icon: Store01Icon, key: "all", status: null },
-    { icon: Clock01Icon, key: "pending", status: "pending" },
-    { icon: CheckmarkCircle02Icon, key: "approved", status: "approved" },
-    { icon: CancelCircleIcon, key: "rejected", status: "rejected" },
-  ] as const;
 
-  const handleStatusFilterChange = (nextStatus: MyBoothStatus | null) => {
-    if (nextStatus === statusFilter) {
+  const filterCards: Array<{
+    icon: typeof Store01Icon;
+    key: BoothsView;
+  }> = [
+    { icon: Store01Icon, key: "owned" },
+    { icon: Clock01Icon, key: "pending" },
+    { icon: CancelCircleIcon, key: "rejected" },
+  ];
+
+  const handleViewChange = (nextView: BoothsView) => {
+    if (nextView === view) {
       return;
     }
 
-    setStatusFilter(nextStatus);
+    setView(nextView);
     setPage(1);
   };
 
+  const isOwnedView = view === "owned";
+  const ownedBooths = ownedPagination?.data ?? [];
+  const boothRequests = requestsPagination?.data ?? [];
+  const requestedBoothsById = useMemo(
+    () =>
+      new Map(
+        (requestBoothCatalogQuery.data?.data ?? []).map((booth) => [
+          booth.id,
+          booth,
+        ]),
+      ),
+    [requestBoothCatalogQuery.data?.data],
+  );
+  const hasItems = isOwnedView ? ownedBooths.length > 0 : boothRequests.length > 0;
+  const errorTitle = isOwnedView
+    ? t("myBooths.errorTitle")
+    : t("myBooths.requests.errorTitle");
+  const errorMessage = isOwnedView
+    ? t("myBooths.errorMessage")
+    : t("myBooths.requests.errorMessage");
+
   return (
-    <section className="my-booths" aria-label={t("myBooths.aria")}>
+    <section aria-label={t("myBooths.aria")} className="my-booths">
       <header className="my-booths__intro">
         <div>
           <h1>{t("myBooths.title")}</h1>
@@ -77,23 +118,19 @@ export function MyBoothsPage() {
         role="group"
       >
         {filterCards.map((filter) => {
-          const isSelected = statusFilter === filter.status;
+          const isSelected = view === filter.key;
 
           return (
             <button
               aria-pressed={isSelected}
               className={`my-booths__filter-card my-booths__filter-card--${filter.key}`}
               key={filter.key}
-              onClick={() => handleStatusFilterChange(filter.status)}
+              onClick={() => handleViewChange(filter.key)}
               type="button"
             >
               <span className="my-booths__filter-content">
                 <span className="my-booths__filter-icon" aria-hidden="true">
-                  <HugeiconsIcon
-                    icon={filter.icon}
-                    size={18}
-                    strokeWidth={1.8}
-                  />
+                  <HugeiconsIcon icon={filter.icon} size={18} strokeWidth={1.8} />
                 </span>
                 <span className="my-booths__filter-copy">
                   <strong>{t(`myBooths.filters.${filter.key}`)}</strong>
@@ -101,13 +138,9 @@ export function MyBoothsPage() {
                 </span>
               </span>
               {isSelected ? (
-                <HugeiconsIcon
-                  aria-hidden="true"
-                  className="my-booths__filter-selected"
-                  icon={Tick02Icon}
-                  size={16}
-                  strokeWidth={2}
-                />
+                <span className="my-booths__filter-selected" aria-hidden="true">
+                  <HugeiconsIcon icon={Tick02Icon} size={16} strokeWidth={2} />
+                </span>
               ) : null}
             </button>
           );
@@ -120,42 +153,48 @@ export function MyBoothsPage() {
         </p>
       ) : null}
 
-      {myBoothsQuery.isPending ? (
+      {activeQuery.isPending ? (
         <MyBoothsSkeleton />
-      ) : myBoothsQuery.isError ? (
+      ) : activeQuery.isError ? (
         <div className="my-booths__state my-booths__state--error" role="alert">
-          <strong>{t("myBooths.errorTitle")}</strong>
-          <span>{t("myBooths.errorMessage")}</span>
-          <button onClick={() => void myBoothsQuery.refetch()} type="button">
+          <strong>{errorTitle}</strong>
+          <span>{errorMessage}</span>
+          <button onClick={() => void activeQuery.refetch()} type="button">
             {t("myBooths.retry")}
           </button>
         </div>
-      ) : visibleBooths.length === 0 ? (
+      ) : !hasItems ? (
         <div className="my-booths__empty">
           <span aria-hidden="true" className="my-booths__empty-icon">
             <HugeiconsIcon icon={Store01Icon} size={26} strokeWidth={1.7} />
           </span>
           <EmptyState
-            message={t("myBooths.emptyMessage")}
-            title={t("myBooths.emptyTitle")}
+            message={isOwnedView ? t("myBooths.emptyMessage") : t("myBooths.requests.emptyMessage")}
+            title={isOwnedView ? t("myBooths.emptyTitle") : t("myBooths.requests.emptyTitle")}
           />
         </div>
       ) : (
         <div className="my-booths__list">
-          {visibleBooths.map((booth) => (
-            <MyBoothCard booth={booth} key={booth.id} />
-          ))}
+          {isOwnedView
+            ? ownedBooths.map((booth) => <MyBoothCard booth={booth} key={booth.id} />)
+            : boothRequests.map((request) => (
+              <BoothRequestCard
+                booth={requestedBoothsById.get(request.booth_id)}
+                key={request.id}
+                request={request}
+              />
+            ))}
         </div>
       )}
 
       {pagination ? (
         <Pagination
           currentPage={pagination.current_page}
-          isFetching={myBoothsQuery.isFetching}
+          isFetching={activeQuery.isFetching}
           labels={{
             ariaLabel: t("myBooths.pagination.aria"),
             nextLabel: t("myBooths.pagination.next"),
-            pageLabel: (page) => t("myBooths.pagination.page", { page }),
+            pageLabel: (nextPage) => t("myBooths.pagination.page", { page: nextPage }),
             previousLabel: t("myBooths.pagination.previous"),
           }}
           onPageChange={setPage}

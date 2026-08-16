@@ -39,8 +39,48 @@ export interface MyBooth {
   created_at: string;
 }
 
+export type BoothRequestStatus = "pending" | "rejected";
+
+export interface BoothRequestCompany {
+  id: number;
+  name: string;
+  business_sector?: string;
+  logo?: string | null;
+  status?: string;
+}
+
+export interface BoothRequestService {
+  id: number;
+  service_id: number;
+  service_name: string;
+  quantity: number;
+  unit_price: number;
+  total_price: number;
+}
+
+export interface BoothRequest {
+  id: number;
+  booth_id: number;
+  company_id: number;
+  company_name: string;
+  status: BoothRequestStatus;
+  reason_for_booking: string | null;
+  final_price: number;
+  created_at: string;
+  services: BoothRequestService[];
+  company: BoothRequestCompany | null;
+}
+
 export interface MyBoothsPagination {
   data: MyBooth[];
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+}
+
+export interface BoothRequestsPagination {
+  data: BoothRequest[];
   current_page: number;
   per_page: number;
   total: number;
@@ -61,12 +101,21 @@ export interface MyBoothsResponse {
   data: MyBoothsPagination;
 }
 
+export interface BoothRequestsResponse {
+  status: boolean;
+  message: string;
+  data: BoothRequestsPagination;
+}
+
 export interface MyBoothCardProps {
   booth: MyBooth;
 }
 
 export interface BoothDetailsCardProps {
   booth: MyBooth;
+  showHall?: boolean;
+  showPriceDollar?: boolean;
+  showQrToken?: boolean;
 }
 
 export interface BoothQrCardProps {

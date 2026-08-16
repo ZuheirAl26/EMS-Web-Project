@@ -79,21 +79,46 @@
     }
   },
   "myBooths": {
-    "aria": "My Booths and QR",
-    "title": "My Booths & QR Code",
+    "aria": "My Booths and booth requests",
+    "title": "My Booths",
     "description": "View your confirmed booth details and download your QR code for visitors.",
     "filters": {
       "label": "Filter by status",
       "all": "All Booths",
+      "owned": "My Booths",
       "pending": "Pending",
       "approved": "Approved",
       "rejected": "Rejected",
       "descriptions": {
         "all": "Every booking",
+        "owned": "Approved booths ready for visitors",
         "pending": "Needs review",
         "approved": "Ready for visitors",
         "rejected": "Needs attention"
       }
+    },
+    "status": {
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "requests": {
+      "requestStatus": "Request status",
+      "requestId": "Request #{{id}}",
+      "company": "Company",
+      "finalPrice": "Final price",
+      "requestedOn": "Requested on",
+      "services": "Requested services",
+      "noServices": "No additional services requested.",
+      "companyLinked": "Company linked to this request",
+      "pendingTitle": "Request under review",
+      "pendingDescription": "We will notify you when your booth request has been reviewed.",
+      "rejectedTitle": "Request not approved",
+      "rejectedDescription": "This booth request was not approved. You can submit a new request at any time.",
+      "submitted": "Submitted {{date}}",
+      "errorTitle": "We couldn't load your booth requests",
+      "errorMessage": "Please check your connection and try again.",
+      "emptyTitle": "No {{status}} booth requests",
+      "emptyMessage": "Your {{status}} booth requests will appear here."
     },
     "fairName": "Damascus International Fair 2026",
     "addBooth": "Add Booth",
@@ -113,6 +138,7 @@
       "hallValue": "Hall {{number}}",
       "boothNumber": "Booth Number",
       "area": "Area",
+    "price": "Booth Price",
       "areaValue": "{{area}} m²",
       "company": "Company",
       "qrToken": "QR Token",

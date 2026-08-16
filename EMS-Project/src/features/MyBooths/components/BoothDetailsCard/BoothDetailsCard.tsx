@@ -4,33 +4,51 @@ import { useTranslation } from "react-i18next";
 import type { BoothDetailsCardProps } from "../../types/myBoothsType";
 import "./BoothDetailsCard.scss";
 
-export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
+export function BoothDetailsCard({
+  booth,
+  showHall = true,
+  showPriceDollar = false,
+  showQrToken = true,
+}: BoothDetailsCardProps) {
   const { t, i18n } = useTranslation("dashboard");
   const numberFormatter = new Intl.NumberFormat(
     i18n.language.startsWith("ar") ? "ar-SY" : "en-US",
     { maximumFractionDigits: 2 },
   );
-
   const hallNumber = booth.hall_id?.number ?? "—";
   const companyName = booth.company?.name ?? "—";
   const services = booth.services ?? [];
   const boothStatus = booth.status ?? (booth.is_booked ? "approved" : "pending");
-  const details = [
+  const areaValue = Number.isFinite(booth.area)
+    ? t("myBooths.details.areaValue", {
+        area: numberFormatter.format(booth.area),
+      })
+    : "—";
+  const numericPrice = Number(booth.price);
+  const priceValue = Number.isFinite(numericPrice)
+    ? `${numberFormatter.format(numericPrice)}${showPriceDollar ? " $" : ""}`
+    : "—";
+  const details: Array<[string, string]> = [
     [t("myBooths.details.fair"), t("myBooths.fairName")],
-    [
+  ];
+
+  if (showHall) {
+    details.push([
       t("myBooths.details.hall"),
       t("myBooths.details.hallValue", { number: hallNumber }),
-    ],
+    ]);
+  }
+
+  details.push(
     [t("myBooths.details.boothNumber"), booth.number],
-    [
-      t("myBooths.details.area"),
-      t("myBooths.details.areaValue", {
-        area: numberFormatter.format(booth.area),
-      }),
-    ],
+    [t("myBooths.details.area"), areaValue],
+    [t("myBooths.details.price"), priceValue],
     [t("myBooths.details.company"), companyName],
-    [t("myBooths.details.qrToken"), booth.qr_token || "—"],
-  ];
+  );
+
+  if (showQrToken) {
+    details.push([t("myBooths.details.qrToken"), booth.qr_token || "—"]);
+  }
 
   return (
     <section
@@ -42,19 +60,9 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
           {t("myBooths.details.title")}
         </h2>
         <span
-          className={`booth-details-card__status booth-details-card__status--${
-            boothStatus
-          }`}
+          className={`booth-details-card__status booth-details-card__status--${boothStatus}`}
         >
-          {boothStatus === "approved" ? (
-            <HugeiconsIcon
-              aria-hidden="true"
-              color="currentColor"
-              icon={Tick02Icon}
-              size={12}
-              strokeWidth={2}
-            />
-          ) : null}
+          <HugeiconsIcon aria-hidden="true" icon={Tick02Icon} size={12} strokeWidth={2} />
           {t(
             boothStatus === "approved"
               ? "myBooths.details.statusApproved"
