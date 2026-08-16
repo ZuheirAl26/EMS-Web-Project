@@ -46,6 +46,7 @@ export function InvitePage() {
   return (
     <section aria-labelledby="invite-page-title" className="invite-page">
       <div className="invite-page__intro">
+                <p className="invite-page__eyebrow"><span>{t("navigation.dashboard")}</span><span aria-hidden="true">/</span><strong>{t("invite.title")}</strong></p>
         <h1 id="invite-page-title">{t("invite.title")}</h1>
         <p>{t("invite.description")}</p>
       </div>

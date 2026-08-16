@@ -13,9 +13,11 @@ export interface MyBoothCompany {
 
 export interface MyBoothService {
   id: number;
-  name: string;
-  price: string;
-  is_active: boolean;
+  service_id?: number;
+  name?: string;
+  service_name?: string;
+  price?: string;
+  is_active?: boolean;
   quantity: number;
   unit_price: number;
   total_price: number;

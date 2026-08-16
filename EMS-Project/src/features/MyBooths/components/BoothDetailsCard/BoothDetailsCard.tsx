@@ -78,17 +78,21 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
         <h3>{t("myBooths.details.servicesBooked")}</h3>
         {services.length > 0 ? (
           <ul>
-            {services.map((service, index) => (
-              <li
-                aria-label={t("myBooths.details.serviceQuantity", {
-                  name: service.name,
-                  quantity: service.quantity,
-                })}
-                key={`${service.id}-${index}`}
-              >
-                {service.name}
-              </li>
-            ))}
+            {services.map((service, index) => {
+              const serviceName = service.service_name ?? service.name ?? "—";
+
+              return (
+                <li
+                  aria-label={t("myBooths.details.serviceQuantity", {
+                    name: serviceName,
+                    quantity: service.quantity,
+                  })}
+                  key={`${service.id}-${index}`}
+                >
+                  {serviceName}
+                </li>
+              );
+            })}
           </ul>
         ) : (
           <p>{t("myBooths.details.noServices")}</p>
