@@ -41,6 +41,12 @@
     "selectedUnits_other": "تم تحديد {{count}} وحدة خدمة",
     "back": "رجوع",
     "continue": "متابعة",
+    "pagination": {
+      "aria": "صفحات الخدمات",
+      "previous": "الصفحة السابقة",
+      "next": "الصفحة التالية",
+      "page": "الصفحة {{page}}"
+    },
     "nextStepPending": "تم حفظ اختيارات الخدمات لهذه الخطوة. أرسل نقطة نهاية ملف الشركة لربط التبويب التالي.",
     "missingBoothTitle": "اختر جناحاً أولاً",
     "missingBoothMessage": "تحتاج خطوة الخدمات إلى جناح محدد قبل المتابعة.",
@@ -92,8 +98,6 @@
       "companyNamePlaceholder": "اسم شركتك",
       "businessSector": "قطاع الأعمال",
       "businessSectorPlaceholder": "مثال: التكنولوجيا",
-      "companyLocation": "موقع الشركة",
-      "companyLocationPlaceholder": "مثال: دمشق، سوريا",
       "phoneNumber": "رقم الهاتف",
       "phoneNumberPlaceholder": "+963 11 XXX XXXX",
       "yearFounded": "سنة التأسيس",
@@ -137,17 +141,16 @@
       "transportation_logistics": "النقل والخدمات اللوجستية",
       "entertainment": "الترفيه",
       "other": "أخرى"
-    },
-    "locationPicker": {
-      "label": "موقع مقر الشركة",
+    },    "locationPicker": {
+      "label": "موقع الشركة",
       "selected": "تم تحديد الموقع",
       "notSelected": "لم يتم تحديد الموقع",
-      "help": "اختر موقع مقر الشركة مباشرةً على الخريطة.",
+      "help": "اختر موقع الشركة مباشرةً على الخريطة.",
       "choose": "اختيار من الخريطة",
       "change": "تغيير الموقع",
-      "modalTitle": "اختر موقع مقر الشركة",
+      "modalTitle": "اختر موقع الشركة",
       "modalDescription": "حرّك الخريطة وقرّبها، ثم انقر على موقع الشركة الدقيق.",
-      "close": "إغلاق خريطة الموقع",
+      "close": "إغلاق خريطة موقع الشركة",
       "loading": "جارٍ تحميل الخريطة…",
       "clickPrompt": "انقر في أي مكان على الخريطة لوضع علامة الموقع.",
       "cancel": "إلغاء",
@@ -157,25 +160,38 @@
       "title": "الوسائط والملفات",
       "description": "سيتم تضمين الملفات المحددة مع بيانات الشركة في الطلب النهائي.",
       "logo": "شعار الشركة",
-      "banner": "لافتة الجناح",
+      "banner": "بانر الشركة",
       "logoHelp": "PNG أو JPG أو WebP أو SVG",
-      "bannerHelp": "المقاس المقترح: 1920×480 بكسل",
-      "dropBanner": "أفلت صورة اللافتة هنا",
+      "bannerHelp": "اختر حتى 10 صور بصيغة PNG أو JPG أو WebP",
+      "dropBanner": "أفلت حتى 10 صور لبانر الشركة هنا",
+      "bannerLimitReached": "تم الوصول إلى الحد الأقصى وهو {{count}} صور. أزل صورة لإضافة أخرى.",
+      "removeImage": "إزالة {{name}}",
+      "selectedImages": "صور بانر الشركة المحددة",
       "uploaded": "تم الرفع",
       "missing": "غير مرفق"
     },
     "directory": {
-      "button": "دليل الشركات",
-      "title": "ملفات الشركات الموجودة",
-      "description": "سيؤدي اختيار شركة محفوظة إلى تعبئة النموذج تلقائياً عند ربط نقطة نهاية الدليل.",
-      "selectLabel": "ملف الشركة",
-      "empty": "لم يتم تحميل شركات محفوظة",
-      "useCompany": "استخدام الشركة"
+      "button": "الشركات الموجودة",
+      "title": "الشركات الموجودة",
+      "description": "اختر شركة موجودة لتعبئة حقول ملف الشركة المتاحة تلقائياً.",
+      "selectLabel": "الشركة",
+      "empty": "اختر شركة",
+      "loading": "جارٍ تحميل الشركات الموجودة…",
+      "loadingDetails": "جارٍ تحميل تفاصيل الشركة…",
+      "error": "تعذر تحميل الشركات الموجودة.",
+      "detailsError": "تعذر تحميل تفاصيل الشركة المحددة.",
+      "fallback": "الشركة رقم {{id}}",
+      "retry": "إعادة المحاولة"
+    },
+    "existingCompany": {
+      "title": "تم اختيار شركة قائمة",
+      "description": "شركة {{name}} مسجلة مسبقاً ولا يمكن تعديل معلوماتها هنا. تابع إلى الخطوة التالية، أو اختر شركة أخرى أدناه، أو أضف شركة جديدة.",
+      "addNew": "إضافة شركة جديدة"
     },
     "validation": {
       "socialLinkRequired": "أضف رابط تواصل واحداً على الأقل: الموقع الإلكتروني أو تويتر / X أو لينكدإن.",
       "logoRequired": "شعار الشركة مطلوب.",
-      "headquartersLocationRequired": "اختر موقع مقر الشركة على الخريطة."
+      "headquartersLocationRequired": "اختر موقع الشركة على الخريطة."
     }
   },
   "review": {
@@ -225,6 +241,14 @@
     "number": "رقم الجناح",
     "numberPlaceholder": "الرقم الدقيق، مثال SE_01",
     "booking": "حالة الحجز",
+    "allHallTypes": "كل أنواع الصالات",
+    "hallTypes": {
+      "exhibition": "معرض",
+      "restaurant": "مطعم",
+      "mosque": "مسجد",
+      "bathroom": "دورة مياه",
+      "parking": "موقف سيارات"
+    },
     "hallType": "نوع الصالة",
     "hallTypePlaceholder": "أدخل نوع الصالة",
     "include": "تضمين",

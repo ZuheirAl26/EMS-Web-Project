@@ -1,11 +1,14 @@
 import { apiClient } from "../../../api/ApiClient";
-import type { MyBoothsResponse } from "../types/myBoothsType";
+import type { MyBoothStatus, MyBoothsResponse } from "../types/myBoothsType";
 
-export async function getMyBooths(page: number): Promise<MyBoothsResponse> {
+export async function getMyBooths(
+  page: number,
+  status: MyBoothStatus | null,
+): Promise<MyBoothsResponse> {
   const response = await apiClient.get<MyBoothsResponse>(
     "/v1/exhibitor/booth/my",
     {
-      params: { page },
+      params: status ? { page, "filter[status]": status } : { page },
     },
   );
 

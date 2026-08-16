@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from "react";
+import { useCallback, useState, type FormEvent } from "react";
 import { ArrowLeft02Icon, ArrowRight02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
+import type { ExhibitorCompany } from "../../../ExhibitorProfile/types/profileType";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   BoothPlanShell,
@@ -32,18 +33,11 @@ export function CompanyProfilePage() {
   const [validationErrors, setValidationErrors] =
     useState<CompanyProfileValidationErrors>({});
 
+  const [selectedExistingCompany, setSelectedExistingCompany] =
+    useState<ExhibitorCompany | null>(null);
+
   const updateField = (field: keyof CompanyProfileDraft, value: string) => {
     updateCompanyProfile(field, value);
-
-    if (
-      value.trim() &&
-      (field === "website" || field === "twitter" || field === "linkedin")
-    ) {
-      setValidationErrors((current) => ({
-        ...current,
-        socialLinks: undefined,
-      }));
-    }
 
     if (
       value.trim() &&
@@ -55,11 +49,86 @@ export function CompanyProfilePage() {
         headquartersLocation: undefined,
       }));
     }
+
+    if (
+      value.trim() &&
+      (field === "website" || field === "twitter" || field === "linkedin")
+    ) {
+      setValidationErrors((current) => ({
+        ...current,
+        socialLinks: undefined,
+      }));
+    }
+
+  };
+
+  const hydrateExistingCompany = useCallback(
+    (company: ExhibitorCompany) => {
+      setSelectedExistingCompany(company);
+      useCreatePlanStore.getState().setCompanyGallery([]);
+      updateCompanyProfile("directoryCompanyId", String(company.id));
+      updateCompanyProfile("companyName", company.name);
+      updateCompanyProfile("businessSector", company.business_sector);
+      updateCompanyProfile(
+        "headquartersLatitude",
+        String(company.headquarters_lat),
+      );
+      updateCompanyProfile(
+        "headquartersLongitude",
+        String(company.headquarters_lng),
+      );
+      updateCompanyProfile("phoneNumber", company.phone);
+      updateCompanyProfile("yearFounded", String(company.year_founded));
+      updateCompanyProfile("website", company.social_links.website ?? "");
+      updateCompanyProfile("twitter", company.social_links.twitter ?? "");
+      updateCompanyProfile("linkedin", company.social_links.linkedin ?? "");
+      updateCompanyProfile("description", company.description);
+      setValidationErrors((current) => ({
+        ...current,
+        companyLogo: undefined,
+        headquartersLocation: undefined,
+        socialLinks: undefined,
+      }));
+    },
+    [updateCompanyProfile],
+  );
+
+  const isExistingCompanySelected = selectedExistingCompany !== null;
+
+  const handleStartNewCompany = () => {
+    setSelectedExistingCompany(null);
+
+    const createPlanStore = useCreatePlanStore.getState();
+    (
+      [
+        "directoryCompanyId",
+        "companyName",
+        "businessSector",
+        "headquartersLatitude",
+        "headquartersLongitude",
+        "phoneNumber",
+        "yearFounded",
+        "website",
+        "twitter",
+        "linkedin",
+        "description",
+      ] as const
+    ).forEach((field) => {
+      createPlanStore.updateCompanyProfile(field, "");
+    });
+    createPlanStore.setCompanyLogo(null);
+    createPlanStore.setCompanyGallery([]);
+    setValidationErrors({});
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const errors = validateCompanyProfile(companyProfile, companyLogo);
+    const hasExistingCompany = Boolean(
+      companyProfile.directoryCompanyId.trim(),
+    );
+    const errors = hasExistingCompany
+      ? {}
+      : validateCompanyProfile(companyProfile, companyLogo);
     setValidationErrors(errors);
 
     if (
@@ -92,7 +161,35 @@ export function CompanyProfilePage() {
           </div>
         ) : (
           <form className="company-profile" onSubmit={handleSubmit}>
-            <CompanyDetailsForm
+            {isExistingCompanySelected ? (
+              <section
+                aria-live="polite"
+                className="company-profile__existing-company-notice"
+                role="status"
+              >
+                <div className="company-profile__existing-company-copy">
+                  <strong>{t("companyProfile.existingCompany.title")}</strong>
+                  <span>
+                    {t("companyProfile.existingCompany.description", {
+                      name: selectedExistingCompany.name,
+                    })}
+                  </span>
+                </div>
+                <button
+                  className="company-profile__existing-company-reset"
+                  onClick={handleStartNewCompany}
+                  type="button"
+                >
+                  {t("companyProfile.existingCompany.addNew")}
+                </button>
+              </section>
+            ) : null}
+
+            <fieldset
+              className="company-profile__editor"
+              disabled={isExistingCompanySelected}
+            >
+              <CompanyDetailsForm
               headquartersLocationError={
                 validationErrors.headquartersLocation
                   ? t("companyProfile.validation.headquartersLocationRequired")
@@ -108,6 +205,11 @@ export function CompanyProfilePage() {
                   ? t("companyProfile.validation.logoRequired")
                   : undefined
               }
+              existingCompany={
+                companyProfile.directoryCompanyId
+                  ? selectedExistingCompany
+                  : null
+              }
               onLogoAccepted={() =>
                 setValidationErrors((current) => ({
                   ...current,
@@ -116,7 +218,12 @@ export function CompanyProfilePage() {
               }
             />
 
-            <CompanyDirectory onFieldChange={updateField} />
+            </fieldset>
+
+            <CompanyDirectory
+              onCompanySelected={hydrateExistingCompany}
+              onFieldChange={updateField}
+            />
 
             <footer className="create-booth-plan__footer">
               <button

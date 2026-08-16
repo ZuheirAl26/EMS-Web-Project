@@ -40,6 +40,11 @@
       background: var(--color-warning-surface);
       color: var(--color-warning-text);
     }
+
+    &--rejected {
+      background: var(--color-danger-a10);
+      color: var(--color-danger);
+    }
   }
 
   &__list {

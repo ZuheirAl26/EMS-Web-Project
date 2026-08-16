@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Add01Icon,
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
+  Calendar03Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
-import { EmptyState } from "../../../components";
+import { EmptyState, Pagination } from "../../../components";
 import { EventCard, EventsSkeleton, EventStatisticsCards } from "../components";
+import type { EventFilterStatus } from "../types/eventType";
 import { useEventStatistics } from "../hooks/useEventStatistics";
 import { useEvents } from "../hooks/useEvents";
 import "./EventsPage.scss";
@@ -17,10 +17,21 @@ export function EventsPage() {
   const { t } = useTranslation("events");
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const eventsQuery = useEvents(page);
+  const [statusFilter, setStatusFilter] = useState<EventFilterStatus | null>(
+    null,
+  );
+  const eventsQuery = useEvents(page, statusFilter);
   const statisticsQuery = useEventStatistics();
   const pagination = eventsQuery.data?.data;
   const events = pagination?.data ?? [];
+  const handleStatusFilterChange = (nextStatus: EventFilterStatus | null) => {
+    if (nextStatus === statusFilter) {
+      return;
+    }
+
+    setStatusFilter(nextStatus);
+    setPage(1);
+  };
 
   return (
     <section aria-label={t("aria")} className="events-page">
@@ -41,8 +52,25 @@ export function EventsPage() {
         </button>
       </header>
 
-      {statisticsQuery.data ? (
-        <EventStatisticsCards statistics={statisticsQuery.data.data} />
+      {statisticsQuery.isError ? (
+        <div
+          className="events-page__statistics-state events-page__state--error"
+          role="alert"
+        >
+          <span>{t("error.message")}</span>
+          <button
+            onClick={() => void statisticsQuery.refetch()}
+            type="button"
+          >
+            {t("error.retry")}
+          </button>
+        </div>
+      ) : statisticsQuery.data ? (
+        <EventStatisticsCards
+          onStatusChange={handleStatusFilterChange}
+          selectedStatus={statusFilter}
+          statistics={statisticsQuery.data.data}
+        />
       ) : null}
 
       {eventsQuery.isPending ? (
@@ -60,6 +88,9 @@ export function EventsPage() {
         </div>
       ) : events.length === 0 ? (
         <div className="events-page__empty">
+          <span aria-hidden="true" className="events-page__empty-icon">
+            <HugeiconsIcon icon={Calendar03Icon} size={26} strokeWidth={1.7} />
+          </span>
           <EmptyState message={t("empty.message")} title={t("empty.title")} />
         </div>
       ) : (
@@ -75,49 +106,19 @@ export function EventsPage() {
         </div>
       )}
 
-      {pagination && pagination.last_page > 1 ? (
-        <nav
-          aria-label={t("pagination.aria")}
-          className="events-page__pagination"
-        >
-          <button
-            aria-label={t("pagination.previous")}
-            disabled={pagination.current_page <= 1 || eventsQuery.isFetching}
-            onClick={() => setPage((currentPage) => currentPage - 1)}
-            type="button"
-          >
-            <HugeiconsIcon
-              aria-hidden="true"
-              color="currentColor"
-              icon={ArrowLeft01Icon}
-              size={16}
-              strokeWidth={1.8}
-            />
-          </button>
-          <span>
-            {t("pagination.summary", {
-              current: pagination.current_page,
-              total: pagination.last_page,
-            })}
-          </span>
-          <button
-            aria-label={t("pagination.next")}
-            disabled={
-              pagination.current_page >= pagination.last_page ||
-              eventsQuery.isFetching
-            }
-            onClick={() => setPage((currentPage) => currentPage + 1)}
-            type="button"
-          >
-            <HugeiconsIcon
-              aria-hidden="true"
-              color="currentColor"
-              icon={ArrowRight01Icon}
-              size={16}
-              strokeWidth={1.8}
-            />
-          </button>
-        </nav>
+      {pagination ? (
+        <Pagination
+          currentPage={pagination.current_page}
+          isFetching={eventsQuery.isFetching}
+          labels={{
+            ariaLabel: t("pagination.aria"),
+            nextLabel: t("pagination.next"),
+            pageLabel: (page) => t("pagination.page", { page }),
+            previousLabel: t("pagination.previous"),
+          }}
+          onPageChange={setPage}
+          totalPages={pagination.last_page}
+        />
       ) : null}
     </section>
   );

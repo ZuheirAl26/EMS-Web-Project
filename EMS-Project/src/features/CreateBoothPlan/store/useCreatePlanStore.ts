@@ -7,7 +7,6 @@ import { initialBoothFilterDraft } from "../utils/validation";
 const initialCompanyProfile: CompanyProfileDraft = {
   companyName: "",
   businessSector: "",
-  companyLocation: "",
   headquartersLatitude: "",
   headquartersLongitude: "",
   phoneNumber: "",
@@ -24,7 +23,7 @@ const initialDraft = {
   serviceQuantities: {},
   companyProfile: initialCompanyProfile,
   companyLogo: null,
-  boothBanner: null,
+  companyGallery: [],
   draftFilters: initialBoothFilterDraft,
   filters: {} as BoothFilters,
 };
@@ -47,7 +46,7 @@ export const useCreatePlanStore = create<CreatePlanState>((set) => ({
       },
     })),
   setCompanyLogo: (companyLogo) => set({ companyLogo }),
-  setBoothBanner: (boothBanner) => set({ boothBanner }),
+  setCompanyGallery: (companyGallery) => set({ companyGallery }),
 
   setDraftFilters: (
     updater: BoothFilterDraft | ((prev: BoothFilterDraft) => BoothFilterDraft),

@@ -1,4 +1,8 @@
-import type { CompanyBoothSummary, ProfileBooth } from "../types/profileType";
+import type {
+  CompanyBoothSummary,
+  CompanyGalleryItem,
+  ProfileBooth,
+} from "../types/profileType";
 
 export function getInitials(value: string) {
   return value
@@ -33,13 +37,13 @@ export function getCompanyBoothSummary(
   companyId: number | null,
 ): CompanyBoothSummary {
   const companyBooths = companyId
-    ? booths.filter((booth) => booth.company.id === companyId)
+    ? booths.filter((booth) => booth.company?.id === companyId)
     : [];
   const firstBooth = companyBooths[0];
 
   return {
     count: companyBooths.length,
-    hallNumber: firstBooth?.hall_id.number ?? null,
+    hallNumber: firstBooth?.hall_id?.number ?? null,
     boothNumber: firstBooth?.number ?? null,
     totalArea: companyBooths.reduce((total, booth) => total + booth.area, 0),
   };
@@ -49,10 +53,9 @@ export function formatCoordinates(latitude: number, longitude: number) {
   return `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
 }
 
-export function getGalleryUrls(gallery: unknown[]) {
+export function getGalleryUrls(gallery: CompanyGalleryItem[]) {
   return gallery
-    .filter((item): item is string => typeof item === "string")
-    .map(resolveMediaUrl)
+    .map((item) => resolveMediaUrl(item.url))
     .filter((url): url is string => Boolean(url));
 }
 

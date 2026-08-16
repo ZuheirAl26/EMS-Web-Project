@@ -34,7 +34,6 @@ function appendNewCompany(formData: FormData, company: NewCompanyRequest) {
   company.gallery.forEach((image, index) => {
     formData.append(`new_company[gallery][${index}]`, image, image.name);
   });
-
   formData.append(
     "new_company[headquarters_lat]",
     String(company.headquarters_lat),
@@ -43,6 +42,7 @@ function appendNewCompany(formData: FormData, company: NewCompanyRequest) {
     "new_company[headquarters_lng]",
     String(company.headquarters_lng),
   );
+
 }
 
 function toRequestBoothFormData(payload: RequestBoothPayload) {

@@ -16,3 +16,8 @@ html {
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+html[lang="ar"] body,
+html[lang="ar"] body * {
+  font-family: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif;
+}

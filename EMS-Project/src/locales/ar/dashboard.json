@@ -45,6 +45,19 @@
     "aria": "أجنحتي ورمز QR",
     "title": "أجنحتي ورموز QR",
     "description": "اعرض تفاصيل الأجنحة المؤكدة ونزّل رموز QR الخاصة بالزوار.",
+    "filters": {
+      "label": "تصفية حسب الحالة",
+      "all": "كل الأجنحة",
+      "pending": "قيد الانتظار",
+      "approved": "مقبولة",
+      "rejected": "مرفوضة",
+      "descriptions": {
+        "all": "كل الحجوزات",
+        "pending": "بحاجة إلى المراجعة",
+        "approved": "جاهزة للزوار",
+        "rejected": "تحتاج إلى الانتباه"
+      }
+    },
     "fairName": "معرض دمشق الدولي 2026",
     "addBooth": "إضافة جناح",
     "loading": "جارٍ تحميل الأجنحة…",
@@ -57,6 +70,7 @@
       "title": "تفاصيل الجناح",
       "statusApproved": "مقبول",
       "statusPending": "قيد الانتظار",
+      "statusRejected": "مرفوض",
       "fair": "المعرض",
       "hall": "القاعة",
       "hallValue": "القاعة {{number}}",
@@ -84,6 +98,7 @@
       "aria": "صفحات الأجنحة",
       "previous": "الصفحة السابقة",
       "next": "الصفحة التالية",
+      "page": "الصفحة {{page}}",
       "summary": "الصفحة {{current}} من {{total}}"
     }
   },
@@ -159,7 +174,10 @@
       "uploaded": "تم الرفع",
       "missing": "غير مرفوع",
       "noGallery": "لا توجد صور في المعرض",
-      "galleryAlt": "صورة الشركة {{index}}"
+      "galleryAlt": "صورة الشركة {{index}}",
+      "previousImage": "صورة المعرض السابقة",
+      "nextImage": "صورة المعرض التالية",
+      "imagePosition": "الصورة {{current}} من {{total}}"
     }
   }
 }

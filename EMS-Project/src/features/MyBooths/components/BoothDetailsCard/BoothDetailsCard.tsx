@@ -11,11 +11,15 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
     { maximumFractionDigits: 2 },
   );
 
+  const hallNumber = booth.hall_id?.number ?? "—";
+  const companyName = booth.company?.name ?? "—";
+  const services = booth.services ?? [];
+  const boothStatus = booth.status ?? (booth.is_booked ? "approved" : "pending");
   const details = [
     [t("myBooths.details.fair"), t("myBooths.fairName")],
     [
       t("myBooths.details.hall"),
-      t("myBooths.details.hallValue", { number: booth.hall_id.number }),
+      t("myBooths.details.hallValue", { number: hallNumber }),
     ],
     [t("myBooths.details.boothNumber"), booth.number],
     [
@@ -24,7 +28,7 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
         area: numberFormatter.format(booth.area),
       }),
     ],
-    [t("myBooths.details.company"), booth.company.name],
+    [t("myBooths.details.company"), companyName],
     [t("myBooths.details.qrToken"), booth.qr_token || "—"],
   ];
 
@@ -39,10 +43,10 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
         </h2>
         <span
           className={`booth-details-card__status booth-details-card__status--${
-            booth.is_booked ? "approved" : "pending"
+            boothStatus
           }`}
         >
-          {booth.is_booked ? (
+          {boothStatus === "approved" ? (
             <HugeiconsIcon
               aria-hidden="true"
               color="currentColor"
@@ -52,9 +56,11 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
             />
           ) : null}
           {t(
-            booth.is_booked
+            boothStatus === "approved"
               ? "myBooths.details.statusApproved"
-              : "myBooths.details.statusPending",
+              : boothStatus === "rejected"
+                ? "myBooths.details.statusRejected"
+                : "myBooths.details.statusPending",
           )}
         </span>
       </header>
@@ -70,15 +76,15 @@ export function BoothDetailsCard({ booth }: BoothDetailsCardProps) {
 
       <div className="booth-details-card__services">
         <h3>{t("myBooths.details.servicesBooked")}</h3>
-        {booth.services.length > 0 ? (
+        {services.length > 0 ? (
           <ul>
-            {booth.services.map((service) => (
+            {services.map((service, index) => (
               <li
                 aria-label={t("myBooths.details.serviceQuantity", {
                   name: service.name,
                   quantity: service.quantity,
                 })}
-                key={service.id}
+                key={`${service.id}-${index}`}
               >
                 {service.name}
               </li>

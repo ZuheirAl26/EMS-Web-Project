@@ -16,6 +16,7 @@ import type {
   ExhibitorService,
   ServiceFilterDraft,
 } from "./serviceType";
+import type { ExhibitorCompany } from "../../ExhibitorProfile/types/profileType";
 
 export interface BoothPlanShellProps {
   children: ReactNode;
@@ -85,12 +86,19 @@ export interface MediaUploadProps {
   accept: string;
   emptyLabel: string;
   errorMessage?: string;
-  file: File | null;
+  file?: File | null;
+  files?: File[];
   helpText: string;
   id: string;
+  limitReachedLabel?: string;
   label: string;
-  onFileChange: (file: File | null) => void;
+  maxFiles?: number;
+  onFileChange?: (file: File | null) => void;
+  onFilesChange?: (files: File[]) => void;
+  remotePreviewUrls?: string[];
+  removeFileAriaLabel?: (fileName: string) => string;
   required?: boolean;
+  selectedFilesLabel?: string;
   uploadedLabel: string;
   wide?: boolean;
 }
@@ -103,9 +111,11 @@ export interface CompanyDetailsFormProps {
 
 export interface CompanyMediaSectionProps {
   companyLogoError?: string;
+  existingCompany: ExhibitorCompany | null;
   onLogoAccepted: () => void;
 }
 
 export interface CompanyDirectoryProps {
+  onCompanySelected: (company: ExhibitorCompany) => void;
   onFieldChange: (field: keyof CompanyProfileDraft, value: string) => void;
 }

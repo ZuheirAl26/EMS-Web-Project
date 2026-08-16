@@ -103,6 +103,16 @@
     }
   }
 
+  &__company-empty-icon {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-primary-a30);
+    border-radius: var(--radius-round);
+    background: var(--color-primary-surface);
+    color: var(--color-primary);
+  }
   &__retry {
     min-height: 38px;
     padding: 8px 18px;

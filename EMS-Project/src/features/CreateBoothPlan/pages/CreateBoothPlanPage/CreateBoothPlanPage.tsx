@@ -29,7 +29,6 @@ export function CreateBoothPlanPage() {
     });
   }, []);
 
-  // 1. Pull filter state directly from Zustand store to preserve across step navigation
   const {
     draftFilters,
     filters,
@@ -44,7 +43,6 @@ export function CreateBoothPlanPage() {
     return isValidBoothId(boothId) ? boothId : null;
   }, [searchParams]);
 
-  // 2. Fetch booths using persistent filters
   const boothsQuery = useBooths(filters);
   const booths = boothsQuery.data?.data ?? [];
 

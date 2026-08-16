@@ -86,6 +86,40 @@
     background: var(--color-white);
   }
 
+  &__statistics-state {
+    min-height: 124px;
+    margin-bottom: 28px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--color-danger-border);
+    border-radius: var(--radius-2xl);
+    background: var(--color-danger-surface);
+    color: var(--color-danger-text);
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+
+    button {
+      min-height: 34px;
+      padding: 7px 14px;
+      border: 1px solid var(--color-danger-border);
+      border-radius: var(--radius-lg);
+      background: var(--color-white);
+      color: var(--color-danger-text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+
+      &:focus-visible {
+        outline: 3px solid var(--color-primary-a20);
+        outline-offset: 2px;
+      }
+    }
+  }
   &__state {
     flex-direction: column;
     gap: 10px;
@@ -118,45 +152,23 @@
   }
 
   &__empty {
+    flex-direction: column;
+    gap: 12px;
     text-align: center;
   }
-
-  &__pagination {
-    margin-top: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-
-    button {
-      width: 34px;
-      height: 34px;
-      padding: 0;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--color-neutral-200);
-      border-radius: var(--radius-lg);
-      background: var(--color-white);
-      color: var(--color-neutral-600);
-      cursor: pointer;
-
-      &:disabled {
-        cursor: not-allowed;
-        opacity: 0.45;
-      }
-    }
-
-    span {
-      color: var(--color-neutral-500);
-      font-size: 12px;
-      line-height: 18px;
-    }
+  &__empty-icon {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-primary-a30);
+    border-radius: var(--radius-round);
+    background: var(--color-primary-surface);
+    color: var(--color-primary);
   }
+
 }
 
-[dir="rtl"] .events-page__pagination button svg {
-  transform: scaleX(-1);
-}
 
 @media (max-width: 760px) {
   .events-page {

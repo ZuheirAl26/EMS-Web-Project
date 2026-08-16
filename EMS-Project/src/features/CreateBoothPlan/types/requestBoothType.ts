@@ -36,7 +36,7 @@ export interface RequestBoothResponse {
 
 export interface RequestBoothDraft {
   boothId: number | null;
-  boothBanner: File | null;
+  companyGallery: File[];
   companyLogo: File | null;
   companyProfile: CompanyProfileDraft;
   serviceQuantities: Record<number, number>;

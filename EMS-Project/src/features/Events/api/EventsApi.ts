@@ -3,17 +3,18 @@ import type {
   EventHallsResponse,
   EventRequestPayload,
   EventRequestResponse,
+  EventFilterStatus,
   EventsResponse,
   EventStatisticsResponse,
 } from "../types/eventType";
 
-export async function getEvents(page: number): Promise<EventsResponse> {
-  const response = await apiClient.get<EventsResponse>(
-    "/v1/exhibitor/events",
-    {
-      params: { page },
-    },
-  );
+export async function getEvents(
+  page: number,
+  status: EventFilterStatus | null,
+): Promise<EventsResponse> {
+  const response = await apiClient.get<EventsResponse>("/v1/exhibitor/events", {
+    params: status ? { page, "filter[status]": status } : { page },
+  });
   if (!response.data.status) {
     throw new Error(
       response.data.message || "The events could not be retrieved.",

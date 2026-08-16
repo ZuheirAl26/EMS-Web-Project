@@ -16,7 +16,7 @@ import { useExhibitorProfile } from "../hooks/useExhibitorProfile";
 import { getCompanyBoothSummary } from "../utils/profileUtils";
 import "./ExhibitorProfilePage.scss";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Edit02Icon } from "@hugeicons/core-free-icons";
+import { Briefcase01Icon, Edit02Icon } from "@hugeicons/core-free-icons";
 import { useCompanyLookup } from "../hooks/useCompanyLookup";
 
 export function ExhibitorProfilePage() {
@@ -45,12 +45,24 @@ export function ExhibitorProfilePage() {
     () => getCompanyBoothSummary(booths, activeCompanyId),
     [activeCompanyId, booths],
   );
+  const handleCompanyChange = (companyId: number) => {
+    if (companyId === activeCompanyId) {
+      return;
+    }
 
-  if (
-    exhibitorQuery.isPending ||
-    boothsQuery.isPending ||
-    companyLookupQuery.isPending
-  ) {
+    setSelectedCompanyId(companyId);
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  };
+  const company = companyQuery.data?.data.company ?? null;
+  const isCompanyLoading =
+    companyLookupQuery.isPending ||
+    (activeCompanyId !== null && companyQuery.isPending);
+  if (exhibitorQuery.isPending || isCompanyLoading) {
     return (
       <section aria-label={t("profile.aria")} className="exhibitor-profile">
         <header className="exhibitor-profile__intro">
@@ -64,11 +76,7 @@ export function ExhibitorProfilePage() {
     );
   }
 
-  if (
-    exhibitorQuery.isError ||
-    boothsQuery.isError ||
-    companyLookupQuery.isError
-  ) {
+  if (exhibitorQuery.isError) {
     return (
       <section className="exhibitor-profile exhibitor-profile--state">
         <EmptyState
@@ -79,8 +87,6 @@ export function ExhibitorProfilePage() {
           className="exhibitor-profile__retry"
           onClick={() => {
             void exhibitorQuery.refetch();
-            void boothsQuery.refetch();
-            void companyLookupQuery.refetch();
           }}
           type="button"
         >
@@ -116,50 +122,39 @@ export function ExhibitorProfilePage() {
         </button>
       </header>
 
-      {activeCompanyId === null ? (
-        <EmptyState
-          message={t("profile.noCompaniesMessage")}
-          title={t("profile.noCompaniesTitle")}
+      <div className="exhibitor-profile__layout">
+        <ProfileSidebarCard
+          boothSummary={boothSummary}
+          companies={companies}
+          company={company}
+          exhibitor={exhibitor}
+          onCompanyChange={handleCompanyChange}
+          selectedCompanyId={activeCompanyId}
         />
-      ) : companyQuery.isPending ? (
-        <ProfileSkeleton />
-      ) : companyQuery.isError ? (
-        <div className="exhibitor-profile__company-state">
-          <EmptyState
-            message={t("profile.companyErrorMessage")}
-            title={t("profile.companyErrorTitle")}
-          />
-          <button
-            className="exhibitor-profile__retry"
-            onClick={() => void companyQuery.refetch()}
-            type="button"
-          >
-            {t("profile.retry")}
-          </button>
+        <div className="exhibitor-profile__details">
+          <AccountInformation company={company} exhibitor={exhibitor} />
+          {company ? (
+            <>
+              <CompanyAboutCard company={company} />
+              <SocialLinksCard links={company.social_links} />
+              <CompanyMediaCard company={company} />
+            </>
+          ) : (
+            <div className="exhibitor-profile__company-state">
+              <span
+                aria-hidden="true"
+                className="exhibitor-profile__company-empty-icon"
+              >
+                <HugeiconsIcon icon={Briefcase01Icon} size={26} strokeWidth={1.7} />
+              </span>
+              <EmptyState
+                message={t("profile.noCompaniesMessage")}
+                title={t("profile.noCompaniesTitle")}
+              />
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="exhibitor-profile__layout">
-          <ProfileSidebarCard
-            boothSummary={boothSummary}
-            companies={companies}
-            company={companyQuery.data.data.company}
-            exhibitor={exhibitor}
-            onCompanyChange={setSelectedCompanyId}
-            selectedCompanyId={activeCompanyId}
-          />
-          <div className="exhibitor-profile__details">
-            <AccountInformation
-              company={companyQuery.data.data.company}
-              exhibitor={exhibitor}
-            />
-            <CompanyAboutCard company={companyQuery.data.data.company} />
-            <SocialLinksCard
-              links={companyQuery.data.data.company.social_links}
-            />
-            <CompanyMediaCard company={companyQuery.data.data.company} />
-          </div>
-        </div>
-      )}
+      </div>
 
       <EditProfileDialog
         exhibitor={exhibitor}

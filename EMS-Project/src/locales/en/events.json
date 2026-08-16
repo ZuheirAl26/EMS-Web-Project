@@ -10,7 +10,7 @@
     "aria": "Event request statistics",
     "total": "Total Events",
     "approved": "Approved",
-    "pending": "Pending Review",
+    "pending": "Pending",
     "rejected": "Rejected"
   },
   "status": {
@@ -62,6 +62,7 @@
     "aria": "Events pagination",
     "previous": "Previous page",
     "next": "Next page",
+    "page": "Page {{page}}",
     "summary": "Page {{current}} of {{total}}"
   },
   "request": {

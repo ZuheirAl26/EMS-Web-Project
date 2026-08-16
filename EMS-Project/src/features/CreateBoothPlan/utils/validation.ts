@@ -71,9 +71,10 @@ export function validateCompanyProfile(
   };
 }
 
+
+
 export function isValidLatitude(value: string): boolean {
   const coordinate = Number(value);
-
   return (
     value.trim() !== "" &&
     Number.isFinite(coordinate) &&
@@ -84,7 +85,6 @@ export function isValidLatitude(value: string): boolean {
 
 export function isValidLongitude(value: string): boolean {
   const coordinate = Number(value);
-
   return (
     value.trim() !== "" &&
     Number.isFinite(coordinate) &&
@@ -103,7 +103,6 @@ export function validateRequestBoothDraft(
   const requiredCompanyFields = [
     draft.companyProfile.companyName,
     draft.companyProfile.businessSector,
-    draft.companyProfile.companyLocation,
     draft.companyProfile.phoneNumber,
     draft.companyProfile.yearFounded,
     draft.companyProfile.description,

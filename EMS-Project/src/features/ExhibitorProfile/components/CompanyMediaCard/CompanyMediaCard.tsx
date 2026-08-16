@@ -1,5 +1,11 @@
-import { Image01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
+import {
+  ArrowLeft02Icon,
+  ArrowRight02Icon,
+  Image01Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { CompanyMediaCardProps } from "../../types/profileType";
 import {
@@ -14,6 +20,27 @@ export function CompanyMediaCard({ company }: CompanyMediaCardProps) {
   const { t } = useTranslation("dashboard");
   const logoUrl = resolveMediaUrl(company.logo);
   const galleryUrls = getGalleryUrls(company.gallery);
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
+  const resolvedGalleryIndex = Math.min(
+    activeGalleryIndex,
+    Math.max(galleryUrls.length - 1, 0),
+  );
+  const activeGalleryUrl = galleryUrls[resolvedGalleryIndex];
+  const hasMultipleGalleryImages = galleryUrls.length > 1;
+  const stackedGalleryUrl = hasMultipleGalleryImages
+    ? galleryUrls[(resolvedGalleryIndex + 1) % galleryUrls.length]
+    : null;
+  const showPreviousGalleryImage = () => {
+    setActiveGalleryIndex(
+      (currentIndex) =>
+        (currentIndex - 1 + galleryUrls.length) % galleryUrls.length,
+    );
+  };
+  const showNextGalleryImage = () => {
+    setActiveGalleryIndex(
+      (currentIndex) => (currentIndex + 1) % galleryUrls.length,
+    );
+  };
 
   return (
     <section className="profile-company-media">
@@ -46,15 +73,62 @@ export function CompanyMediaCard({ company }: CompanyMediaCardProps) {
 
         <article>
           <h3>{t("profile.media.gallery")}</h3>
-          {galleryUrls.length > 0 ? (
+          {activeGalleryUrl ? (
             <div className="profile-company-media__gallery">
-              {galleryUrls.map((url, index) => (
+              {stackedGalleryUrl ? (
                 <img
-                  alt={t("profile.media.galleryAlt", { index: index + 1 })}
-                  key={url}
-                  src={url}
+                  alt=""
+                  aria-hidden="true"
+                  className="profile-company-media__gallery-image profile-company-media__gallery-image--stacked"
+                  src={stackedGalleryUrl}
                 />
-              ))}
+              ) : null}
+              <img
+                alt={t("profile.media.galleryAlt", {
+                  index: resolvedGalleryIndex + 1,
+                })}
+                className="profile-company-media__gallery-image profile-company-media__gallery-image--active"
+                key={activeGalleryUrl}
+                src={activeGalleryUrl}
+              />
+              <div
+                aria-hidden="true"
+                className="profile-company-media__gallery-preload"
+              >
+                {galleryUrls.map((url) => (
+                  <img alt="" key={url} src={url} />
+                ))}
+              </div>
+              {hasMultipleGalleryImages ? (
+                <div className="profile-company-media__gallery-controls">
+                  <button
+                    aria-label={t("profile.media.previousImage")}
+                    className="profile-company-media__gallery-nav profile-company-media__gallery-nav--previous"
+                    onClick={showPreviousGalleryImage}
+                    type="button"
+                  >
+                    <HugeiconsIcon
+                      aria-hidden="true"
+                      icon={ArrowLeft02Icon}
+                      size={16}
+                      strokeWidth={2}
+                    />
+                  </button>
+                  <button
+                    aria-label={t("profile.media.nextImage")}
+                    className="profile-company-media__gallery-nav profile-company-media__gallery-nav--next"
+                    onClick={showNextGalleryImage}
+                    type="button"
+                  >
+                    <HugeiconsIcon
+                      aria-hidden="true"
+                      icon={ArrowRight02Icon}
+                      size={16}
+                      strokeWidth={2}
+                    />
+                  </button>
+                </div>
+              ) : null}
             </div>
           ) : (
             <div className="profile-company-media__empty">

@@ -7,14 +7,30 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
+import { downloadQrPng } from "../../MyBooths/utils/qrActions";
 import type { EventMetricsProps } from "../types/eventType";
 import { getEventQrUrl } from "../utils/eventUtils";
 
 export function EventMetrics({ event, numberFormatter }: EventMetricsProps) {
   const { t } = useTranslation("events");
   const [hasQrError, setHasQrError] = useState(false);
+  const [isDownloadingQr, setIsDownloadingQr] = useState(false);
   const qrUrl = getEventQrUrl(event);
   const canShowQr = Boolean(qrUrl) && !hasQrError;
+  const canDownloadQr = Boolean(event.qr_token);
+
+  const handleQrDownload = async () => {
+    if (!event.qr_token || isDownloadingQr) {
+      return;
+    }
+
+    setIsDownloadingQr(true);
+    try {
+      await downloadQrPng(event.qr_token, `event-${event.id}-qr.png`);
+    } finally {
+      setIsDownloadingQr(false);
+    }
+  };
 
   return (
     <section
@@ -47,19 +63,25 @@ export function EventMetrics({ event, numberFormatter }: EventMetricsProps) {
           <div>
             <h4>{t("metrics.qrToken")}</h4>
             <code>{event.qr_token || t("metrics.qrPending")}</code>
-            {canShowQr ? (
-              <a download href={qrUrl ?? undefined}>
-                <HugeiconsIcon
-                  aria-hidden="true"
-                  color="currentColor"
-                  icon={Download04Icon}
-                  size={13}
-                  strokeWidth={1.8}
-                />
-                {t("metrics.download")}
-              </a>
-            ) : null}
           </div>
+          {canDownloadQr ? (
+            <button
+              aria-label={t("metrics.download")}
+              className="event-metrics__qr-download"
+              disabled={isDownloadingQr}
+              onClick={() => void handleQrDownload()}
+              title={t("metrics.download")}
+              type="button"
+            >
+              <HugeiconsIcon
+                aria-hidden="true"
+                color="currentColor"
+                icon={Download04Icon}
+                size={16}
+                strokeWidth={1.8}
+              />
+            </button>
+          ) : null}
         </section>
 
         <dl>

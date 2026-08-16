@@ -1,16 +1,20 @@
 import { useState } from "react";
 import {
   Add01Icon,
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
+  CancelCircleIcon,
+  CheckmarkCircle02Icon,
+  Clock01Icon,
+  Store01Icon,
+  Tick02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { EmptyState } from "../../../components";
+import { EmptyState, Pagination } from "../../../components";
 import { usePrefetchBooths } from "../../CreateBoothPlan/hooks/usePrefetchBooths";
 import { useMyBooths } from "../hooks/useMyBooths";
 import type { MyBoothsLocationState } from "../types/navigationType";
+import type { MyBoothStatus } from "../types/myBoothsType";
 import "./MyBoothsPage.scss";
 import { MyBoothCard, MyBoothsSkeleton } from "../components";
 
@@ -18,12 +22,29 @@ export function MyBoothsPage() {
   const { t } = useTranslation("dashboard");
   const location = useLocation();
   const [page, setPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState<MyBoothStatus | null>(null);
   const prefetchBooths = usePrefetchBooths();
-  const myBoothsQuery = useMyBooths(page);
+  const myBoothsQuery = useMyBooths(page, statusFilter);
   const requestMessage = (location.state as MyBoothsLocationState | null)
     ?.requestMessage;
   const pagination = myBoothsQuery.data?.data;
   const booths = pagination?.data ?? [];
+  const visibleBooths = booths.filter((booth) => booth.status !== null);
+  const filterCards = [
+    { icon: Store01Icon, key: "all", status: null },
+    { icon: Clock01Icon, key: "pending", status: "pending" },
+    { icon: CheckmarkCircle02Icon, key: "approved", status: "approved" },
+    { icon: CancelCircleIcon, key: "rejected", status: "rejected" },
+  ] as const;
+
+  const handleStatusFilterChange = (nextStatus: MyBoothStatus | null) => {
+    if (nextStatus === statusFilter) {
+      return;
+    }
+
+    setStatusFilter(nextStatus);
+    setPage(1);
+  };
 
   return (
     <section className="my-booths" aria-label={t("myBooths.aria")}>
@@ -50,6 +71,49 @@ export function MyBoothsPage() {
         </Link>
       </header>
 
+      <div
+        aria-label={t("myBooths.filters.label")}
+        className="my-booths__filters"
+        role="group"
+      >
+        {filterCards.map((filter) => {
+          const isSelected = statusFilter === filter.status;
+
+          return (
+            <button
+              aria-pressed={isSelected}
+              className={`my-booths__filter-card my-booths__filter-card--${filter.key}`}
+              key={filter.key}
+              onClick={() => handleStatusFilterChange(filter.status)}
+              type="button"
+            >
+              <span className="my-booths__filter-content">
+                <span className="my-booths__filter-icon" aria-hidden="true">
+                  <HugeiconsIcon
+                    icon={filter.icon}
+                    size={18}
+                    strokeWidth={1.8}
+                  />
+                </span>
+                <span className="my-booths__filter-copy">
+                  <strong>{t(`myBooths.filters.${filter.key}`)}</strong>
+                  <small>{t(`myBooths.filters.descriptions.${filter.key}`)}</small>
+                </span>
+              </span>
+              {isSelected ? (
+                <HugeiconsIcon
+                  aria-hidden="true"
+                  className="my-booths__filter-selected"
+                  icon={Tick02Icon}
+                  size={16}
+                  strokeWidth={2}
+                />
+              ) : null}
+            </button>
+          );
+        })}
+      </div>
+
       {requestMessage ? (
         <p className="my-booths__success" role="status">
           {requestMessage}
@@ -66,8 +130,11 @@ export function MyBoothsPage() {
             {t("myBooths.retry")}
           </button>
         </div>
-      ) : booths.length === 0 ? (
+      ) : visibleBooths.length === 0 ? (
         <div className="my-booths__empty">
+          <span aria-hidden="true" className="my-booths__empty-icon">
+            <HugeiconsIcon icon={Store01Icon} size={26} strokeWidth={1.7} />
+          </span>
           <EmptyState
             message={t("myBooths.emptyMessage")}
             title={t("myBooths.emptyTitle")}
@@ -75,55 +142,25 @@ export function MyBoothsPage() {
         </div>
       ) : (
         <div className="my-booths__list">
-          {booths.map((booth) => (
+          {visibleBooths.map((booth) => (
             <MyBoothCard booth={booth} key={booth.id} />
           ))}
         </div>
       )}
 
-      {pagination && pagination.last_page > 1 ? (
-        <nav
-          aria-label={t("myBooths.pagination.aria")}
-          className="my-booths__pagination"
-        >
-          <button
-            aria-label={t("myBooths.pagination.previous")}
-            disabled={pagination.current_page <= 1 || myBoothsQuery.isFetching}
-            onClick={() => setPage((currentPage) => currentPage - 1)}
-            type="button"
-          >
-            <HugeiconsIcon
-              aria-hidden="true"
-              color="currentColor"
-              icon={ArrowLeft01Icon}
-              size={16}
-              strokeWidth={1.8}
-            />
-          </button>
-          <span>
-            {t("myBooths.pagination.summary", {
-              current: pagination.current_page,
-              total: pagination.last_page,
-            })}
-          </span>
-          <button
-            aria-label={t("myBooths.pagination.next")}
-            disabled={
-              pagination.current_page >= pagination.last_page ||
-              myBoothsQuery.isFetching
-            }
-            onClick={() => setPage((currentPage) => currentPage + 1)}
-            type="button"
-          >
-            <HugeiconsIcon
-              aria-hidden="true"
-              color="currentColor"
-              icon={ArrowRight01Icon}
-              size={16}
-              strokeWidth={1.8}
-            />
-          </button>
-        </nav>
+      {pagination ? (
+        <Pagination
+          currentPage={pagination.current_page}
+          isFetching={myBoothsQuery.isFetching}
+          labels={{
+            ariaLabel: t("myBooths.pagination.aria"),
+            nextLabel: t("myBooths.pagination.next"),
+            pageLabel: (page) => t("myBooths.pagination.page", { page }),
+            previousLabel: t("myBooths.pagination.previous"),
+          }}
+          onPageChange={setPage}
+          totalPages={pagination.last_page}
+        />
       ) : null}
     </section>
   );

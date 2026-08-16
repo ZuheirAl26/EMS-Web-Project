@@ -1,77 +1,99 @@
-import { apiClient } from "../../../api/ApiClient";
+import QRCode from "qrcode";
 
-async function getQrImageBlob(qrUrl: string) {
-  const response = await apiClient.get<Blob>(qrUrl, {
-    responseType: "blob",
-  });
+const QR_SCAN_BASE_URL =
+  import.meta.env.VITE_QR_SCAN_BASE_URL ?? "https://localhost:8000";
 
-  return response.data;
+const QR_OPTIONS = {
+  errorCorrectionLevel: "M" as const,
+  margin: 2,
+  width: 1024,
+  color: {
+    dark: "#0a8782",
+    light: "#ffffff",
+  },
+};
+
+function createQrPayload(qrToken: string) {
+  return new URL(
+    `/scan/${encodeURIComponent(qrToken)}`,
+    QR_SCAN_BASE_URL,
+  ).toString();
 }
 
-export async function downloadQrImage(qrUrl: string, filename: string) {
-  const blob = await getQrImageBlob(qrUrl);
-  const objectUrl = URL.createObjectURL(blob);
-  const link = document.createElement("a");
+export function resolveQrImageUrl(qrUrl: string) {
+  if (/^(https?:|data:|blob:)/i.test(qrUrl)) {
+    return qrUrl;
+  }
 
-  link.href = objectUrl;
+  try {
+    return new URL(qrUrl, import.meta.env.VITE_API_URL).toString();
+  } catch {
+    return qrUrl;
+  }
+}
+
+async function createQrPngDataUrl(qrToken: string) {
+  return QRCode.toDataURL(createQrPayload(qrToken), QR_OPTIONS);
+}
+
+export async function downloadQrPng(qrToken: string, filename: string) {
+  const pngDataUrl = await createQrPngDataUrl(qrToken);
+  const link = document.createElement("a");
+  link.href = pngDataUrl;
   link.download = filename;
+  link.style.display = "none";
   document.body.append(link);
   link.click();
   link.remove();
-  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
 }
 
-export async function printQrImage(qrUrl: string, documentTitle: string) {
-  const printWindow = window.open("", "_blank", "width=720,height=720");
-
+export async function printQrPng(qrToken: string, boothNumber: string) {
+  const printWindow = window.open("", "_blank");
   if (!printWindow) {
     throw new Error("The print window could not be opened.");
   }
 
   try {
-    const blob = await getQrImageBlob(qrUrl);
-    const objectUrl = URL.createObjectURL(blob);
+    const pngDataUrl = await createQrPngDataUrl(qrToken);
     const printDocument = printWindow.document;
     const style = printDocument.createElement("style");
+    const content = printDocument.createElement("main");
+    const title = printDocument.createElement("h1");
+    const subtitle = printDocument.createElement("p");
     const image = printDocument.createElement("img");
 
-    printDocument.title = documentTitle;
+    printDocument.title = `Booth ${boothNumber} QR`;
     style.textContent = `
-      @page { margin: 20mm; }
-      body { min-height: 100vh; margin: 0; display: grid; place-items: center; }
-      img { width: min(100%, 520px); height: auto; }
+      @page { margin: 0; }
+      * { box-sizing: border-box; }
+      body { width: 100vw; min-height: 100vh; margin: 0; background: #ffffff; color: #111827; font-family: Inter, Arial, sans-serif; }
+      main { min-height: 100vh; padding: 22mm; display: grid; align-content: center; justify-items: center; gap: 16px; text-align: center; }
+      h1 { margin: 0; font-size: 28px; line-height: 1.25; }
+      p { margin: 0; color: #64748b; font-size: 16px; }
+      img { width: min(76vw, 180mm); height: auto; display: block; }
     `;
+    title.textContent = `Booth ${boothNumber}`;
+    subtitle.textContent = "Scan QR code";
+    image.alt = `Booth ${boothNumber} QR code`;
+    image.src = pngDataUrl;
+
+    content.append(title, subtitle, image);
     printDocument.head.append(style);
-    image.alt = documentTitle;
-    image.src = objectUrl;
-    printDocument.body.append(image);
+    printDocument.body.append(content);
 
-    const cleanup = () => {
-      URL.revokeObjectURL(objectUrl);
-      printWindow.close();
-    };
-
-    printWindow.addEventListener("afterprint", cleanup, { once: true });
-
-    await new Promise<void>((resolve, reject) => {
-      image.addEventListener(
-        "load",
-        () => {
-          printWindow.focus();
-          printWindow.print();
-          resolve();
-        },
-        { once: true },
-      );
-      image.addEventListener(
-        "error",
-        () => {
-          cleanup();
-          reject(new Error("The QR image could not be loaded."));
-        },
-        { once: true },
-      );
-    });
+    image.addEventListener(
+      "load",
+      () => {
+        printWindow.focus();
+        printWindow.print();
+      },
+      { once: true },
+    );
+    printWindow.addEventListener(
+      "afterprint",
+      () => printWindow.close(),
+      { once: true },
+    );
   } catch (error) {
     printWindow.close();
     throw error;
