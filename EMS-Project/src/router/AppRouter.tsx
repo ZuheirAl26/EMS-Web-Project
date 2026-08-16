@@ -16,8 +16,8 @@ import {
 } from "../features/CreateBoothPlan/pages";
 import { MyBoothsPage } from "../features/MyBooths/pages";
 import { ExhibitorProfilePage } from "../features/ExhibitorProfile/pages";
-import { EventsPage } from "../features/Events/pages";
 import { InvitePage } from "../features/Invite/pages/InvitePage";
+import { EventRequestPage, EventsPage } from "../features/Events/pages";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { ProtectedRoute } from "./guards";
 
@@ -60,6 +60,10 @@ export const AppRouter = () => {
           <Route
             path="/dashboard/booths/create/review"
             element={<ReviewSubmitPage />}
+          />
+          <Route
+            path="/dashboard/events/request"
+            element={<EventRequestPage />}
           />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="booths" element={<MyBoothsPage />} />

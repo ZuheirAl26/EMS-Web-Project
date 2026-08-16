@@ -144,7 +144,7 @@
     font: inherit;
     text-align: start;
     cursor: pointer;
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-sm);
     transition:
       border-color 160ms ease,
       box-shadow 160ms ease,
@@ -152,7 +152,8 @@
 
     &:hover {
       border-color: var(--color-primary-a30);
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-xl-strong);
+      transform: translateY(-4px);
     }
 
     &:active {

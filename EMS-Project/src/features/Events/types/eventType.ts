@@ -93,3 +93,41 @@ export type EventStatusTranslationKey =
   | "status.pending"
   | "status.rejected"
   | "status.other";
+
+export type EventType = "conference" | "workshop" | "lecture" | "other";
+
+export interface EventHall {
+  id: number;
+  number: string;
+  svg_id: string;
+  area: number;
+  price_per_hour: string;
+}
+
+export interface EventHallsResponse {
+  status: boolean;
+  message: string;
+  data: EventHall[];
+}
+
+export interface EventRequestSpeaker {
+  name: string;
+}
+
+export interface EventRequestPayload {
+  event_hall_id: number;
+  company_id?: string | null;
+  type: EventType;
+  title: string;
+  description: string;
+  start_at: string;
+  duration: number;
+  logo?: File | null;
+  speakers: EventRequestSpeaker[];
+}
+
+export interface EventRequestResponse {
+  status: boolean;
+  message: string;
+  data?: ExhibitorEvent;
+}

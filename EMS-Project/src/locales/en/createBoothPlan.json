@@ -18,7 +18,7 @@
     "selectedLabel": "Selected booth",
     "area": "Area",
     "price": "Price",
-    "svgId": "SVG ID",
+    "svgId": "Booth number",
     "continue": "Continue",
     "nextStepPending": "The booth is selected. Send the services and reservation endpoints to connect the next step.",
     "ready": "{{number}} is selected and ready to continue."
