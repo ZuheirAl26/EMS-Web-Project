@@ -22,6 +22,7 @@ import type {
   EventType,
 } from "../../types/eventType";
 import { getApiErrorMessage } from "../../../../utils/apiError";
+import { EventDetailsSkeleton, EventHallSelectionSkeleton } from "./EventRequestSkeletons";
 import "./EventRequestPage.scss";
 
 type FormErrors = Partial<Record<"title" | "description" | "startAt" | "duration" | "speakers" | "logo", string>>;
@@ -78,6 +79,14 @@ export function EventRequestPage() {
       }),
     [locale],
   );
+
+  const minStartAt = useMemo(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}T00:00`;
+  }, []);
 
   const selectHall = (hall: EventHall) => {
     setSelectedHallId(hall.id);
@@ -197,7 +206,9 @@ export function EventRequestPage() {
             <p>{t("request.selectDescription")}</p>
           </div>
 
-          {eventHallsQuery.isPending ? <p className="event-request-page__state">{t("request.loadingHalls")}</p> : null}
+          {eventHallsQuery.isPending ? (
+            <EventHallSelectionSkeleton loadingLabel={t("request.loadingHalls")} />
+          ) : null}
           {eventHallsQuery.isError ? (
             <div className="event-request-page__state event-request-page__state--error" role="alert">
               <strong>{t("request.hallsErrorTitle")}</strong>
@@ -273,11 +284,12 @@ export function EventRequestPage() {
             </button>
           </footer>
         </section>
+      ) : companiesQuery.isPending ? (
+        <EventDetailsSkeleton loadingLabel={t("request.loadingDetails")} />
       ) : (
         <section className="event-request-page__card event-request-page__card--details" aria-labelledby="event-details-title">
           <div className="event-request-page__intro">
-            <span>{t("request.stepTwo")}</span>
-            <h1 id="event-details-title">{t("request.detailsTitle")}</h1>
+              <h1 id="event-details-title">{t("request.detailsTitle")}</h1>
             <p>{t("request.detailsDescription")}</p>
           </div>
 
@@ -312,14 +324,14 @@ export function EventRequestPage() {
               <label className={errors.startAt ? "event-request-page__field event-request-page__field--error" : "event-request-page__field"}>
                 <span>{t("request.fields.startAt")}<em>*</em></span>
                 <div className="event-request-page__date-time">
-          <input type="datetime-local" value={startAt} onChange={(event) => setStartAt(event.target.value)} />
+          <input min={minStartAt} type="datetime-local" value={startAt} onChange={(event) => setStartAt(event.target.value)} />
           <HugeiconsIcon aria-hidden="true" className="event-request-page__date-time-icon" icon={Calendar03Icon} size={18} strokeWidth={1.8} />
         </div>
                 {errors.startAt ? <small>{errors.startAt}</small> : null}
               </label>
               <label className={errors.duration ? "event-request-page__field event-request-page__field--error" : "event-request-page__field"}>
                 <span>{t("request.fields.duration")}<em>*</em></span>
-                <input inputMode="decimal" max="4" min="1" step="0.5" type="number" value={duration} onChange={(event) => setDuration(event.target.value)} placeholder={t("request.placeholders.duration")} />
+                <input className="event-request-page__duration-input" inputMode="numeric" max="4" min="1" step="1" type="number" value={duration} onChange={(event) => setDuration(event.target.value)} placeholder={t("request.placeholders.duration")} />
                 {errors.duration ? <small>{errors.duration}</small> : null}
               </label>
               <label className={errors.logo ? "event-request-page__field event-request-page__field--error" : "event-request-page__field"}>

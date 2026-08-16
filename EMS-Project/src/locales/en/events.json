@@ -77,6 +77,7 @@
     "selectTitle": "Choose an event hall",
     "selectDescription": "Select the hall where you would like to host your event.",
     "loadingHalls": "Loading event halls…",
+    "loadingDetails": "Loading event details…",
     "hallsErrorTitle": "Unable to load event halls",
     "hallsError": "Please check the connection and try again.",
     "retry": "Retry",
@@ -94,7 +95,7 @@
     "selectedHallLabel": "Selected hall",
     "areaLabel": "Area",
     "priceLabel": "Price per hour",
-    "svgIdLabel": "SVG ID",
+    "svgIdLabel": "Event hall number",
     "changeHall": "Change hall",
     "fields": {
       "title": "Event title",
