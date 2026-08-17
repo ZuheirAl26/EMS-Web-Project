@@ -211,6 +211,8 @@
       text-decoration: none;
       transition: all 0.15s ease;
 
+      margin: 0 auto;
+
       &:hover {
         background: var(--color-primary-surface, #eff6ff);
         color: var(--color-primary);
@@ -221,6 +223,10 @@
 
     .text-end {
       text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
     }
   }
 

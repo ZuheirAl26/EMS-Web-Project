@@ -81,12 +81,12 @@ export function ReviewsTable({
         <table className="reviews-table">
           <thead>
             <tr>
-              <th>{t("reviews.table.visitor", "Visitor Name")}</th>
-              <th>{t("reviews.table.phone", "Phone Number")}</th>
-              <th>{t("reviews.table.rating", "Rating")}</th>
-              <th>{t("reviews.table.comment", "Comment")}</th>
-              <th>{t("reviews.table.date", "Date")}</th>
-              <th className="text-end">{t("reviews.table.contact", "Contact")}</th>
+              <th className="text-center">{t("reviews.table.visitor", "Visitor Name")}</th>
+              <th className="text-center">{t("reviews.table.phone", "Phone Number")}</th>
+              <th className="text-center">{t("reviews.table.rating", "Rating")}</th>
+              <th className="text-center">{t("reviews.table.comment", "Comment")}</th>
+              <th className="text-center">{t("reviews.table.date", "Date")}</th>
+              <th className="text-center">{t("reviews.table.contact", "Contact")}</th>
             </tr>
           </thead>
           <tbody>
@@ -118,7 +118,7 @@ export function ReviewsTable({
                 return (
                   <tr key={review.id} className={isExpanded ? "row-expanded" : ""}>
                     {/* Visitor Column */}
-                    <td>
+                    <td className="text-center">
                       <div className="visitor-cell">
                         <div className="avatar-box">
                           {avatarSrc ? (
@@ -150,14 +150,14 @@ export function ReviewsTable({
                     </td>
 
                     {/* Phone Column */}
-                    <td>
+                    <td className="text-center">
                       <span className="phone-text">
                         {review.user.phone || "-"}
                       </span>
                     </td>
 
                     {/* Rating Column */}
-                    <td>
+                    <td className="text-center">
                       <div className="rating-badge">
                         <HugeiconsIcon
                           icon={StarIcon}
@@ -170,7 +170,7 @@ export function ReviewsTable({
                     </td>
 
                     {/* Comment Snippet Column */}
-                    <td>
+                    <td className="text-center">
                       {hasComment ? (
                         <button
                           type="button"
@@ -192,14 +192,14 @@ export function ReviewsTable({
                     </td>
 
                     {/* Date Column */}
-                    <td>
+                    <td className="text-center">
                       <span className="date-text">
                         {formatDate(review.created_at)}
                       </span>
                     </td>
 
                     {/* Actions Column (Email / Message) */}
-                    <td className="text-end">
+                    <td className="text-center">
                       <a
                         href={`mailto:${review.user.email}`}
                         className="action-btn email-btn"
