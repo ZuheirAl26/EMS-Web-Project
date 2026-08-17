@@ -233,5 +233,47 @@
       "nextImage": "صورة المعرض التالية",
       "imagePosition": "الصورة {{current}} من {{total}}"
     }
+  },
+  "reviews": {
+    "header": {
+      "title": "آراء وتقييمات الزوار",
+      "subtitle": "متابعة آراء وتقييمات وملاحظات زوار جناحك المعرضي.",
+      "typeEvent": "تقييمات الفعالية",
+      "typeBooth": "تقييمات الجناح",
+      "booth": "جناح",
+      "selectTarget": "اختر الهدف...",
+      "export": "تصدير",
+      "exportTitle": "تصدير التقييمات المحددة إلى ملف Excel"
+    },
+    "stats": {
+      "totalReviews": "إجمالي التقييمات",
+      "avgRating": "متوسط التقييم",
+      "highInterest": "اهتمام عالٍ",
+      "showAll": "عرض جميع التقييمات",
+      "filterAvg": "تصفية بـ {{rating}}★ نجوم",
+      "filterFiveStar": "تصفية بتقييم 5 نجوم",
+      "allActive": "الكل",
+      "filterSuffix": "فلتر"
+    },
+    "table": {
+      "visitor": "اسم الزائر",
+      "phone": "رقم الهاتف",
+      "rating": "التقييم",
+      "comment": "التعليق",
+      "date": "التاريخ",
+      "contact": "التواصل",
+      "loading": "جارٍ تحميل التقييمات...",
+      "empty": "لا توجد تقييمات متاحة لهذا التحديد.",
+      "noComment": "لا يوجد تعليق",
+      "noCommentText": "لم يتم تقديم تعليق.",
+      "hideComment": "إخفاء التعليق",
+      "viewComment": "عرض التعليق",
+      "sendMessage": "إرسال بريد إلكتروني للزائر",
+      "commentLabel": "التعليق"
+    },
+    "error": {
+      "title": "تعذر تحميل التقييمات",
+      "message": "حدثت مشكلة أثناء استعادة آراء الزوار. يرجى المحاولة مرة أخرى."
+    }
   }
 }

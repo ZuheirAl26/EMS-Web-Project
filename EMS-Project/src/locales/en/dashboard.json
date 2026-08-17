@@ -265,5 +265,47 @@
         "errorMsg": "We couldn't send the reset link. Please try again."
       }
     }
+  },
+  "reviews": {
+    "header": {
+      "title": "Visitors & Reviews",
+      "subtitle": "Monitor visitor feedback, ratings, and comments for your pavilion.",
+      "typeEvent": "Event Reviews",
+      "typeBooth": "Booth Reviews",
+      "booth": "Booth",
+      "selectTarget": "Select target...",
+      "export": "Export",
+      "exportTitle": "Export current filtered reviews to Excel"
+    },
+    "stats": {
+      "totalReviews": "Total Reviews",
+      "avgRating": "Avg Rating",
+      "highInterest": "High Interest",
+      "showAll": "Show all reviews",
+      "filterAvg": "Filter by {{rating}}★ rating",
+      "filterFiveStar": "Filter by 5★ ratings",
+      "allActive": "All",
+      "filterSuffix": "Filter"
+    },
+    "table": {
+      "visitor": "Visitor Name",
+      "phone": "Phone Number",
+      "rating": "Rating",
+      "comment": "Comment",
+      "date": "Date",
+      "contact": "Contact",
+      "loading": "Loading reviews...",
+      "empty": "No reviews available for this selection.",
+      "noComment": "No comment",
+      "noCommentText": "No comment provided.",
+      "hideComment": "Hide Comment",
+      "viewComment": "View Comment",
+      "sendMessage": "Send email to visitor",
+      "commentLabel": "Comment"
+    },
+    "error": {
+      "title": "Failed to Load Reviews",
+      "message": "We encountered an issue retrieving visitor feedback. Please try again."
+    }
   }
 }
