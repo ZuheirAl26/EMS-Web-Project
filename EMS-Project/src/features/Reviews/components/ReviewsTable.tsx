@@ -86,7 +86,7 @@ export function ReviewsTable({
               <th>{t("reviews.table.rating", "Rating")}</th>
               <th>{t("reviews.table.comment", "Comment")}</th>
               <th>{t("reviews.table.date", "Date")}</th>
-              <th className="text-end">{t("reviews.table.actions", "Action")}</th>
+              <th className="text-end">{t("reviews.table.contact", "Contact")}</th>
             </tr>
           </thead>
           <tbody>
