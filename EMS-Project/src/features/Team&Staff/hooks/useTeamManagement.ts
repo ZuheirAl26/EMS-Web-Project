@@ -8,7 +8,6 @@ import {
   inviteCompanyManagerApi,
   inviteBoothManagerApi,
   deleteInvitationApi,
-  type DeleteInvitationParams,
 } from "../api/teamApi";
 import { getApiErrorMessage } from "../../../utils/apiError";
 import { getCompanyLookup } from "../../ExhibitorProfile/api/ProfileApi";
@@ -132,7 +131,8 @@ export function useTeamManagement() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (params: DeleteInvitationParams) => deleteInvitationApi(params),
+    mutationFn: (invitation: string | number) =>
+      deleteInvitationApi(invitation),
     onSuccess: () => {
       invitationsQuery.refetch();
       setFormError(null);
@@ -194,8 +194,8 @@ export function useTeamManagement() {
     }
   };
 
-  const handleDeleteInvitation = (params: DeleteInvitationParams) => {
-    deleteMutation.mutate(params);
+  const handleDeleteInvitation = (invitation: string | number) => {
+    deleteMutation.mutate(invitation);
   };
 
   const rawInvitations = invitationsQuery.data;

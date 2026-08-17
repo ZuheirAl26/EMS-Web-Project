@@ -156,21 +156,15 @@ export default function CurrentTeamList({
         onCancel={() => setInvitationToDelete(null)}
         onConfirm={() => {
           if (invitationToDelete) {
-            const scopeParts = selectedScopeKey.split(":");
-            const scopeType =
-              (invitationToDelete.type as "company" | "booth") ||
-              (scopeParts[0] as "company" | "booth");
-            const entityId = Number(scopeParts[1]);
-            const targetId =
+            const token =
               invitationToDelete.invitation ||
               invitationToDelete.token ||
-              invitationToDelete.id;
+              invitationToDelete.invitation_token ||
+              invitationToDelete.code ||
+              invitationToDelete.uuid ||
+              String(invitationToDelete.id);
 
-            handleDeleteInvitation({
-              id: targetId,
-              type: scopeType,
-              entityId: entityId || undefined,
-            });
+            handleDeleteInvitation(token);
             setInvitationToDelete(null);
           }
         }}

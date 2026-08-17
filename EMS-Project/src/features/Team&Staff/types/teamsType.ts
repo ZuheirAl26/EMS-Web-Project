@@ -21,6 +21,9 @@ export interface TeamInvitation {
   status: string;
   invitation?: string;
   token?: string;
+  invitation_token?: string;
+  code?: string;
+  uuid?: string;
   is_user_exists?: boolean;
   expires_at?: string;
   is_expired?: boolean;

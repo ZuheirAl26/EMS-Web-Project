@@ -60,59 +60,11 @@ export const inviteBoothManagerApi = async (
   return data;
 };
 
-export interface DeleteInvitationParams {
-  id: number | string;
-  type?: "company" | "booth";
-  entityId?: number;
-}
-
 export const deleteInvitationApi = async (
-  params: DeleteInvitationParams,
+  invitation: string | number,
 ): Promise<ApiResponse<null>> => {
-  const { id, type, entityId } = params;
-
-  if (type === "company" && entityId) {
-    try {
-      const { data } = await apiClient.delete<ApiResponse<null>>(
-        `/v1/exhibitor/companies/${entityId}/invitations/${id}`,
-      );
-      return data;
-    } catch (err: unknown) {
-      if (
-        !(
-          typeof err === "object" &&
-          err !== null &&
-          "response" in err &&
-          (err as { response?: { status?: number } }).response?.status === 404
-        )
-      ) {
-        throw err;
-      }
-    }
-  }
-
-  if (type === "booth" && entityId) {
-    try {
-      const { data } = await apiClient.delete<ApiResponse<null>>(
-        `/v1/exhibitor/booth/${entityId}/invitations/${id}`,
-      );
-      return data;
-    } catch (err: unknown) {
-      if (
-        !(
-          typeof err === "object" &&
-          err !== null &&
-          "response" in err &&
-          (err as { response?: { status?: number } }).response?.status === 404
-        )
-      ) {
-        throw err;
-      }
-    }
-  }
-
   const { data } = await apiClient.delete<ApiResponse<null>>(
-    `/v1/exhibitor/invitations/${id}`,
+    `/v1/exhibitor/invitations/${invitation}`,
   );
   return data;
 };
