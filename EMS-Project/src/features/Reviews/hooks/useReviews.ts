@@ -9,6 +9,7 @@ import {
 import { getBoothLookupApi } from "../../Team&Staff/api/teamApi";
 import type { LookupEntity } from "../../Team&Staff/types/teamsType";
 import type { ReviewTargetType } from "../types/reviewsType";
+import { exportReviewsToXlsx } from "../utils/exportReviews";
 
 export const reviewKeys = {
   all: ["reviews"] as const,
@@ -109,7 +110,7 @@ export function useReviews() {
   const isPageLoading =
     eventsLookupQuery.isLoading || boothsLookupQuery.isLoading;
 
-  const isReviewsLoading = reviewsQuery.isLoading;
+  const isReviewsLoading = reviewsQuery.isLoading || reviewsQuery.isFetching;
 
   const statistics = reviewsQuery.data?.statistics || {
     total_reviews: 0,
@@ -127,6 +128,17 @@ export function useReviews() {
         last_page: reviewsData.last_page,
       }
     : null;
+
+  const handleExport = () => {
+    const selectedEntity = activeLookupList.find(
+      (item) => Number(item.id) === Number(activeEntityId),
+    );
+    const targetTitle =
+      selectedEntity?.label ||
+      selectedEntity?.name ||
+      `${targetType}_${activeEntityId}`;
+    exportReviewsToXlsx(reviewsList, targetTitle, ratingFilter);
+  };
 
   return {
     targetType,
@@ -147,6 +159,7 @@ export function useReviews() {
     isReviewsLoading,
     isError: reviewsQuery.isError,
     refetch: reviewsQuery.refetch,
+    handleExport,
     t,
   };
 }

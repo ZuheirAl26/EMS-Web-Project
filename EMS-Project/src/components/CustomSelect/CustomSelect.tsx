@@ -6,6 +6,7 @@ import "./CustomSelect.scss";
 export interface SelectOption<T = string | number> {
   value: T;
   label: string;
+  icon?: React.ReactNode;
 }
 
 export interface CustomSelectProps<T = string | number> {
@@ -16,6 +17,7 @@ export interface CustomSelectProps<T = string | number> {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  icon?: React.ReactNode;
 }
 
 export function CustomSelect<T extends string | number>({
@@ -26,6 +28,7 @@ export function CustomSelect<T extends string | number>({
   placeholder = "Select...",
   disabled = false,
   className = "",
+  icon,
 }: CustomSelectProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -58,14 +61,25 @@ export function CustomSelect<T extends string | number>({
         disabled={disabled}
         aria-expanded={isOpen}
       >
-        <span className={`trigger-label ${!selectedOption ? "placeholder" : ""}`}>
-          {selectedOption ? selectedOption.label : placeholder}
-        </span>
-        <HugeiconsIcon
-          icon={ArrowDown01Icon}
-          size={18}
-          className={`chevron-icon ${isOpen ? "rotate" : ""}`}
-        />
+        <div className="trigger-content">
+          {(selectedOption?.icon || icon) && (
+            <span className="trigger-icon">
+              {selectedOption?.icon || icon}
+            </span>
+          )}
+          <span
+            className={`trigger-label ${!selectedOption ? "placeholder" : ""}`}
+          >
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
+        </div>
+        <div className="chevron-wrapper">
+          <HugeiconsIcon
+            icon={ArrowDown01Icon}
+            size={16}
+            className={`chevron-icon ${isOpen ? "rotate" : ""}`}
+          />
+        </div>
       </button>
 
       {isOpen && (
@@ -85,7 +99,10 @@ export function CustomSelect<T extends string | number>({
                     setIsOpen(false);
                   }}
                 >
-                  <span>{item.label}</span>
+                  <div className="option-content">
+                    {item.icon && <span className="option-icon">{item.icon}</span>}
+                    <span>{item.label}</span>
+                  </div>
                   {isSelected && (
                     <HugeiconsIcon
                       icon={Tick01Icon}

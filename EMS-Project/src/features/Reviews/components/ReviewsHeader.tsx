@@ -15,6 +15,8 @@ export function ReviewsHeader({
   selectedEntityId,
   handleEntityChange,
   activeLookupList,
+  handleExport,
+  reviewsList,
 }: ReviewsHeaderProps) {
   const { t } = useTranslation();
   const targetTypeOptions: SelectOption<string>[] = [
@@ -68,12 +70,13 @@ export function ReviewsHeader({
           )}
         </div>
 
-        {/* Export Button (Useless UI per request) */}
+        {/* Primary Export Button */}
         <button
           type="button"
           className="reviews-header__export-btn"
-          title={t("reviews.header.exportDisabled", "Export report")}
-          onClick={(e) => e.preventDefault()}
+          title={t("reviews.header.exportTitle", "Export current filtered reviews to Excel")}
+          onClick={() => handleExport()}
+          disabled={!reviewsList || reviewsList.length === 0}
         >
           <HugeiconsIcon icon={Download01Icon} size={18} />
           <span>{t("reviews.header.export", "Export")}</span>
