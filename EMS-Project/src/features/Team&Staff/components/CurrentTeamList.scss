@@ -1,30 +1,43 @@
 .card.team-list-card {
   background: var(--color-bg-white);
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 24px;
   box-shadow: var(--shadow-xs);
 
   .card-header {
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+
     h2 {
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--color-text-main);
+      margin: 0;
+    }
+
+    .scope-select-wrapper {
+      min-width: 180px;
+      max-width: 240px;
     }
   }
 
   .members-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
 
+    .loading-state,
     .empty-state {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 32px 16px;
+      padding: 36px 16px;
       text-align: center;
       color: var(--color-text-muted);
 
@@ -43,17 +56,25 @@
       justify-content: space-between;
       padding: 12px 16px;
       border: 1px solid var(--color-border);
-      border-radius: 8px;
+      border-radius: 12px;
       background: var(--color-surface);
+      gap: 12px;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: var(--color-bg-white);
+      }
 
       .member-info {
         display: flex;
         align-items: center;
         gap: 12px;
+        min-width: 0;
 
         .avatar {
           width: 36px;
           height: 36px;
+          flex-shrink: 0;
           border-radius: 50%;
           background: var(--color-primary);
           color: white;
@@ -67,14 +88,22 @@
         .details {
           display: flex;
           flex-direction: column;
+          min-width: 0;
+
           .name {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--color-text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .email {
             font-size: 0.8rem;
             color: var(--color-text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
       }
@@ -83,9 +112,10 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        flex-shrink: 0;
 
         .role {
-          font-size: 0.8rem;
+          font-size: 0.78rem;
           color: var(--color-text-muted);
           font-weight: 500;
         }
@@ -95,6 +125,9 @@
           padding: 4px 8px;
           border-radius: 6px;
           font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          gap: 2px;
 
           &.status-pending {
             background: #fef3c7;
@@ -103,6 +136,36 @@
           &.status-rejected {
             background: var(--color-danger-surface);
             color: var(--color-danger);
+          }
+          &.status-active,
+          &.status-accepted {
+            background: var(--color-success-surface-muted, #d1fae5);
+            color: var(--color-success-dark, #16a34a);
+          }
+        }
+
+        .action-btn.cancel-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          padding: 0;
+          border: 1px solid var(--color-border);
+          border-radius: 8px;
+          background: var(--color-bg-white);
+          color: var(--color-danger);
+          cursor: pointer;
+          transition: all 0.15s ease;
+
+          &:hover:not(:disabled) {
+            background: var(--color-danger-surface);
+            border-color: var(--color-danger-border);
+            transform: scale(1.05);
+          }
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
           }
         }
       }

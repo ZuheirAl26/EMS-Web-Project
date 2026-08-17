@@ -7,6 +7,8 @@ import {
   SentIcon,
   Mail01Icon,
 } from "@hugeicons/core-free-icons";
+import { CustomSelect } from "../../../components";
+import type { SelectOption } from "../../../components/CustomSelect/CustomSelect";
 import "./InviteMemberForm.scss";
 
 type InviteProps = ReturnType<typeof useTeamManagement>;
@@ -26,6 +28,21 @@ export default function InviteMemberForm({
   handleInviteSubmit,
   t,
 }: InviteProps) {
+  const boothOptions: SelectOption<number>[] = booths.map((b: LookupEntity) => ({
+    value: b.id,
+    label:
+      b.label ||
+      b.name ||
+      (b.number
+        ? `${t("team.form.boothLabel", "Booth")} #${b.number}`
+        : `${t("team.form.boothLabel", "Booth")} #${b.id}`),
+  }));
+
+  const companyOptions: SelectOption<number>[] = companies.map((c: LookupEntity) => ({
+    value: c.id,
+    label: c.label || c.name || `Company #${c.id}`,
+  }));
+
   return (
     <div className="card invite-card">
       <h2>{t("team.form.title", "Invite a Team Member")}</h2>
@@ -40,7 +57,6 @@ export default function InviteMemberForm({
           </label>
           <div className="input-with-icon">
             <span className="icon">
-              {/* Forced gray icon color */}
               <HugeiconsIcon icon={Mail01Icon} size={20} color="#9ca3af" />
             </span>
             <input
@@ -74,6 +90,7 @@ export default function InviteMemberForm({
                 {t("team.roles.boothDesc", "Manages a specific booth")}
               </span>
             </button>
+
             <button
               type="button"
               className={`role-btn ${role === "company_manager" ? "active" : ""}`}
@@ -96,26 +113,14 @@ export default function InviteMemberForm({
             <label htmlFor="booth-select">
               {t("team.form.assignBooth", "ASSIGN TO BOOTH")}
             </label>
-            <select
+            <CustomSelect
               id="booth-select"
+              options={boothOptions}
               value={selectedEntityId}
-              onChange={(e) => setSelectedEntityId(Number(e.target.value))}
+              onChange={(val) => setSelectedEntityId(val)}
+              placeholder={t("team.form.selectBooth", "Select a booth...")}
               disabled={isInviting}
-              required
-            >
-              <option value="" disabled>
-                {t("team.form.selectBooth", "Select a booth...")}
-              </option>
-              {booths.map((b: LookupEntity) => (
-                <option key={b.id} value={b.id}>
-                  {b.label ||
-                    b.name ||
-                    (b.number
-                      ? `${t("team.form.boothLabel", "Booth")} #${b.number}`
-                      : `${t("team.form.boothLabel", "Booth")} #${b.id}`)}
-                </option>
-              ))}
-            </select>
+            />
           </div>
         )}
 
@@ -125,22 +130,14 @@ export default function InviteMemberForm({
             <label htmlFor="company-select">
               {t("team.form.assignCompany", "ASSIGN TO COMPANY")}
             </label>
-            <select
+            <CustomSelect
               id="company-select"
+              options={companyOptions}
               value={selectedEntityId}
-              onChange={(e) => setSelectedEntityId(Number(e.target.value))}
+              onChange={(val) => setSelectedEntityId(val)}
+              placeholder={t("team.form.selectCompany", "Select a company...")}
               disabled={isInviting}
-              required
-            >
-              <option value="" disabled>
-                {t("team.form.selectCompany", "Select a company...")}
-              </option>
-              {companies.map((c: LookupEntity) => (
-                <option key={c.id} value={c.id}>
-                  {c.label || c.name || `Company #${c.id}`}
-                </option>
-              ))}
-            </select>
+            />
           </div>
         )}
 

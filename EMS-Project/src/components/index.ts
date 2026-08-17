@@ -7,3 +7,4 @@ export { Modal } from "./Modal";
 export { Table } from "./Table";
 export { Skeleton } from "./Skeleton/Skeleton";
 export { Pagination } from "./Pagination/Pagination";
+export { CustomSelect } from "./CustomSelect/CustomSelect";

@@ -1,5 +1,6 @@
 import { useTeamManagement } from "../hooks/useTeamManagement";
 import InviteMemberForm from "../components/InviteMemberForm";
+import CurrentTeamList from "../components/CurrentTeamList";
 import TeamSkeleton from "../components/TeamSkeleton";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Alert01Icon, Refresh01Icon } from "@hugeicons/core-free-icons";
@@ -47,9 +48,9 @@ export default function TeamPage() {
         </p>
       </header>
 
-      {/* Grid changed to single column since we are hiding the right panel for now */}
       <div className="team-content-grid">
         <InviteMemberForm {...hookState} />
+        <CurrentTeamList {...hookState} />
       </div>
     </div>
   );

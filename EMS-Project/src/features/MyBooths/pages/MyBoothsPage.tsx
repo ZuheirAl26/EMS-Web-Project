@@ -130,7 +130,7 @@ export function MyBoothsPage() {
             >
               <span className="my-booths__filter-content">
                 <span className="my-booths__filter-icon" aria-hidden="true">
-                  <HugeiconsIcon icon={filter.icon} size={18} strokeWidth={1.8} />
+                  <HugeiconsIcon icon={filter.icon} size={22} strokeWidth={1.8} />
                 </span>
                 <span className="my-booths__filter-copy">
                   <strong>{t(`myBooths.filters.${filter.key}`)}</strong>
@@ -139,7 +139,7 @@ export function MyBoothsPage() {
               </span>
               {isSelected ? (
                 <span className="my-booths__filter-selected" aria-hidden="true">
-                  <HugeiconsIcon icon={Tick02Icon} size={16} strokeWidth={2} />
+                  <HugeiconsIcon icon={Tick02Icon} size={18} strokeWidth={2} />
                 </span>
               ) : null}
             </button>
