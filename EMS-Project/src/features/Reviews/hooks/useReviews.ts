@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import {
   getEventsLookupApi,
   getEventReviewsApi,
@@ -13,25 +14,34 @@ export const reviewKeys = {
   all: ["reviews"] as const,
   eventsLookup: () => [...reviewKeys.all, "events-lookup"] as const,
   boothsLookup: () => [...reviewKeys.all, "booths-lookup"] as const,
-  reviews: (type: ReviewTargetType, id: number | "", page: number) =>
-    [...reviewKeys.all, type, id, page] as const,
+  reviews: (
+    type: ReviewTargetType,
+    id: number | "",
+    page: number,
+    rating: number | null,
+  ) => [...reviewKeys.all, type, id, page, rating] as const,
 };
+
+const STALE_TIME_2_MIN = 1000 * 60 * 2;
 
 export function useReviews() {
   const { t } = useTranslation();
   const [targetType, setTargetType] = useState<ReviewTargetType>("event");
   const [selectedEntityId, setSelectedEntityId] = useState<number | "">("");
   const [page, setPage] = useState<number>(1);
+  const [ratingFilter, setRatingFilter] = useState<number | null>(null);
 
   // Lookups
   const eventsLookupQuery = useQuery({
     queryKey: reviewKeys.eventsLookup(),
     queryFn: getEventsLookupApi,
+    staleTime: STALE_TIME_2_MIN,
   });
 
   const boothsLookupQuery = useQuery({
     queryKey: reviewKeys.boothsLookup(),
     queryFn: getBoothLookupApi,
+    staleTime: STALE_TIME_2_MIN,
   });
 
   const eventsList: LookupEntity[] = useMemo(
@@ -59,26 +69,41 @@ export function useReviews() {
     setTargetType(newType);
     setSelectedEntityId("");
     setPage(1);
+    setRatingFilter(null);
   };
 
   // Handle entity change
   const handleEntityChange = (id: number | "") => {
     setSelectedEntityId(id);
     setPage(1);
+    setRatingFilter(null);
+  };
+
+  // Handle rating filter change
+  const handleRatingFilterChange = (rating: number | null) => {
+    setRatingFilter(rating);
+    setPage(1);
   };
 
   // Reviews query
   const reviewsQuery = useQuery({
-    queryKey: reviewKeys.reviews(targetType, activeEntityId, page),
+    queryKey: reviewKeys.reviews(
+      targetType,
+      activeEntityId,
+      page,
+      ratingFilter,
+    ),
     queryFn: async () => {
       if (!activeEntityId) return null;
       if (targetType === "event") {
-        return getEventReviewsApi(Number(activeEntityId), page);
+        return getEventReviewsApi(Number(activeEntityId), page, ratingFilter);
       } else {
-        return getBoothReviewsApi(Number(activeEntityId), page);
+        return getBoothReviewsApi(Number(activeEntityId), page, ratingFilter);
       }
     },
     enabled: Boolean(activeEntityId),
+    placeholderData: keepPreviousData,
+    staleTime: STALE_TIME_2_MIN,
   });
 
   const isPageLoading =
@@ -108,6 +133,8 @@ export function useReviews() {
     handleTargetTypeChange,
     selectedEntityId: activeEntityId,
     handleEntityChange,
+    ratingFilter,
+    handleRatingFilterChange,
     eventsList,
     boothsList,
     activeLookupList,
@@ -120,5 +147,6 @@ export function useReviews() {
     isReviewsLoading,
     isError: reviewsQuery.isError,
     refetch: reviewsQuery.refetch,
+    t,
   };
 }

@@ -162,7 +162,7 @@ export function ReviewsTable({
                         <HugeiconsIcon
                           icon={StarIcon}
                           size={15}
-                          className="star-icon"
+                          className="star-icon is-filled"
                         />
                         <span className="rating-num">{review.rating}</span>
                         <span className="rating-max">/ 5</span>
@@ -185,7 +185,9 @@ export function ReviewsTable({
                           </span>
                         </button>
                       ) : (
-                        <span className="no-comment">-</span>
+                        <span className="no-comment">
+                          {t("reviews.table.noComment", "No comment")}
+                        </span>
                       )}
                     </td>
 

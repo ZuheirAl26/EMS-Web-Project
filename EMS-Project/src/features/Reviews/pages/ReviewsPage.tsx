@@ -21,6 +21,8 @@ export function ReviewsPage() {
     isReviewsLoading,
     pagination,
     setPage,
+    ratingFilter,
+    handleRatingFilterChange,
   } = hookState;
 
   if (isPageLoading) {
@@ -55,7 +57,11 @@ export function ReviewsPage() {
   return (
     <div className="reviews-page-layout">
       <ReviewsHeader {...hookState} />
-      <ReviewsStatsCards statistics={statistics} t={t} />
+      <ReviewsStatsCards
+        statistics={statistics}
+        ratingFilter={ratingFilter}
+        onSelectRatingFilter={handleRatingFilterChange}
+      />
       <ReviewsTable
         reviews={reviewsList}
         isLoading={isReviewsLoading}

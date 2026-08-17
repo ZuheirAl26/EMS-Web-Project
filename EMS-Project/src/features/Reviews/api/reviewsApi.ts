@@ -12,10 +12,15 @@ export const getEventsLookupApi = async (): Promise<LookupEntity[]> => {
 export const getEventReviewsApi = async (
   eventId: number,
   page = 1,
+  rating?: number | null,
 ): Promise<ReviewsResponseData> => {
+  const params: Record<string, unknown> = { page };
+  if (rating !== null && rating !== undefined) {
+    params["filter[rating]"] = rating;
+  }
   const { data } = await apiClient.get<ApiResponse<ReviewsResponseData>>(
     `/v1/exhibitor/reviews/event/${eventId}`,
-    { params: { page } },
+    { params },
   );
   return data.data;
 };
@@ -23,10 +28,15 @@ export const getEventReviewsApi = async (
 export const getBoothReviewsApi = async (
   boothId: number,
   page = 1,
+  rating?: number | null,
 ): Promise<ReviewsResponseData> => {
+  const params: Record<string, unknown> = { page };
+  if (rating !== null && rating !== undefined) {
+    params["filter[rating]"] = rating;
+  }
   const { data } = await apiClient.get<ApiResponse<ReviewsResponseData>>(
-    `/v1/exhibitor/reviews/booht/${boothId}`,
-    { params: { page } },
+    `/v1/exhibitor/reviews/booth/${boothId}`,
+    { params },
   );
   return data.data;
 };
