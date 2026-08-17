@@ -156,15 +156,7 @@ export default function CurrentTeamList({
         onCancel={() => setInvitationToDelete(null)}
         onConfirm={() => {
           if (invitationToDelete) {
-            const token =
-              invitationToDelete.invitation ||
-              invitationToDelete.token ||
-              invitationToDelete.invitation_token ||
-              invitationToDelete.code ||
-              invitationToDelete.uuid ||
-              String(invitationToDelete.id);
-
-            handleDeleteInvitation(token);
+            handleDeleteInvitation(invitationToDelete.id);
             setInvitationToDelete(null);
           }
         }}
