@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import {
   getBoothLookupApi,
@@ -11,6 +11,8 @@ import {
 } from "../api/teamApi";
 import { getApiErrorMessage } from "../../../utils/apiError";
 import { getCompanyLookup } from "../../ExhibitorProfile/api/ProfileApi";
+import { useTeamPreferencesStore } from "../store/useTeamPreferencesStore";
+import type { RoleType } from "../store/useTeamPreferencesStore";
 import type {
   InvitePayload,
   LookupEntity,
@@ -25,15 +27,22 @@ export const teamKeys = {
     [...teamKeys.all, "invitations", type, id] as const,
 };
 
-export type RoleType = "company_manager" | "booth_manager" | null;
+export type { RoleType };
 
 export function useTeamManagement() {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  const {
+    role,
+    setRole,
+    selectedEntityId,
+    setSelectedEntityId,
+    selectedScopeKey,
+    setSelectedScopeKey,
+  } = useTeamPreferencesStore();
 
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState<RoleType>("booth_manager");
-  const [selectedEntityId, setSelectedEntityId] = useState<number | "">("");
-  const [selectedScopeKey, setSelectedScopeKey] = useState<string>("");
   const [formError, setFormError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
@@ -113,11 +122,10 @@ export function useTeamManagement() {
     onSuccess: () => {
       setEmail("");
       setSelectedEntityId("");
-      setRole("booth_manager");
       setFormError(null);
       setSuccessMsg(t("team.inviteSuccess", "Invitation sent successfully!"));
       invitationsQuery.refetch();
-      setTimeout(() => setSuccessMsg(null), 4000);
+      setTimeout(() => setSuccessMsg(null), 2000);
     },
     onError: (error: unknown) => {
       setFormError(
@@ -133,19 +141,61 @@ export function useTeamManagement() {
   const deleteMutation = useMutation({
     mutationFn: (invitation: string | number) =>
       deleteInvitationApi(invitation),
-    onSuccess: () => {
-      invitationsQuery.refetch();
+    onMutate: async (invitationId: string | number) => {
+      const queryKey = teamKeys.invitations(parsedScope?.type, parsedScope?.id);
+
+      await queryClient.cancelQueries({ queryKey });
+
+      const previousInvitations = queryClient.getQueryData(queryKey);
+
+      queryClient.setQueryData(queryKey, (oldData: unknown) => {
+        if (!oldData) return oldData;
+        if (Array.isArray(oldData)) {
+          return oldData.filter(
+            (item: TeamInvitation) => String(item.id) !== String(invitationId),
+          );
+        }
+        if (
+          typeof oldData === "object" &&
+          oldData !== null &&
+          "data" in oldData &&
+          Array.isArray((oldData as { data: TeamInvitation[] }).data)
+        ) {
+          const dataObj = oldData as { data: TeamInvitation[] };
+          return {
+            ...dataObj,
+            data: dataObj.data.filter(
+              (item: TeamInvitation) =>
+                String(item.id) !== String(invitationId),
+            ),
+          };
+        }
+        return oldData;
+      });
+
       setFormError(null);
       setSuccessMsg(t("team.deleteSuccess", "Invitation canceled."));
-      setTimeout(() => setSuccessMsg(null), 3000);
+
+      return { previousInvitations, queryKey };
     },
-    onError: (error: unknown) => {
+    onError: (error: unknown, _invitationId, context) => {
+      // Rollback to previous state if API call fails
+      if (context?.queryKey && context?.previousInvitations !== undefined) {
+        queryClient.setQueryData(context.queryKey, context.previousInvitations);
+      }
+      setSuccessMsg(null);
       setFormError(
         getApiErrorMessage(
           error,
           t("team.deleteError", "Failed to cancel invitation."),
         ),
       );
+    },
+    onSettled: (_data, _error, _variables, context) => {
+      if (context?.queryKey) {
+        queryClient.invalidateQueries({ queryKey: context.queryKey });
+      }
+      setTimeout(() => setSuccessMsg(null), 2000);
     },
   });
 
@@ -202,10 +252,10 @@ export function useTeamManagement() {
   const invitations: TeamInvitation[] = Array.isArray(rawInvitations)
     ? rawInvitations
     : Array.isArray(
-        (rawInvitations as unknown as { data?: TeamInvitation[] })?.data,
-      )
-    ? (rawInvitations as unknown as { data: TeamInvitation[] }).data
-    : [];
+          (rawInvitations as unknown as { data?: TeamInvitation[] })?.data,
+        )
+      ? (rawInvitations as unknown as { data: TeamInvitation[] }).data
+      : [];
 
   return {
     invitations,
