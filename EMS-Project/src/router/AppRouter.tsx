@@ -20,6 +20,7 @@ import { EventRequestPage, EventsPage } from "../features/Events/pages";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { ProtectedRoute } from "./guards";
 import TeamPage from "../features/Team&Staff/pages/TeamPage";
+import { ReviewsPage } from "../features/Reviews/pages";
 
 export const AppRouter = () => {
   const location = useLocation();
@@ -67,6 +68,8 @@ export const AppRouter = () => {
           />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="booths" element={<MyBoothsPage />} />
+            <Route path="visitors" element={<ReviewsPage />} />
+            <Route path="reviews" element={<ReviewsPage />} />
             <Route path="events" element={<EventsPage />} />
             <Route path="team" element={<TeamPage />} />
             <Route path="profile" element={<ExhibitorProfilePage />} />
