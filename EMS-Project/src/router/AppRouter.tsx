@@ -16,10 +16,10 @@ import {
 } from "../features/CreateBoothPlan/pages";
 import { MyBoothsPage } from "../features/MyBooths/pages";
 import { ExhibitorProfilePage } from "../features/ExhibitorProfile/pages";
-import { InvitePage } from "../features/Invite/pages/InvitePage";
 import { EventRequestPage, EventsPage } from "../features/Events/pages";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { ProtectedRoute } from "./guards";
+import TeamPage from "../features/Team&Staff/pages/TeamPage";
 
 export const AppRouter = () => {
   const location = useLocation();
@@ -68,7 +68,7 @@ export const AppRouter = () => {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="booths" element={<MyBoothsPage />} />
             <Route path="events" element={<EventsPage />} />
-            <Route path="team" element={<InvitePage />} />
+            <Route path="team" element={<TeamPage />} />
             <Route path="profile" element={<ExhibitorProfilePage />} />
             <Route path="*" element={null} />
           </Route>

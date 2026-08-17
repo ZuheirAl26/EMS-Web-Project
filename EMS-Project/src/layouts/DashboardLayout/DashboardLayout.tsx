@@ -84,9 +84,11 @@ export function DashboardLayout() {
     return resolveMediaUrl(exhibitor?.avatar ?? null);
   }, [exhibitor?.avatar]);
 
-  useEffect(() => {
+  const [prevAvatarUrl, setPrevAvatarUrl] = useState(avatarUrl);
+  if (prevAvatarUrl !== avatarUrl) {
+    setPrevAvatarUrl(avatarUrl);
     setAvatarError(false);
-  }, [avatarUrl]);
+  }
 
   const accountName =
     exhibitor?.name?.trim() || user?.name?.trim() || t("account.fallbackName");

@@ -1,0 +1,111 @@
+.card.team-list-card {
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow-xs);
+
+  .card-header {
+    margin-bottom: 20px;
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-text-main);
+    }
+  }
+
+  .members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--color-text-muted);
+
+      .empty-icon {
+        margin-bottom: 12px;
+        color: var(--color-text-muted-light);
+      }
+      p {
+        font-size: 0.9rem;
+      }
+    }
+
+    .member-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: var(--color-surface);
+
+      .member-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: var(--color-primary);
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.85rem;
+        }
+
+        .details {
+          display: flex;
+          flex-direction: column;
+          .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--color-text-main);
+          }
+          .email {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+          }
+        }
+      }
+
+      .member-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .role {
+          font-size: 0.8rem;
+          color: var(--color-text-muted);
+          font-weight: 500;
+        }
+
+        .status-badge {
+          font-size: 0.75rem;
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-weight: 600;
+
+          &.status-pending {
+            background: #fef3c7;
+            color: #92400e;
+          }
+          &.status-rejected {
+            background: var(--color-danger-surface);
+            color: var(--color-danger);
+          }
+        }
+      }
+    }
+  }
+}

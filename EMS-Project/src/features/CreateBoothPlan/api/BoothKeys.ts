@@ -3,7 +3,7 @@ import type { BoothFilters } from "../types/boothType";
 export function normalizeFilters(filters: BoothFilters = {}): BoothFilters {
   return Object.fromEntries(
     Object.entries(filters).filter(
-      ([_, value]) => value !== "" && value !== undefined && value !== null,
+      ([, value]) => value !== "" && value !== undefined && value !== null,
     ),
   );
 }
