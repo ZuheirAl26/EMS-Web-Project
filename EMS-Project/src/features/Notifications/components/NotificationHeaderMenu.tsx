@@ -50,10 +50,19 @@ export function NotificationHeaderMenu() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"all" | "unread">("all");
+  const [toastMessage, setToastMessage] = useState<{
+    title: string;
+    body: string;
+  } | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Initialize Firebase Push listener
-  useFirebaseMessaging();
+  // Initialize Firebase Push listener with realtime foreground toast callback
+  useFirebaseMessaging((title, body) => {
+    setToastMessage({ title, body });
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4500);
+  });
 
   // Queries & Mutations
   const { data: countData } = useUnreadNotificationsCount();
@@ -223,6 +232,27 @@ export function NotificationHeaderMenu() {
               <HugeiconsIcon icon={ArrowRight01Icon} size={14} />
             </NavLink>
           </div>
+        </div>
+      )}
+
+      {/* Realtime FCM Push Toast Alert */}
+      {toastMessage && (
+        <div className="realtime-push-toast">
+          <div className="toast-icon-circle">
+            <HugeiconsIcon icon={Notification02Icon} size={18} />
+          </div>
+          <div className="toast-content">
+            <strong>{toastMessage.title}</strong>
+            <p>{toastMessage.body}</p>
+          </div>
+          <button
+            type="button"
+            className="toast-close"
+            onClick={() => setToastMessage(null)}
+            aria-label="Close notification toast"
+          >
+            ×
+          </button>
         </div>
       )}
     </div>

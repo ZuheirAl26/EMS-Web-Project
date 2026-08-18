@@ -6,7 +6,7 @@
   overflow: hidden;
 
   .list-toolbar {
-    padding: 14px 20px;
+    padding: 16px 20px;
     border-bottom: 1px solid var(--color-border, #e2e8f0);
     background: var(--color-surface, #f8fafb);
     display: flex;
@@ -15,39 +15,86 @@
     gap: 16px;
     flex-wrap: wrap;
 
-    .filter-tabs {
+    .filter-group {
       display: flex;
       align-items: center;
-      gap: 6px;
-      overflow-x: auto;
-      max-width: 100%;
-      padding-bottom: 2px;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
 
-      &::-webkit-scrollbar {
-        display: none;
+      .filter-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--color-text-muted, #64748b);
+        flex-shrink: 0;
+
+        svg {
+          color: var(--color-primary, #0a8782);
+        }
       }
 
-      .tab-item {
-        padding: 7px 14px;
-        border: 1px solid transparent;
-        border-radius: 999px;
-        background: transparent;
-        color: var(--color-text-muted, #64748b);
-        font-size: 0.82rem;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all 0.15s ease;
+      .filter-pills {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow-x: auto;
+        padding-vertical: 4px;
+        flex: 1;
+        min-width: 0;
 
-        &:hover {
-          color: var(--color-ebony, #111827);
-          background: rgba(0, 0, 0, 0.03);
+        &::-webkit-scrollbar {
+          height: 4px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 999px;
         }
 
-        &.active {
-          background: var(--color-primary, #0a8782);
-          color: #ffffff;
-          box-shadow: 0 2px 6px rgba(10, 135, 130, 0.25);
+        .filter-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 14px;
+          border: 1px solid var(--color-border, #e2e8f0);
+          border-radius: 999px;
+          background: var(--color-bg-white, #ffffff);
+          color: var(--color-text-muted, #64748b);
+          font-size: 0.8rem;
+          font-weight: 600;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all 0.15s ease;
+          flex-shrink: 0;
+
+          &:hover {
+            color: var(--color-ebony, #111827);
+            border-color: var(--color-primary-a30, rgba(10, 135, 130, 0.3));
+            background: rgba(10, 135, 130, 0.03);
+          }
+
+          &.active {
+            background: var(--color-primary, #0a8782);
+            color: #ffffff;
+            border-color: var(--color-primary, #0a8782);
+            box-shadow: 0 2px 6px rgba(10, 135, 130, 0.25);
+
+            .pill-badge {
+              background: rgba(255, 255, 255, 0.25);
+              color: #ffffff;
+            }
+          }
+
+          .pill-badge {
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: #fef3c7;
+            color: #d97706;
+            font-size: 0.7rem;
+            font-weight: 700;
+          }
         }
       }
     }
@@ -56,16 +103,17 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 14px;
+      padding: 8px 16px;
       border: 1px solid var(--color-primary-a30, rgba(10, 135, 130, 0.3));
       border-radius: 8px;
       background: var(--color-primary-a05, rgba(10, 135, 130, 0.05));
       color: var(--color-primary, #0a8782);
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s ease;
+      flex-shrink: 0;
 
       &:hover {
         background: var(--color-primary-a12, rgba(10, 135, 130, 0.12));

@@ -14,36 +14,66 @@ import {
 import { NotificationCard } from "./NotificationCard";
 import "./NotificationsList.scss";
 
-type TabFilter = "all" | "unread" | "booth" | "event" | "review" | "announcement";
+export type TabFilter =
+  | "all"
+  | "unread"
+  | "booth"
+  | "event"
+  | "review"
+  | "announcement";
+
+interface FilterTabOption {
+  id: TabFilter;
+  label: string;
+  exactType?: string;
+}
+
+const FILTER_TABS: FilterTabOption[] = [
+  { id: "all", label: "All Notifications" },
+  { id: "unread", label: "Unread" },
+  { id: "booth", label: "Booths" },
+  { id: "event", label: "Events" },
+  { id: "review", label: "Reviews", exactType: "review_created" },
+  { id: "announcement", label: "Announcements", exactType: "announcement" },
+];
 
 export function NotificationsList() {
   const [activeTab, setActiveTab] = useState<TabFilter>("all");
   const [page, setPage] = useState(1);
 
-  // Unread count
+  // Unread count for badge
   const { data: countData } = useUnreadNotificationsCount();
   const unreadCount = countData?.data?.numberOfUnreadNotifications ?? 0;
 
-  // Build API parameters based on tab
-  const filterType =
-    activeTab === "all" || activeTab === "unread" ? undefined : activeTab;
+  // Active option configuration
+  const activeOption =
+    FILTER_TABS.find((t) => t.id === activeTab) ?? FILTER_TABS[0];
+  const isUnreadOnly = activeTab === "unread";
 
-  const { data: notificationsData, isLoading } = useNotifications({
-    page,
-    per_page: 10,
-    "filter[type]": filterType,
-  });
+  // Fetch API notifications list
+  const { data: notificationsData, isLoading } = useNotifications(
+    {
+      page,
+      per_page: 20,
+      "filter[type]": activeOption.exactType,
+    },
+    isUnreadOnly,
+  );
 
   const markAllMutation = useMarkAllNotificationsAsRead();
 
   const pagination = notificationsData?.data;
   const rawList = pagination?.data ?? [];
 
-  // Filter unread tab locally if needed
-  const displayList =
-    activeTab === "unread"
-      ? rawList.filter((item) => !item.read_at)
-      : rawList;
+  // Apply tab prefix filtering for category tabs (booth, event, review)
+  const displayList = rawList.filter((item) => {
+    if (activeTab === "all" || activeTab === "unread") return true;
+    if (activeTab === "booth") return item.type.includes("booth");
+    if (activeTab === "event") return item.type.includes("event");
+    if (activeTab === "review") return item.type.includes("review");
+    if (activeTab === "announcement") return item.type.includes("announcement");
+    return true;
+  });
 
   const handleTabChange = (tab: TabFilter) => {
     setActiveTab(tab);
@@ -52,51 +82,34 @@ export function NotificationsList() {
 
   return (
     <div className="card notifications-list-card">
-      {/* Top Filter & Action Bar */}
+      {/* Top Filter & Action Toolbar */}
       <div className="list-toolbar">
-        <div className="filter-tabs">
-          <button
-            type="button"
-            className={`tab-item ${activeTab === "all" ? "active" : ""}`}
-            onClick={() => handleTabChange("all")}
-          >
-            All
-          </button>
-          <button
-            type="button"
-            className={`tab-item ${activeTab === "unread" ? "active" : ""}`}
-            onClick={() => handleTabChange("unread")}
-          >
-            Unread ({unreadCount})
-          </button>
-          <button
-            type="button"
-            className={`tab-item ${activeTab === "booth" ? "active" : ""}`}
-            onClick={() => handleTabChange("booth")}
-          >
-            Booths
-          </button>
-          <button
-            type="button"
-            className={`tab-item ${activeTab === "event" ? "active" : ""}`}
-            onClick={() => handleTabChange("event")}
-          >
-            Events
-          </button>
-          <button
-            type="button"
-            className={`tab-item ${activeTab === "review" ? "active" : ""}`}
-            onClick={() => handleTabChange("review")}
-          >
-            Reviews
-          </button>
-          <button
-            type="button"
-            className={`tab-item ${activeTab === "announcement" ? "active" : ""}`}
-            onClick={() => handleTabChange("announcement")}
-          >
-            Announcements
-          </button>
+        <div className="filter-group">
+          <span className="filter-label">
+            <HugeiconsIcon icon={FilterIcon} size={15} />
+            <span>Category:</span>
+          </span>
+
+          <div className="filter-pills">
+            {FILTER_TABS.map((tab) => {
+              const isActive = activeTab === tab.id;
+              const isUnreadTab = tab.id === "unread";
+
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  className={`filter-pill ${isActive ? "active" : ""}`}
+                  onClick={() => handleTabChange(tab.id)}
+                >
+                  <span>{tab.label}</span>
+                  {isUnreadTab && unreadCount > 0 && (
+                    <span className="pill-badge">{unreadCount}</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {unreadCount > 0 && (
@@ -126,7 +139,11 @@ export function NotificationsList() {
               <HugeiconsIcon icon={Notification02Icon} size={36} />
             </div>
             <h3>No notifications found</h3>
-            <p>You have no notifications matching the selected filter right now.</p>
+            <p>
+              {activeTab === "all"
+                ? "You have no notifications in your account yet."
+                : `No notifications under "${activeOption.label}".`}
+            </p>
           </div>
         ) : (
           <div className="notifications-cards-stack">

@@ -1,13 +1,16 @@
 export type NotificationType =
-  | "booth_approved"
-  | "booth_rejected"
   | "event_approved"
   | "event_rejected"
-  | "review_created"
-  | "announcement"
+  | "event_event_expired"
   | "_event_event_expired"
+  | "event_event_schedule_conflict"
   | "_event_event_schedule_conflict"
+  | "booth_approved"
+  | "booth_rejected"
+  | "booth_booth_conflict"
   | "_booth_booth_conflict"
+  | "announcement"
+  | "review_created"
   | string;
 
 export interface NotificationItem {

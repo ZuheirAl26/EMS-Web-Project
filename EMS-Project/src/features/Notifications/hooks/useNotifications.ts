@@ -15,20 +15,14 @@ export const NOTIFICATIONS_KEYS = {
 };
 
 // Fetch notifications list
-export function useNotifications(params?: FetchNotificationsParams) {
+export function useNotifications(params?: FetchNotificationsParams, isUnreadOnly?: boolean) {
   return useQuery({
-    queryKey: NOTIFICATIONS_KEYS.list(params),
-    queryFn: () => notificationsApi.getNotifications(params),
-    staleTime: 30000,
-  });
-}
-
-// Fetch unread notifications list
-export function useUnreadNotifications(params?: FetchNotificationsParams) {
-  return useQuery({
-    queryKey: NOTIFICATIONS_KEYS.unread(params),
-    queryFn: () => notificationsApi.getUnreadNotifications(params),
-    staleTime: 30000,
+    queryKey: isUnreadOnly ? NOTIFICATIONS_KEYS.unread(params) : NOTIFICATIONS_KEYS.list(params),
+    queryFn: () =>
+      isUnreadOnly
+        ? notificationsApi.getUnreadNotifications(params)
+        : notificationsApi.getNotifications(params),
+    staleTime: 15000,
   });
 }
 
@@ -39,8 +33,8 @@ export function useUnreadNotificationsCount() {
     queryKey: NOTIFICATIONS_KEYS.count,
     queryFn: () => notificationsApi.getUnreadCount(),
     enabled: Boolean(token),
-    refetchInterval: 60000, // Poll every 60s as fallback
-    staleTime: 15000,
+    refetchInterval: 30000, // Poll every 30s
+    staleTime: 10000,
   });
 }
 
@@ -49,7 +43,7 @@ export function useNotificationStats() {
   return useQuery({
     queryKey: NOTIFICATIONS_KEYS.stats,
     queryFn: () => notificationsApi.getStatistics(),
-    staleTime: 30000,
+    staleTime: 15000,
   });
 }
 
@@ -87,7 +81,7 @@ export function useDeleteNotification() {
 }
 
 // Hook to initialize Firebase Cloud Messaging, request permission & register token with backend
-export function useFirebaseMessaging() {
+export function useFirebaseMessaging(onForegroundPush?: (title: string, body: string) => void) {
   const queryClient = useQueryClient();
   const token = useAuthStore((state) => state.token);
 
@@ -120,12 +114,20 @@ export function useFirebaseMessaging() {
 
         // Listen for foreground FCM push notifications
         unsubscribeOnMessage = onMessage(messaging, (payload) => {
-          console.log("[FCM Foreground Message]:", payload);
+          console.log("[FCM Realtime Push Received]:", payload);
+          
           // Invalidate React Query notification queries to immediately refresh count and list
           queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEYS.all });
+
+          const title = payload.notification?.title || payload.data?.title || "New Notification";
+          const body = payload.notification?.body || payload.data?.body || "";
+
+          if (onForegroundPush) {
+            onForegroundPush(title, body);
+          }
         });
       } catch (err) {
-        console.warn("[FCM Messaging Error]:", err);
+        console.warn("[FCM Messaging Setup Warning]:", err);
       }
     }
 
@@ -136,5 +138,5 @@ export function useFirebaseMessaging() {
         unsubscribeOnMessage();
       }
     };
-  }, [token, queryClient]);
+  }, [token, queryClient, onForegroundPush]);
 }
