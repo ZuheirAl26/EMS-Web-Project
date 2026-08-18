@@ -21,6 +21,7 @@ import { DashboardLayout } from "../layouts/DashboardLayout";
 import { ProtectedRoute } from "./guards";
 import TeamPage from "../features/Team&Staff/pages/TeamPage";
 import { ReviewsPage } from "../features/Reviews/pages";
+import { NotificationsPage } from "../features/Notifications";
 
 export const AppRouter = () => {
   const location = useLocation();
@@ -73,6 +74,7 @@ export const AppRouter = () => {
             <Route path="events" element={<EventsPage />} />
             <Route path="team" element={<TeamPage />} />
             <Route path="profile" element={<ExhibitorProfilePage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
             <Route path="*" element={null} />
           </Route>
         </Route>

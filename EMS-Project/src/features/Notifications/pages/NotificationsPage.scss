@@ -1,0 +1,29 @@
+.notifications-page {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .page-header-row {
+    margin-bottom: 24px;
+
+    .page-title {
+      margin: 0 0 6px 0;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--color-ebony, #111827);
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--color-text-muted, #64748b);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .notifications-page {
+    padding: 16px;
+  }
+}

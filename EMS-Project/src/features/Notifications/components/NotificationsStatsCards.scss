@@ -1,0 +1,80 @@
+.notifications-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .stat-card {
+    background: var(--color-bg-white, #ffffff);
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-xs);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .icon-wrapper {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .stat-label {
+        font-size: 0.8rem;
+        color: var(--color-text-muted, #64748b);
+        font-weight: 500;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--color-ebony, #111827);
+        line-height: 1.2;
+      }
+    }
+
+    &.total-card {
+      .icon-wrapper {
+        background: var(--color-primary-a10, rgba(10, 135, 130, 0.1));
+        color: var(--color-primary, #0a8782);
+      }
+    }
+
+    &.unread-card {
+      .icon-wrapper {
+        background: #fef3c7;
+        color: #d97706;
+      }
+    }
+
+    &.read-card {
+      .icon-wrapper {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .notifications-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

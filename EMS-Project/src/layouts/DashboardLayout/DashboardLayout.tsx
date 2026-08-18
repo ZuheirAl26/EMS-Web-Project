@@ -21,6 +21,7 @@ import "./DashboardLayout.scss";
 import { useExhibitorProfile } from "../../features/ExhibitorProfile/hooks/useExhibitorProfile";
 import { resolveMediaUrl } from "../../features/ExhibitorProfile/utils/profileUtils";
 import { AccountMenu } from "../components/AccountMenu";
+import { NotificationHeaderMenu } from "../../features/Notifications";
 
 const navigationItems = [
   {
@@ -183,19 +184,7 @@ export function DashboardLayout() {
           </div>
 
           <div className="dashboard-header__actions">
-            <button
-              aria-label={t("header.notifications")}
-              className="dashboard-header__notifications"
-              type="button"
-            >
-              <HugeiconsIcon
-                color="currentColor"
-                icon={Notification02Icon}
-                size={16}
-                strokeWidth={1.8}
-              />
-              <span aria-hidden="true">3</span>
-            </button>
+            <NotificationHeaderMenu />
             <NavLink
               aria-label={accountName}
               className="dashboard-header__avatar"
