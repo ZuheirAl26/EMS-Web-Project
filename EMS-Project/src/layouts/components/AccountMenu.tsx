@@ -9,6 +9,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { useLanguageStore } from "../../context/useLanguageStore";
 import { useThemeStore } from "../../context/useThemeStore";
+import { EmailContactMenu } from "../../components";
 import "./AccountMenu.scss";
 
 const ADMIN_CONTACT_EMAIL =
@@ -143,10 +144,12 @@ export function AccountMenu({
             </span>
           </button>
 
-          <a
-            className="account-menu__item"
-            href={`mailto:${ADMIN_CONTACT_EMAIL}`}
-            role="menuitem"
+          <EmailContactMenu
+            align="left"
+            direction="up"
+            buttonClassName="account-menu__item"
+            buttonTitle={t("account.menu.contactAdmin")}
+            email={ADMIN_CONTACT_EMAIL}
           >
             <HugeiconsIcon
               aria-hidden="true"
@@ -159,7 +162,7 @@ export function AccountMenu({
               <strong>{t("account.menu.contactAdmin")}</strong>
               <small title={ADMIN_CONTACT_EMAIL}>{ADMIN_CONTACT_EMAIL}</small>
             </span>
-          </a>
+          </EmailContactMenu>
         </div>
       ) : null}
     </div>

@@ -7,7 +7,7 @@ import {
   BubbleChatIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Pagination } from "../../../components";
+import { Pagination, EmailContactMenu } from "../../../components";
 import type { ReviewItem } from "../types/reviewsType";
 import "./ReviewsTable.scss";
 
@@ -200,13 +200,10 @@ export function ReviewsTable({
 
                     {/* Actions Column (Email / Message) */}
                     <td className="text-center">
-                      <a
-                        href={`mailto:${review.user.email}`}
-                        className="action-btn email-btn"
-                        title={t("reviews.table.sendMessage", "Send email to visitor")}
-                      >
-                        <HugeiconsIcon icon={Mail01Icon} size={16} />
-                      </a>
+                      <EmailContactMenu
+                        email={review.user.email}
+                        buttonTitle={t("reviews.table.sendMessage", "Send email to visitor")}
+                      />
                     </td>
                   </tr>
                 );
