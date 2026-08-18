@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Mail01Icon,
   StarIcon,
   Comment01Icon,
   UserGroupIcon,
@@ -81,12 +80,22 @@ export function ReviewsTable({
         <table className="reviews-table">
           <thead>
             <tr>
-              <th className="text-center">{t("reviews.table.visitor", "Visitor Name")}</th>
-              <th className="text-center">{t("reviews.table.phone", "Phone Number")}</th>
-              <th className="text-center">{t("reviews.table.rating", "Rating")}</th>
-              <th className="text-center">{t("reviews.table.comment", "Comment")}</th>
+              <th className="text-center">
+                {t("reviews.table.visitor", "Visitor Name")}
+              </th>
+              <th className="text-center">
+                {t("reviews.table.phone", "Phone Number")}
+              </th>
+              <th className="text-center">
+                {t("reviews.table.rating", "Rating")}
+              </th>
+              <th className="text-center">
+                {t("reviews.table.comment", "Comment")}
+              </th>
               <th className="text-center">{t("reviews.table.date", "Date")}</th>
-              <th className="text-center">{t("reviews.table.contact", "Contact")}</th>
+              <th className="text-center">
+                {t("reviews.table.contact", "Contact")}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -105,7 +114,12 @@ export function ReviewsTable({
                       size={38}
                       className="empty-icon"
                     />
-                    <p>{t("reviews.table.empty", "No reviews available for this selection.")}</p>
+                    <p>
+                      {t(
+                        "reviews.table.empty",
+                        "No reviews available for this selection.",
+                      )}
+                    </p>
                   </div>
                 </td>
               </tr>
@@ -113,10 +127,15 @@ export function ReviewsTable({
               reviews.map((review) => {
                 const avatarSrc = resolveAvatarUrl(review.user.avatar);
                 const isExpanded = expandedCommentId === review.id;
-                const hasComment = Boolean(review.comment && review.comment.trim().length > 0);
+                const hasComment = Boolean(
+                  review.comment && review.comment.trim().length > 0,
+                );
 
                 return (
-                  <tr key={review.id} className={isExpanded ? "row-expanded" : ""}>
+                  <tr
+                    key={review.id}
+                    className={isExpanded ? "row-expanded" : ""}
+                  >
                     {/* Visitor Column */}
                     <td className="text-center">
                       <div className="visitor-cell">
@@ -135,13 +154,19 @@ export function ReviewsTable({
                           {isExpanded && (
                             <div className="comment-drawer">
                               <span className="drawer-title">
-                                <HugeiconsIcon icon={BubbleChatIcon} size={14} />
+                                <HugeiconsIcon
+                                  icon={BubbleChatIcon}
+                                  size={14}
+                                />
                                 {t("reviews.table.commentLabel", "Comment")}:
                               </span>
                               <p className="drawer-content">
                                 {hasComment
                                   ? review.comment
-                                  : t("reviews.table.noCommentText", "No comment provided.")}
+                                  : t(
+                                      "reviews.table.noCommentText",
+                                      "No comment provided.",
+                                    )}
                               </p>
                             </div>
                           )}
@@ -202,7 +227,10 @@ export function ReviewsTable({
                     <td className="text-center">
                       <EmailContactMenu
                         email={review.user.email}
-                        buttonTitle={t("reviews.table.sendMessage", "Send email to visitor")}
+                        buttonTitle={t(
+                          "reviews.table.sendMessage",
+                          "Send email to visitor",
+                        )}
                       />
                     </td>
                   </tr>
