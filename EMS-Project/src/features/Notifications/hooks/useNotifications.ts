@@ -4,7 +4,10 @@ import { getToken, onMessage } from "firebase/messaging";
 import { getFirebaseMessaging } from "../../../config/firebase";
 import { useAuthStore } from "../../../store/AuthStore";
 import { notificationsApi } from "../api/notificationsApi";
-import type { FetchNotificationsParams } from "../types/notificationsType";
+import type {
+  FetchNotificationsParams,
+  NotificationItem,
+} from "../types/notificationsType";
 
 export const NOTIFICATIONS_KEYS = {
   all: ["notifications"] as const,
@@ -47,12 +50,79 @@ export function useNotificationStats() {
   });
 }
 
+type QueryCacheData = {
+  data?: {
+    data?: NotificationItem[];
+    total?: number;
+    numberOfUnreadNotifications?: number;
+    total_notifications?: number;
+  };
+};
+
 // Mark single notification as read
 export function useMarkNotificationAsRead() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => notificationsApi.markAsRead(id),
-    onSuccess: () => {
+    onMutate: async (id: string) => {
+      await queryClient.cancelQueries({ queryKey: NOTIFICATIONS_KEYS.all });
+
+      const previousQueries = queryClient.getQueriesData<unknown>({
+        queryKey: NOTIFICATIONS_KEYS.all,
+      });
+
+      const nowIso = new Date().toISOString();
+
+      queryClient.setQueriesData<unknown>(
+        { queryKey: NOTIFICATIONS_KEYS.all },
+        (oldData: unknown) => {
+          if (!oldData || typeof oldData !== "object") return oldData;
+          const cacheData = oldData as QueryCacheData;
+
+          if (cacheData.data?.data && Array.isArray(cacheData.data.data)) {
+            const updatedItems = cacheData.data.data.map((item) => {
+              if (item.id === id) {
+                return { ...item, read_at: item.read_at || nowIso };
+              }
+              return item;
+            });
+
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                data: updatedItems,
+              },
+            };
+          }
+
+          if (typeof cacheData.data?.numberOfUnreadNotifications === "number") {
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                numberOfUnreadNotifications: Math.max(
+                  0,
+                  cacheData.data.numberOfUnreadNotifications - 1,
+                ),
+              },
+            };
+          }
+
+          return oldData;
+        },
+      );
+
+      return { previousQueries };
+    },
+    onError: (_err, _id, context) => {
+      if (context?.previousQueries) {
+        context.previousQueries.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data);
+        });
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEYS.all });
     },
   });
@@ -63,7 +133,7 @@ export function useMarkAllNotificationsAsRead() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => notificationsApi.markAllAsRead(),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEYS.all });
     },
   });
@@ -74,7 +144,75 @@ export function useDeleteNotification() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => notificationsApi.deleteNotification(id),
-    onSuccess: () => {
+    onMutate: async (deletedId: string) => {
+      await queryClient.cancelQueries({ queryKey: NOTIFICATIONS_KEYS.all });
+
+      const previousQueries = queryClient.getQueriesData<unknown>({
+        queryKey: NOTIFICATIONS_KEYS.all,
+      });
+
+      queryClient.setQueriesData<unknown>(
+        { queryKey: NOTIFICATIONS_KEYS.all },
+        (oldData: unknown) => {
+          if (!oldData || typeof oldData !== "object") return oldData;
+          const cacheData = oldData as QueryCacheData;
+
+          if (cacheData.data?.data && Array.isArray(cacheData.data.data)) {
+            const updatedItems = cacheData.data.data.filter(
+              (item) => item.id !== deletedId,
+            );
+            const totalDiff = cacheData.data.data.length - updatedItems.length;
+
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                data: updatedItems,
+                total: Math.max(0, (cacheData.data.total ?? 0) - totalDiff),
+              },
+            };
+          }
+
+          if (typeof cacheData.data?.numberOfUnreadNotifications === "number") {
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                numberOfUnreadNotifications: Math.max(
+                  0,
+                  cacheData.data.numberOfUnreadNotifications - 1,
+                ),
+              },
+            };
+          }
+
+          if (typeof cacheData.data?.total_notifications === "number") {
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                total_notifications: Math.max(
+                  0,
+                  cacheData.data.total_notifications - 1,
+                ),
+              },
+            };
+          }
+
+          return oldData;
+        },
+      );
+
+      return { previousQueries };
+    },
+    onError: (_err, _deletedId, context) => {
+      if (context?.previousQueries) {
+        context.previousQueries.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data);
+        });
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEYS.all });
     },
   });

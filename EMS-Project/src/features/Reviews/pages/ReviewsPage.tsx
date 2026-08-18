@@ -67,7 +67,7 @@ export function ReviewsPage() {
         isLoading={isReviewsLoading}
         pagination={pagination}
         onPageChange={setPage}
-        t={t}
+        t={t as unknown as (key: string, defaultValue?: string) => string}
       />
     </div>
   );

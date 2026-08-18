@@ -2,15 +2,17 @@ import { useState } from "react";
 import {
   CheckmarkSquare01Icon,
   Notification02Icon,
-  FilterIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Pagination } from "../../../components";
 import {
+  useDeleteNotification,
   useMarkAllNotificationsAsRead,
   useNotifications,
   useUnreadNotificationsCount,
 } from "../hooks/useNotifications";
+import type { NotificationItem } from "../types/notificationsType";
+import { DeleteNotificationDialog } from "./DeleteNotificationDialog";
 import { NotificationCard } from "./NotificationCard";
 import "./NotificationsList.scss";
 
@@ -40,6 +42,8 @@ const FILTER_TABS: FilterTabOption[] = [
 export function NotificationsList() {
   const [activeTab, setActiveTab] = useState<TabFilter>("all");
   const [page, setPage] = useState(1);
+  const [notificationToDelete, setNotificationToDelete] =
+    useState<NotificationItem | null>(null);
 
   // Unread count for badge
   const { data: countData } = useUnreadNotificationsCount();
@@ -61,6 +65,7 @@ export function NotificationsList() {
   );
 
   const markAllMutation = useMarkAllNotificationsAsRead();
+  const deleteMutation = useDeleteNotification();
 
   const pagination = notificationsData?.data;
   const rawList = pagination?.data ?? [];
@@ -80,16 +85,20 @@ export function NotificationsList() {
     setPage(1);
   };
 
+  const handleConfirmDelete = () => {
+    if (!notificationToDelete) return;
+    deleteMutation.mutate(notificationToDelete.id, {
+      onSuccess: () => {
+        setNotificationToDelete(null);
+      },
+    });
+  };
+
   return (
     <div className="card notifications-list-card">
       {/* Top Filter & Action Toolbar */}
       <div className="list-toolbar">
         <div className="filter-group">
-          <span className="filter-label">
-            <HugeiconsIcon icon={FilterIcon} size={15} />
-            <span>Category:</span>
-          </span>
-
           <div className="filter-pills">
             {FILTER_TABS.map((tab) => {
               const isActive = activeTab === tab.id;
@@ -151,6 +160,7 @@ export function NotificationsList() {
               <NotificationCard
                 key={notification.id}
                 notification={notification}
+                onDeleteClick={(item) => setNotificationToDelete(item)}
               />
             ))}
           </div>
@@ -173,6 +183,15 @@ export function NotificationsList() {
           />
         </div>
       )}
+
+      {/* Delete Notification Confirmation Dialog Panel */}
+      <DeleteNotificationDialog
+        open={Boolean(notificationToDelete)}
+        notification={notificationToDelete}
+        isPending={deleteMutation.isPending}
+        onCancel={() => setNotificationToDelete(null)}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 }

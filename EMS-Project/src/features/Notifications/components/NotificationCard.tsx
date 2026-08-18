@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Building03Icon,
@@ -18,10 +19,12 @@ import type {
   NotificationItem,
   NotificationType,
 } from "../types/notificationsType";
+import { DeleteNotificationDialog } from "./DeleteNotificationDialog";
 import "./NotificationCard.scss";
 
 interface NotificationCardProps {
   notification: NotificationItem;
+  onDeleteClick?: (notification: NotificationItem) => void;
 }
 
 function getTypeIcon(type: NotificationType) {
@@ -55,10 +58,15 @@ function formatFullDate(dateStr: string) {
   }
 }
 
-export function NotificationCard({ notification }: NotificationCardProps) {
+export function NotificationCard({
+  notification,
+  onDeleteClick,
+}: NotificationCardProps) {
   const navigate = useNavigate();
   const markAsReadMutation = useMarkNotificationAsRead();
   const deleteMutation = useDeleteNotification();
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const isUnread = !notification.read_at;
   const IconComponent = getTypeIcon(notification.type);
@@ -85,62 +93,86 @@ export function NotificationCard({ notification }: NotificationCardProps) {
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    deleteMutation.mutate(notification.id);
+    if (onDeleteClick) {
+      onDeleteClick(notification);
+    } else {
+      setIsDeleteDialogOpen(true);
+    }
+  };
+
+  const handleConfirmLocalDelete = () => {
+    deleteMutation.mutate(notification.id, {
+      onSuccess: () => {
+        setIsDeleteDialogOpen(false);
+      },
+    });
   };
 
   return (
-    <div
-      className={`notification-card-item ${isUnread ? "is-unread" : ""}`}
-      onClick={handleCardClick}
-      role="button"
-      tabIndex={0}
-    >
-      <div className={`card-icon-badge type-${notification.type}`}>
-        <HugeiconsIcon icon={IconComponent} size={20} />
-      </div>
-
-      <div className="card-content">
-        <div className="card-header-meta">
-          <span className={`category-tag category-${notification.type}`}>
-            {categoryLabel}
-          </span>
-          <span className="card-timestamp">
-            {formatFullDate(notification.created_at)}
-          </span>
+    <>
+      <div
+        className={`notification-card-item ${isUnread ? "is-unread" : ""}`}
+        onClick={handleCardClick}
+        role="button"
+        tabIndex={0}
+      >
+        <div className={`card-icon-badge type-${notification.type}`}>
+          <HugeiconsIcon icon={IconComponent} size={20} />
         </div>
 
-        <h4 className="card-title">{notification.title}</h4>
-        <p className="card-body-text">{notification.body}</p>
-      </div>
+        <div className="card-content">
+          <div className="card-header-meta">
+            <span className={`category-tag category-${notification.type}`}>
+              {categoryLabel}
+            </span>
+            <span className="card-timestamp">
+              {formatFullDate(notification.created_at)}
+            </span>
+          </div>
 
-      <div className="card-actions">
-        {isUnread && (
+          <h4 className="card-title">{notification.title}</h4>
+          <p className="card-body-text">{notification.body}</p>
+        </div>
+
+        <div className="card-actions">
+          {isUnread && (
+            <button
+              type="button"
+              className="action-btn mark-read-btn"
+              title="Mark as read"
+              onClick={handleMarkAsRead}
+              disabled={markAsReadMutation.isPending}
+            >
+              <HugeiconsIcon icon={CheckmarkSquare01Icon} size={16} />
+              <span>Mark Read</span>
+            </button>
+          )}
+
           <button
             type="button"
-            className="action-btn mark-read-btn"
-            title="Mark as read"
-            onClick={handleMarkAsRead}
-            disabled={markAsReadMutation.isPending}
+            className="action-btn delete-btn"
+            title="Delete notification"
+            onClick={handleDelete}
+            disabled={deleteMutation.isPending}
           >
-            <HugeiconsIcon icon={CheckmarkSquare01Icon} size={16} />
-            <span>Mark Read</span>
+            <HugeiconsIcon icon={Delete02Icon} size={16} />
           </button>
-        )}
 
-        <button
-          type="button"
-          className="action-btn delete-btn"
-          title="Delete notification"
-          onClick={handleDelete}
-          disabled={deleteMutation.isPending}
-        >
-          <HugeiconsIcon icon={Delete02Icon} size={16} />
-        </button>
-
-        <div className="navigate-arrow" title="View details">
-          <HugeiconsIcon icon={ArrowRight01Icon} size={16} />
+          <div className="navigate-arrow" title="View details">
+            <HugeiconsIcon icon={ArrowRight01Icon} size={16} />
+          </div>
         </div>
       </div>
-    </div>
+
+      {!onDeleteClick && (
+        <DeleteNotificationDialog
+          open={isDeleteDialogOpen}
+          notification={notification}
+          isPending={deleteMutation.isPending}
+          onCancel={() => setIsDeleteDialogOpen(false)}
+          onConfirm={handleConfirmLocalDelete}
+        />
+      )}
+    </>
   );
 }
