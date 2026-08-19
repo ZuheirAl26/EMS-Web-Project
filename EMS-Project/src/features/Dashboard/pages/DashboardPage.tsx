@@ -6,6 +6,7 @@ import { DashboardReviewsSection } from "../components/DashboardReviewsSection/D
 import { RecentVisitorsSection } from "../components/RecentVisitorsSection/RecentVisitorsSection";
 import { AnnouncementsSection } from "../components/AnnouncementsSection/AnnouncementsSection";
 import { BottomDetailsSection } from "../components/BottomDetailsSection/BottomDetailsSection";
+import { ReviewerDetailsModal } from "../../Reviews/components/ReviewerDetailsModal";
 import "./DashboardPage.scss";
 
 export function DashboardPage() {
@@ -37,6 +38,9 @@ export function DashboardPage() {
     isAnnouncementsLoading,
     isAnnouncementsError,
     refetchAnnouncements,
+    selectedVisitorForModal,
+    setSelectedVisitorForModal,
+    handleSelectVisitorLead,
   } = useDashboard();
 
   const visitorsList = leadsData?.visitors?.data || [];
@@ -102,8 +106,17 @@ export function DashboardPage() {
           isError={isLeadsError}
           onRetry={refetchLeads}
           visitors={visitorsList}
+          onSelectVisitor={handleSelectVisitorLead}
         />
       </div>
+
+      {/* Visitor Profile Details Modal */}
+      <ReviewerDetailsModal
+        isOpen={selectedVisitorForModal !== null}
+        onClose={() => setSelectedVisitorForModal(null)}
+        reviewer={selectedVisitorForModal || undefined}
+        isLoading={false}
+      />
     </section>
   );
 }

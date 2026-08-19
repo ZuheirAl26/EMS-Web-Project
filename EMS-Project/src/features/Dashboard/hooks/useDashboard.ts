@@ -21,12 +21,16 @@ import type { DashboardScopeMode } from "../types/dashboardType";
 export const dashboardKeys = {
   all: ["dashboard"] as const,
   booth: (id?: number) => [...dashboardKeys.all, "booth", id] as const,
-  boothStats: (id?: number) => [...dashboardKeys.all, "boothStats", id] as const,
+  boothStats: (id?: number) =>
+    [...dashboardKeys.all, "boothStats", id] as const,
   leads: (mode: DashboardScopeMode, id?: number, page?: number) =>
     [...dashboardKeys.all, "leads", mode, id, page] as const,
   announcements: (perPage: number, page?: number) =>
     [...dashboardKeys.all, "announcements", perPage, page] as const,
 };
+
+const STALE_TIME_2_MIN = 1000 * 60 * 2; // 2 minutes
+const GC_TIME_30_MIN = 1000 * 60 * 30; // 30 minutes
 
 export function useDashboard() {
   const [mode, setMode] = useState<DashboardScopeMode>("booth");
@@ -43,25 +47,39 @@ export function useDashboard() {
   const boothsLookupQuery = useQuery({
     queryKey: ["lookup-booths"],
     queryFn: getBoothLookupApi,
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
   });
 
   const eventsLookupQuery = useQuery({
     queryKey: ["lookup-events"],
     queryFn: getEventsLookupApi,
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
   });
 
-  const boothsList = useMemo(() => boothsLookupQuery.data || [], [boothsLookupQuery.data]);
-  const eventsList = useMemo(() => eventsLookupQuery.data || [], [eventsLookupQuery.data]);
+  const boothsList = useMemo(
+    () => boothsLookupQuery.data || [],
+    [boothsLookupQuery.data],
+  );
+  const eventsList = useMemo(
+    () => eventsLookupQuery.data || [],
+    [eventsLookupQuery.data],
+  );
 
   // Active Target ID
-  const activeBoothId = selectedBoothId ?? (boothsList.length > 0 ? boothsList[0].id : null);
-  const activeEventId = selectedEventId ?? (eventsList.length > 0 ? eventsList[0].id : null);
+  const activeBoothId =
+    selectedBoothId ?? (boothsList.length > 0 ? boothsList[0].id : null);
+  const activeEventId =
+    selectedEventId ?? (eventsList.length > 0 ? eventsList[0].id : null);
 
   // Single Booth Details Query
   const singleBoothQuery = useQuery({
     queryKey: dashboardKeys.booth(activeBoothId ?? undefined),
     queryFn: () => getSingleBoothApi(activeBoothId!),
     enabled: Boolean(activeBoothId) && mode === "booth",
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
   });
 
   // Booth Statistics Query
@@ -69,6 +87,8 @@ export function useDashboard() {
     queryKey: dashboardKeys.boothStats(activeBoothId ?? undefined),
     queryFn: () => getBoothStatisticsApi(activeBoothId!),
     enabled: Boolean(activeBoothId) && mode === "booth",
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
   });
 
   // Leads Query (Booth or Event)
@@ -83,6 +103,8 @@ export function useDashboard() {
       }
     },
     enabled: Boolean(activeTargetId),
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
   });
 
   // Reviews Query
@@ -96,6 +118,8 @@ export function useDashboard() {
       }
     },
     enabled: Boolean(activeTargetId),
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
   });
 
   // Review Stats Query
@@ -109,13 +133,40 @@ export function useDashboard() {
       }
     },
     enabled: Boolean(activeTargetId),
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
   });
 
   // Announcements Query (per_page = 5)
   const announcementsQuery = useQuery({
     queryKey: dashboardKeys.announcements(5, announcementsPage),
     queryFn: () => getAnnouncementsApi(5, announcementsPage),
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
   });
+
+  const [selectedVisitorForModal, setSelectedVisitorForModal] = useState<
+    import("../../Reviews/types/reviewsType").ReviewerDetails | null
+  >(null);
+
+  const handleSelectVisitorLead = (
+    lead: import("../types/dashboardType").VisitorLead,
+  ) => {
+    const v = lead.visitor;
+    if (!v) return;
+    const nameParts = (v.full_name || "").trim().split(/\s+/);
+    const firstName = nameParts[0] || "Visitor";
+    const lastName = nameParts.slice(1).join(" ");
+    setSelectedVisitorForModal({
+      id: v.id,
+      first_name: firstName,
+      last_name: lastName,
+      email: v.email || "—",
+      phone: v.phone || "—",
+      avatar: v.avatar,
+      job: "Exhibition Visitor",
+    });
+  };
 
   const handleModeChange = (nextMode: DashboardScopeMode) => {
     setMode(nextMode);
@@ -168,5 +219,8 @@ export function useDashboard() {
     refetchAnnouncements: announcementsQuery.refetch,
     announcementsPage,
     setAnnouncementsPage,
+    selectedVisitorForModal,
+    setSelectedVisitorForModal,
+    handleSelectVisitorLead,
   };
 }

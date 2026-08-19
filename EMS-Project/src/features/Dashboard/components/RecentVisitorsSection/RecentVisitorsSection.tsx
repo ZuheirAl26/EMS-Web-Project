@@ -15,6 +15,7 @@ interface RecentVisitorsSectionProps {
   isLoading: boolean;
   isError?: boolean;
   onRetry?: () => void;
+  onSelectVisitor?: (lead: VisitorLead) => void;
 }
 
 function formatDate(isoString: string) {
@@ -46,6 +47,7 @@ export function RecentVisitorsSection({
   isLoading,
   isError,
   onRetry,
+  onSelectVisitor,
 }: RecentVisitorsSectionProps) {
   const recentThree = visitors.slice(0, 3);
 
@@ -84,7 +86,19 @@ export function RecentVisitorsSection({
             const name = visitor?.full_name || "Anonymous Visitor";
 
             return (
-              <div className="visitor-item" key={item.id}>
+              <div
+                className="visitor-item clickable-visitor"
+                key={item.id}
+                onClick={() => onSelectVisitor?.(item)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    onSelectVisitor?.(item);
+                  }
+                }}
+                title="Click to view visitor reviewer profile"
+              >
                 <div className="avatar">
                   {avatarUrl ? (
                     <img alt={name} src={avatarUrl} />
