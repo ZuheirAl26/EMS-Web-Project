@@ -1,7 +1,6 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Calendar03Icon,
-  Clock01Icon,
   Store01Icon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
@@ -37,28 +36,19 @@ export function DashboardHeader({
   activeEventId,
   onBoothChange,
   onEventChange,
-  singleBooth,
 }: DashboardHeaderProps) {
   const isBoothMode = mode === "booth";
 
   const boothOptions: SelectOption<number>[] = boothsList.map((b) => ({
     value: b.id,
     label:
-      b.label ||
-      b.name ||
-      (b.number ? `Booth #${b.number}` : `Booth #${b.id}`),
+      b.label || b.name || (b.number ? `Booth #${b.number}` : `Booth #${b.id}`),
   }));
 
   const eventOptions: SelectOption<number>[] = eventsList.map((e) => ({
     value: e.id,
     label: e.label || e.name || `Event #${e.id}`,
   }));
-
-  const hallNumber = singleBooth?.hall_id?.number || "25";
-  const boothNumber = singleBooth?.number || "25B-01";
-  const companyName = singleBooth?.company?.name || "Exhibitor Company";
-  const area = singleBooth?.area || 48;
-  const price = singleBooth?.price || "1200.00";
 
   return (
     <div className="dashboard-top-header">
@@ -68,39 +58,31 @@ export function DashboardHeader({
             <h1>
               Welcome back, <span>{exhibitorName || "Exhibitor"}</span>
             </h1>
-            <div className="countdown-pill">
+            {/* <div className="countdown-pill">
               <HugeiconsIcon icon={Clock01Icon} size={14} />
               <span>12 Days Left</span>
-            </div>
+            </div> */}
           </div>
           <p className="subtitle">
-            Overview of your pavilion activity, visitor leads, services, and event metrics.
+            Overview of your pavilion activity, visitor leads, services, and
+            event metrics.
           </p>
 
-          {isBoothMode && (
-            <div className="booth-info-badges">
-              <div className="badge-item">
-                <span className="label">Hall</span>
-                <strong className="value">{hallNumber}</strong>
-              </div>
-              <div className="badge-item">
-                <span className="label">Booth</span>
-                <strong className="value">{boothNumber}</strong>
-              </div>
-              <div className="badge-item">
-                <span className="label">Company</span>
-                <strong className="value">{companyName}</strong>
-              </div>
-              <div className="badge-item">
-                <span className="label">Area</span>
-                <strong className="value">{area} m²</strong>
-              </div>
-              <div className="badge-item">
-                <span className="label">Price</span>
-                <strong className="value">${price}</strong>
-              </div>
-            </div>
-          )}
+          <div className="header-date-badge">
+            <HugeiconsIcon
+              icon={Calendar03Icon}
+              size={16}
+              className="date-icon"
+            />
+            <span>
+              {new Date().toLocaleDateString(undefined, {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+          </div>
         </div>
 
         {/* Scope Selector Bar (Booth vs Event + Dropdown) */}
@@ -131,14 +113,18 @@ export function DashboardHeader({
               <CustomSelect<number>
                 options={boothOptions}
                 value={activeBoothId ?? ""}
-                onChange={(val: number | "") => typeof val === "number" && onBoothChange(val)}
+                onChange={(val: number | "") =>
+                  typeof val === "number" && onBoothChange(val)
+                }
                 placeholder="Select Booth..."
               />
             ) : (
               <CustomSelect<number>
                 options={eventOptions}
                 value={activeEventId ?? ""}
-                onChange={(val: number | "") => typeof val === "number" && onEventChange(val)}
+                onChange={(val: number | "") =>
+                  typeof val === "number" && onEventChange(val)
+                }
                 placeholder="Select Event..."
               />
             )}
