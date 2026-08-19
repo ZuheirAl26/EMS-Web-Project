@@ -13,6 +13,7 @@ type TeamListProps = ReturnType<typeof useTeamManagement>;
 export default function CurrentTeamList({
   invitations,
   isInvitationsLoading,
+  isInvitationsError,
   booths,
   companies,
   role,
@@ -81,9 +82,39 @@ export default function CurrentTeamList({
         </div>
 
         <div className="members-list">
-          {isInvitationsLoading ? (
+          {!selectedScopeKey ? (
+            <div className="empty-state">
+              <HugeiconsIcon
+                icon={UserGroupIcon}
+                size={42}
+                strokeWidth={1.5}
+                className="empty-icon"
+              />
+              <p>
+                {t(
+                  "team.list.selectPrompt",
+                  "Please select a company or booth from the dropdown above to view team members.",
+                )}
+              </p>
+            </div>
+          ) : isInvitationsLoading ? (
             <div className="loading-state">
               <p>{t("team.list.loading", "Loading invitations...")}</p>
+            </div>
+          ) : isInvitationsError ? (
+            <div className="empty-state">
+              <HugeiconsIcon
+                icon={UserGroupIcon}
+                size={42}
+                strokeWidth={1.5}
+                className="empty-icon"
+              />
+              <p>
+                {t(
+                  "team.list.scopeError",
+                  "Unable to load team members for this selection. Please choose a company or booth from the dropdown.",
+                )}
+              </p>
             </div>
           ) : invitationList.length === 0 ? (
             <div className="empty-state">
@@ -99,6 +130,10 @@ export default function CurrentTeamList({
             invitationList.map((item: TeamInvitation) => {
               const isPending =
                 item.status?.toLowerCase() === "pending" || !item.status;
+              const isApproved =
+                item.status?.toLowerCase() === "approved" ||
+                item.status?.toLowerCase() === "accepted";
+              const isRejected = item.status?.toLowerCase() === "rejected";
               const displayName = item.name || item.sender?.name;
               const roleText = capitalize(item.role || item.type);
               const statusText = capitalize(item.status || "pending");
@@ -123,7 +158,7 @@ export default function CurrentTeamList({
                         item.status || "pending"
                       ).toLowerCase()}`}
                     >
-                      {item.status?.toLowerCase() === "rejected"
+                      {isRejected
                         ? "⊗ "
                         : isPending
                         ? "⏱ "
@@ -131,11 +166,15 @@ export default function CurrentTeamList({
                       {statusText}
                     </span>
 
-                    {isPending && (
+                    {!isRejected && (
                       <button
                         type="button"
                         className="action-btn cancel-btn"
-                        title={t("team.list.cancelInvitation", "Decline / Cancel Invitation")}
+                        title={
+                          isApproved
+                            ? t("team.list.removeMember", "Remove member from team")
+                            : t("team.list.cancelInvitation", "Decline / Cancel Invitation")
+                        }
                         onClick={() => setInvitationToDelete(item)}
                         disabled={isDeletingInvitation}
                       >

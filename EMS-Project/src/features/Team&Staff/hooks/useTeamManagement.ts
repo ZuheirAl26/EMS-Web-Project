@@ -68,10 +68,15 @@ export function useTeamManagement() {
   );
 
   const defaultScopeKey = useMemo(() => {
+    if (role === "company_manager" && companiesList.length > 0) {
+      return `company:${companiesList[0].id}`;
+    }
+    if (role === "booth_manager" && boothsList.length > 0) {
+      return `booth:${boothsList[0].id}`;
+    }
     if (boothsList.length > 0) return `booth:${boothsList[0].id}`;
-    if (companiesList.length > 0) return `company:${companiesList[0].id}`;
     return "";
-  }, [boothsList, companiesList]);
+  }, [role, boothsList, companiesList]);
 
   const activeScopeKey = selectedScopeKey || defaultScopeKey;
 
@@ -260,6 +265,8 @@ export function useTeamManagement() {
   return {
     invitations,
     isInvitationsLoading: invitationsQuery.isLoading,
+    isInvitationsError: invitationsQuery.isError,
+    invitationsError: invitationsQuery.error,
     companies: companiesList,
     booths: boothsList,
     selectedScopeKey: activeScopeKey,
