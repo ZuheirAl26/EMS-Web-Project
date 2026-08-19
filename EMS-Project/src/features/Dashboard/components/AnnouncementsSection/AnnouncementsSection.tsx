@@ -5,6 +5,8 @@ import {
   ArrowLeft01Icon,
   ArrowRight01Icon,
   Image01Icon,
+  AlertCircleIcon,
+  RefreshIcon,
 } from "@hugeicons/core-free-icons";
 import { resolveMediaUrl } from "../../../ExhibitorProfile/utils/profileUtils";
 import type { AnnouncementsResponseData } from "../../types/dashboardType";
@@ -13,11 +15,15 @@ import "./AnnouncementsSection.scss";
 interface AnnouncementsSectionProps {
   announcementsData?: AnnouncementsResponseData;
   isLoading: boolean;
+  isError?: boolean;
+  onRetry?: () => void;
 }
 
 export function AnnouncementsSection({
   announcementsData,
   isLoading,
+  isError,
+  onRetry,
 }: AnnouncementsSectionProps) {
   const items = announcementsData?.data || [];
   const [activeIndex, setActiveIndex] = useState(0);
@@ -69,6 +75,17 @@ export function AnnouncementsSection({
       <div className="announcement-content">
         {isLoading ? (
           <div className="announcement-loading">Loading announcements...</div>
+        ) : isError ? (
+          <div className="announcement-error">
+            <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
+            <p>Failed to load exhibition announcements.</p>
+            {onRetry && (
+              <button type="button" className="retry-btn" onClick={onRetry}>
+                <HugeiconsIcon icon={RefreshIcon} size={14} />
+                <span>Retry</span>
+              </button>
+            )}
+          </div>
         ) : items.length === 0 || !currentItem ? (
           <div className="announcement-empty">No announcements published at this time.</div>
         ) : (

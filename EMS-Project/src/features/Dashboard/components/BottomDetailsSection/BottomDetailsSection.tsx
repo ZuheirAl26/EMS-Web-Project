@@ -3,6 +3,10 @@ import {
   Store01Icon,
   Calendar03Icon,
   CheckmarkCircle02Icon,
+  Clock01Icon,
+  Cancel01Icon,
+  AlertCircleIcon,
+  RefreshIcon,
 } from "@hugeicons/core-free-icons";
 import { resolveMediaUrl } from "../../../ExhibitorProfile/utils/profileUtils";
 import type {
@@ -15,12 +19,43 @@ interface BottomDetailsSectionProps {
   mode: DashboardScopeMode;
   singleBooth?: DetailedBoothData;
   isLoading: boolean;
+  isError?: boolean;
+  onRetry?: () => void;
+}
+
+function renderStatusBadge(status?: string) {
+  if (!status) return null;
+  const s = status.toLowerCase();
+  if (s === "approved" || s === "booked") {
+    return (
+      <span className="status-badge status-approved">
+        <HugeiconsIcon icon={CheckmarkCircle02Icon} size={14} />
+        {status.toUpperCase()}
+      </span>
+    );
+  }
+  if (s === "pending") {
+    return (
+      <span className="status-badge status-pending">
+        <HugeiconsIcon icon={Clock01Icon} size={14} />
+        {status.toUpperCase()}
+      </span>
+    );
+  }
+  return (
+    <span className="status-badge status-rejected">
+      <HugeiconsIcon icon={Cancel01Icon} size={14} />
+      {status.toUpperCase()}
+    </span>
+  );
 }
 
 export function BottomDetailsSection({
   mode,
   singleBooth,
   isLoading,
+  isError,
+  onRetry,
 }: BottomDetailsSectionProps) {
   const isBoothMode = mode === "booth";
   const qrUrl = resolveMediaUrl(singleBooth?.qr_code_url ?? null);
@@ -33,16 +68,22 @@ export function BottomDetailsSection({
             <HugeiconsIcon icon={Store01Icon} size={20} className="icon" />
             <h2>Booth Details</h2>
           </div>
-          {singleBooth?.status && (
-            <span className="status-badge status-approved">
-              <HugeiconsIcon icon={CheckmarkCircle02Icon} size={14} />
-              {singleBooth.status.toUpperCase()}
-            </span>
-          )}
+          {renderStatusBadge(singleBooth?.status)}
         </div>
 
         {isLoading ? (
           <div className="card-loading">Loading booth details...</div>
+        ) : isError ? (
+          <div className="card-error">
+            <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
+            <p>Failed to load booth details.</p>
+            {onRetry && (
+              <button type="button" className="retry-btn" onClick={onRetry}>
+                <HugeiconsIcon icon={RefreshIcon} size={14} />
+                <span>Retry</span>
+              </button>
+            )}
+          </div>
         ) : (
           <div className="booth-details-content">
             <div className="details-grid">

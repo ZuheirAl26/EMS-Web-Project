@@ -3,6 +3,8 @@ import {
   UserGroupIcon,
   CallIcon,
   Calendar03Icon,
+  AlertCircleIcon,
+  RefreshIcon,
 } from "@hugeicons/core-free-icons";
 import { resolveMediaUrl } from "../../../ExhibitorProfile/utils/profileUtils";
 import type { VisitorLead } from "../../types/dashboardType";
@@ -11,6 +13,8 @@ import "./RecentVisitorsSection.scss";
 interface RecentVisitorsSectionProps {
   visitors: VisitorLead[];
   isLoading: boolean;
+  isError?: boolean;
+  onRetry?: () => void;
 }
 
 function formatDate(isoString: string) {
@@ -40,6 +44,8 @@ function getInitials(name: string) {
 export function RecentVisitorsSection({
   visitors,
   isLoading,
+  isError,
+  onRetry,
 }: RecentVisitorsSectionProps) {
   const recentThree = visitors.slice(0, 3);
 
@@ -55,6 +61,17 @@ export function RecentVisitorsSection({
       <div className="visitors-list">
         {isLoading ? (
           <div className="list-loading">Loading visitor leads...</div>
+        ) : isError ? (
+          <div className="list-error">
+            <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
+            <p>Failed to load visitor leads.</p>
+            {onRetry && (
+              <button type="button" className="retry-btn" onClick={onRetry}>
+                <HugeiconsIcon icon={RefreshIcon} size={14} />
+                <span>Retry</span>
+              </button>
+            )}
+          </div>
         ) : recentThree.length === 0 ? (
           <div className="list-empty">
             <HugeiconsIcon icon={UserGroupIcon} size={36} className="empty-icon" />

@@ -1,16 +1,20 @@
 import { HugeiconsIcon } from "@hugeicons/react";
-import { StarIcon } from "@hugeicons/core-free-icons";
+import { StarIcon, AlertCircleIcon, RefreshIcon } from "@hugeicons/core-free-icons";
 import type { ReviewStatsData } from "../../../Reviews/types/reviewsType";
 import "./DashboardReviewsSection.scss";
 
 interface DashboardReviewsSectionProps {
   stats?: ReviewStatsData;
   isLoading: boolean;
+  isError?: boolean;
+  onRetry?: () => void;
 }
 
 export function DashboardReviewsSection({
   stats,
   isLoading,
+  isError,
+  onRetry,
 }: DashboardReviewsSectionProps) {
   const totalReviews = stats?.total_reviews ?? 0;
   const avgRating = stats?.average_rating ?? 0;
@@ -38,6 +42,17 @@ export function DashboardReviewsSection({
       <div className="reviews-body">
         {isLoading ? (
           <div className="reviews-loading">Loading rating statistics...</div>
+        ) : isError ? (
+          <div className="reviews-error">
+            <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
+            <p>Failed to load rating statistics.</p>
+            {onRetry && (
+              <button type="button" className="retry-btn" onClick={onRetry}>
+                <HugeiconsIcon icon={RefreshIcon} size={14} />
+                <span>Retry</span>
+              </button>
+            )}
+          </div>
         ) : (
           <>
             <div className="score-summary-box">

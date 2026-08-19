@@ -1,15 +1,25 @@
 import { useMemo } from "react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  AlertCircleIcon,
+  RefreshIcon,
+  ChartBreakoutSquareIcon,
+} from "@hugeicons/core-free-icons";
 import type { LeadsResponseData, WeeklyStat } from "../../types/dashboardType";
 import "./LeadsChartSection.scss";
 
 interface LeadsChartSectionProps {
   leadsData?: LeadsResponseData;
   isLoading: boolean;
+  isError?: boolean;
+  onRetry?: () => void;
 }
 
 export function LeadsChartSection({
   leadsData,
   isLoading,
+  isError,
+  onRetry,
 }: LeadsChartSectionProps) {
   const weeklyStats: WeeklyStat[] = leadsData?.weekly_stats || [];
   const totalLeads = leadsData?.leads_count ?? 0;
@@ -35,8 +45,22 @@ export function LeadsChartSection({
       <div className="chart-body">
         {isLoading ? (
           <div className="chart-loading">Loading weekly analytics...</div>
+        ) : isError ? (
+          <div className="chart-error">
+            <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
+            <p>Failed to load lead activity analytics.</p>
+            {onRetry && (
+              <button type="button" className="retry-btn" onClick={onRetry}>
+                <HugeiconsIcon icon={RefreshIcon} size={14} />
+                <span>Retry</span>
+              </button>
+            )}
+          </div>
         ) : weeklyStats.length === 0 ? (
-          <div className="chart-empty">No lead activity recorded this week yet.</div>
+          <div className="chart-empty">
+            <HugeiconsIcon icon={ChartBreakoutSquareIcon} size={32} className="empty-icon" />
+            <p>No lead activity recorded this week yet.</p>
+          </div>
         ) : (
           <div className="bars-container">
             {weeklyStats.map((stat: WeeklyStat) => {

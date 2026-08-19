@@ -21,14 +21,22 @@ export function DashboardPage() {
     handleEventChange,
     singleBooth,
     isSingleBoothLoading,
+    isSingleBoothError,
+    refetchSingleBooth,
     boothStats,
     isBoothStatsLoading,
     leadsData,
     isLeadsLoading,
+    isLeadsError,
+    refetchLeads,
     reviewStats,
     isReviewStatsLoading,
+    isReviewStatsError,
+    refetchReviewStats,
     announcementsData,
     isAnnouncementsLoading,
+    isAnnouncementsError,
+    refetchAnnouncements,
   } = useDashboard();
 
   const visitorsList = leadsData?.visitors?.data || [];
@@ -60,10 +68,14 @@ export function DashboardPage() {
       <div className="dashboard-middle-grid">
         <LeadsChartSection
           isLoading={isLeadsLoading}
+          isError={isLeadsError}
           leadsData={leadsData}
+          onRetry={refetchLeads}
         />
         <DashboardReviewsSection
           isLoading={isReviewStatsLoading}
+          isError={isReviewStatsError}
+          onRetry={refetchReviewStats}
           stats={reviewStats}
         />
       </div>
@@ -72,17 +84,23 @@ export function DashboardPage() {
       <AnnouncementsSection
         announcementsData={announcementsData}
         isLoading={isAnnouncementsLoading}
+        isError={isAnnouncementsError}
+        onRetry={refetchAnnouncements}
       />
 
       {/* 5. Booth details with visitors (Same Row Grid) */}
       <div className="dashboard-bottom-grid">
         <BottomDetailsSection
           isLoading={isSingleBoothLoading}
+          isError={isSingleBoothError}
           mode={mode}
+          onRetry={refetchSingleBooth}
           singleBooth={singleBooth}
         />
         <RecentVisitorsSection
           isLoading={isLeadsLoading}
+          isError={isLeadsError}
+          onRetry={refetchLeads}
           visitors={visitorsList}
         />
       </div>
