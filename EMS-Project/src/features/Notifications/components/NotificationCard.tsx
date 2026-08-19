@@ -82,7 +82,7 @@ export function NotificationCard({
     } else if (notification.type.includes("event")) {
       navigate("/dashboard/events");
     } else if (notification.type.includes("review")) {
-      navigate("/dashboard/reviews");
+      navigate("/dashboard/visitors");
     }
   };
 

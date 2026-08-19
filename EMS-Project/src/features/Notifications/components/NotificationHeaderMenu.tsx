@@ -115,7 +115,7 @@ export function NotificationHeaderMenu() {
     } else if (item.type.includes("event")) {
       navigate("/dashboard/events");
     } else if (item.type.includes("review")) {
-      navigate("/dashboard/reviews");
+      navigate("/dashboard/visitors");
     } else {
       navigate("/dashboard/notifications");
     }

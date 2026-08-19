@@ -70,7 +70,6 @@ export const AppRouter = () => {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="booths" element={<MyBoothsPage />} />
             <Route path="visitors" element={<ReviewsPage />} />
-            <Route path="reviews" element={<ReviewsPage />} />
             <Route path="events" element={<EventsPage />} />
             <Route path="team" element={<TeamPage />} />
             <Route path="profile" element={<ExhibitorProfilePage />} />

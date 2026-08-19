@@ -56,6 +56,8 @@ type QueryCacheData = {
     total?: number;
     numberOfUnreadNotifications?: number;
     total_notifications?: number;
+    unread_notifications?: number;
+    read_notifications?: number;
   };
 };
 
@@ -73,12 +75,26 @@ export function useMarkNotificationAsRead() {
 
       const nowIso = new Date().toISOString();
 
+      let wasUnread = false;
+      previousQueries.forEach(([, data]) => {
+        if (data && typeof data === "object") {
+          const cacheData = data as QueryCacheData;
+          if (cacheData.data?.data && Array.isArray(cacheData.data.data)) {
+            const found = cacheData.data.data.find((item) => item.id === id);
+            if (found && !found.read_at) {
+              wasUnread = true;
+            }
+          }
+        }
+      });
+
       queryClient.setQueriesData<unknown>(
         { queryKey: NOTIFICATIONS_KEYS.all },
         (oldData: unknown) => {
           if (!oldData || typeof oldData !== "object") return oldData;
           const cacheData = oldData as QueryCacheData;
 
+          // 1. Paginated list query
           if (cacheData.data?.data && Array.isArray(cacheData.data.data)) {
             const updatedItems = cacheData.data.data.map((item) => {
               if (item.id === id) {
@@ -96,6 +112,7 @@ export function useMarkNotificationAsRead() {
             };
           }
 
+          // 2. Unread count query
           if (typeof cacheData.data?.numberOfUnreadNotifications === "number") {
             return {
               ...cacheData,
@@ -103,8 +120,27 @@ export function useMarkNotificationAsRead() {
                 ...cacheData.data,
                 numberOfUnreadNotifications: Math.max(
                   0,
-                  cacheData.data.numberOfUnreadNotifications - 1,
+                  cacheData.data.numberOfUnreadNotifications - (wasUnread ? 1 : 0),
                 ),
+              },
+            };
+          }
+
+          // 3. Stats query
+          if (typeof cacheData.data?.unread_notifications === "number") {
+            const unread = Math.max(
+              0,
+              cacheData.data.unread_notifications - (wasUnread ? 1 : 0),
+            );
+            const read =
+              (cacheData.data.read_notifications ?? 0) + (wasUnread ? 1 : 0);
+
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                unread_notifications: unread,
+                read_notifications: read,
               },
             };
           }
@@ -133,6 +169,76 @@ export function useMarkAllNotificationsAsRead() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => notificationsApi.markAllAsRead(),
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: NOTIFICATIONS_KEYS.all });
+
+      const previousQueries = queryClient.getQueriesData<unknown>({
+        queryKey: NOTIFICATIONS_KEYS.all,
+      });
+
+      const nowIso = new Date().toISOString();
+
+      queryClient.setQueriesData<unknown>(
+        { queryKey: NOTIFICATIONS_KEYS.all },
+        (oldData: unknown) => {
+          if (!oldData || typeof oldData !== "object") return oldData;
+          const cacheData = oldData as QueryCacheData;
+
+          // 1. Paginated list query
+          if (cacheData.data?.data && Array.isArray(cacheData.data.data)) {
+            const updatedItems = cacheData.data.data.map((item) => ({
+              ...item,
+              read_at: item.read_at || nowIso,
+            }));
+
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                data: updatedItems,
+              },
+            };
+          }
+
+          // 2. Unread count query
+          if (typeof cacheData.data?.numberOfUnreadNotifications === "number") {
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                numberOfUnreadNotifications: 0,
+              },
+            };
+          }
+
+          // 3. Stats query
+          if (typeof cacheData.data?.unread_notifications === "number") {
+            const unreadCount = cacheData.data.unread_notifications ?? 0;
+            const readCount = cacheData.data.read_notifications ?? 0;
+
+            return {
+              ...cacheData,
+              data: {
+                ...cacheData.data,
+                unread_notifications: 0,
+                read_notifications: readCount + unreadCount,
+              },
+            };
+          }
+
+          return oldData;
+        },
+      );
+
+      return { previousQueries };
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousQueries) {
+        context.previousQueries.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data);
+        });
+      }
+    },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEYS.all });
     },
@@ -151,12 +257,27 @@ export function useDeleteNotification() {
         queryKey: NOTIFICATIONS_KEYS.all,
       });
 
+      let wasUnread = false;
+
+      previousQueries.forEach(([, data]) => {
+        if (data && typeof data === "object") {
+          const cacheData = data as QueryCacheData;
+          if (cacheData.data?.data && Array.isArray(cacheData.data.data)) {
+            const found = cacheData.data.data.find((item) => item.id === deletedId);
+            if (found && !found.read_at) {
+              wasUnread = true;
+            }
+          }
+        }
+      });
+
       queryClient.setQueriesData<unknown>(
         { queryKey: NOTIFICATIONS_KEYS.all },
         (oldData: unknown) => {
           if (!oldData || typeof oldData !== "object") return oldData;
           const cacheData = oldData as QueryCacheData;
 
+          // 1. Paginated list query
           if (cacheData.data?.data && Array.isArray(cacheData.data.data)) {
             const updatedItems = cacheData.data.data.filter(
               (item) => item.id !== deletedId,
@@ -173,6 +294,7 @@ export function useDeleteNotification() {
             };
           }
 
+          // 2. Unread count query
           if (typeof cacheData.data?.numberOfUnreadNotifications === "number") {
             return {
               ...cacheData,
@@ -180,12 +302,13 @@ export function useDeleteNotification() {
                 ...cacheData.data,
                 numberOfUnreadNotifications: Math.max(
                   0,
-                  cacheData.data.numberOfUnreadNotifications - 1,
+                  cacheData.data.numberOfUnreadNotifications - (wasUnread ? 1 : 0),
                 ),
               },
             };
           }
 
+          // 3. Stats query
           if (typeof cacheData.data?.total_notifications === "number") {
             return {
               ...cacheData,
@@ -195,6 +318,12 @@ export function useDeleteNotification() {
                   0,
                   cacheData.data.total_notifications - 1,
                 ),
+                unread_notifications: wasUnread
+                  ? Math.max(0, (cacheData.data.unread_notifications ?? 0) - 1)
+                  : (cacheData.data.unread_notifications ?? 0),
+                read_notifications: !wasUnread
+                  ? Math.max(0, (cacheData.data.read_notifications ?? 0) - 1)
+                  : (cacheData.data.read_notifications ?? 0),
               },
             };
           }
