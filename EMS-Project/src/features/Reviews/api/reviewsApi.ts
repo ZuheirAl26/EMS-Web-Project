@@ -40,3 +40,21 @@ export const getBoothReviewsApi = async (
   );
   return data.data;
 };
+
+export const getBoothReviewStatsApi = async (
+  boothId: number,
+): Promise<import("../types/reviewsType").ReviewStatsData> => {
+  const { data } = await apiClient.get<
+    ApiResponse<import("../types/reviewsType").ReviewStatsData>
+  >(`/v1/exhibitor/reviews/booth/${boothId}/statistics`);
+  return data.data;
+};
+
+export const getEventReviewStatsApi = async (
+  eventId: number,
+): Promise<import("../types/reviewsType").ReviewStatsData> => {
+  const { data } = await apiClient.get<
+    ApiResponse<import("../types/reviewsType").ReviewStatsData>
+  >(`/v1/exhibitor/reviews/event/${eventId}/statistics`);
+  return data.data;
+};

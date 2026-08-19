@@ -18,6 +18,20 @@ export interface ReviewItem {
 export interface ReviewStatistics {
   total_reviews: number;
   average_rating: number;
+  five_star_reviews?: number;
+  four_star_reviews?: number;
+  three_star_reviews?: number;
+  two_star_reviews?: number;
+  one_star_reviews?: number;
+}
+
+export interface ReviewStatsData {
+  total_reviews: number;
+  average_rating: number;
+  one_star_reviews: number;
+  two_star_reviews: number;
+  three_star_reviews: number;
+  four_star_reviews: number;
   five_star_reviews: number;
 }
 

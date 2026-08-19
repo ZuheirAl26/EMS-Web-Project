@@ -4,14 +4,15 @@
   border-radius: var(--radius-2xl, 14px);
   padding: 24px;
   box-shadow: var(--shadow-xs);
-  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
 
   .card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 
     h2 {
       margin: 0;
@@ -25,78 +26,56 @@
       font-size: 0.8rem;
       color: var(--color-neutral-500, #64748b);
     }
-
-    .avg-rating-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: #fef3c7;
-      color: #92400e;
-      font-size: 0.82rem;
-
-      .star-icon {
-        color: #f59e0b;
-        fill: currentColor;
-      }
-
-      strong {
-        font-weight: 800;
-      }
-    }
   }
 
-  .reviews-list {
+  .reviews-body {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 12px;
 
-    .reviews-loading,
-    .reviews-empty {
-      padding: 24px 0;
+    .reviews-loading {
+      padding: 32px 0;
       text-align: center;
       color: var(--color-neutral-400, #9ca3af);
       font-size: 0.88rem;
     }
 
-    .review-item {
-      padding: 12px 14px;
-      border: 1px solid var(--color-border, #e2e8f0);
-      border-radius: 10px;
+    .score-summary-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius-xl, 12px);
       background: var(--color-page, #f8fafb);
+      border: 1px solid var(--color-border, #e2e8f0);
+      margin-bottom: 20px;
 
-      .review-header {
+      .big-score {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 6px;
+        gap: 6px;
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--color-ink, #181d1c);
+        line-height: 1;
 
-        .reviewer-info {
-          display: flex;
-          align-items: center;
-          gap: 8px;
+        .star-icon {
+          color: #f59e0b;
+          fill: currentColor;
+        }
+      }
 
-          .avatar {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: var(--color-primary-surface, #f0fafa);
-            color: var(--color-primary, #0a8782);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
+      .score-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
 
-          .reviewer-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--color-ink, #181d1c);
-          }
+        strong {
+          font-size: 0.85rem;
+          color: var(--color-ink, #181d1c);
         }
 
-        .rating-stars {
+        .stars-row {
           display: flex;
           align-items: center;
           gap: 2px;
@@ -107,17 +86,70 @@
           }
 
           .empty {
-            color: #cbd5e1;
+            color: var(--color-neutral-300, #cbd5e1);
           }
         }
       }
+    }
 
-      .review-comment {
-        margin: 0;
-        font-size: 0.82rem;
-        color: var(--color-neutral-500, #64748b);
-        line-height: 1.4;
+    .star-breakdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .star-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .star-label {
+          width: 55px;
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: var(--color-neutral-500, #64748b);
+          white-space: nowrap;
+        }
+
+        .progress-bar-track {
+          flex: 1;
+          height: 10px;
+          border-radius: 999px;
+          background: var(--color-page, #f1f5f9);
+          border: 1px solid var(--color-border, #e2e8f0);
+          overflow: hidden;
+
+          .progress-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(
+              90deg,
+              var(--color-primary, #0a8782),
+              var(--color-primary-light, #0d9e98)
+            );
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+        }
+
+        .row-val {
+          width: 65px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 4px;
+          font-size: 0.78rem;
+
+          .percent-num {
+            font-weight: 700;
+            color: var(--color-ink, #181d1c);
+          }
+
+          .count-num {
+            color: var(--color-neutral-400, #9ca3af);
+            font-size: 0.72rem;
+          }
+        }
       }
     }
   }
 }
+

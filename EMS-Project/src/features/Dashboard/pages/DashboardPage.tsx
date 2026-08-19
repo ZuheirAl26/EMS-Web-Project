@@ -2,8 +2,9 @@ import { useDashboard } from "../hooks/useDashboard";
 import { DashboardHeader } from "../components/DashboardHeader/DashboardHeader";
 import { DashboardStatsCards } from "../components/DashboardStatsCards/DashboardStatsCards";
 import { LeadsChartSection } from "../components/LeadsChartSection/LeadsChartSection";
-import { AnnouncementsSection } from "../components/AnnouncementsSection/AnnouncementsSection";
 import { DashboardReviewsSection } from "../components/DashboardReviewsSection/DashboardReviewsSection";
+import { RecentVisitorsSection } from "../components/RecentVisitorsSection/RecentVisitorsSection";
+import { AnnouncementsSection } from "../components/AnnouncementsSection/AnnouncementsSection";
 import { BottomDetailsSection } from "../components/BottomDetailsSection/BottomDetailsSection";
 import "./DashboardPage.scss";
 
@@ -24,11 +25,13 @@ export function DashboardPage() {
     isBoothStatsLoading,
     leadsData,
     isLeadsLoading,
-    reviewsData,
-    isReviewsLoading,
+    reviewStats,
+    isReviewStatsLoading,
     announcementsData,
     isAnnouncementsLoading,
   } = useDashboard();
+
+  const visitorsList = leadsData?.visitors?.data || [];
 
   return (
     <section aria-label="Exhibitor Dashboard" className="dashboard-page">
@@ -51,21 +54,31 @@ export function DashboardPage() {
         stats={boothStats}
       />
 
-      <LeadsChartSection
+      {/* Grid: Leads Chart on Left, Review Statistics on Right */}
+      <div className="dashboard-middle-grid">
+        <LeadsChartSection
+          isLoading={isLeadsLoading}
+          leadsData={leadsData}
+        />
+        <DashboardReviewsSection
+          isLoading={isReviewStatsLoading}
+          stats={reviewStats}
+        />
+      </div>
+
+      {/* Under the chart grid: Recent 3 Visitors */}
+      <RecentVisitorsSection
         isLoading={isLeadsLoading}
-        leadsData={leadsData}
+        visitors={visitorsList}
       />
 
+      {/* Announcements */}
       <AnnouncementsSection
         announcementsData={announcementsData}
         isLoading={isAnnouncementsLoading}
       />
 
-      <DashboardReviewsSection
-        isLoading={isReviewsLoading}
-        reviewsData={reviewsData}
-      />
-
+      {/* Other / Bottom Details */}
       <BottomDetailsSection
         isLoading={isSingleBoothLoading}
         mode={mode}
@@ -76,3 +89,4 @@ export function DashboardPage() {
 }
 
 export default DashboardPage;
+

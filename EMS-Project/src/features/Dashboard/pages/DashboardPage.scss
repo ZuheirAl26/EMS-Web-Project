@@ -3,6 +3,17 @@
   padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
+
+  .dashboard-middle-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -10,3 +21,4 @@
     padding: 16px;
   }
 }
+

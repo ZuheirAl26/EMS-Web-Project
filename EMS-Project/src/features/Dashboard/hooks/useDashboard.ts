@@ -2,7 +2,13 @@ import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useExhibitorProfile } from "../../ExhibitorProfile/hooks/useExhibitorProfile";
 import { getBoothLookupApi } from "../../Team&Staff/api/teamApi";
-import { getEventsLookupApi, getBoothReviewsApi, getEventReviewsApi } from "../../Reviews/api/reviewsApi";
+import {
+  getEventsLookupApi,
+  getBoothReviewsApi,
+  getEventReviewsApi,
+  getBoothReviewStatsApi,
+  getEventReviewStatsApi,
+} from "../../Reviews/api/reviewsApi";
 import {
   getSingleBoothApi,
   getBoothStatisticsApi,
@@ -92,6 +98,19 @@ export function useDashboard() {
     enabled: Boolean(activeTargetId),
   });
 
+  // Review Stats Query
+  const reviewStatsQuery = useQuery({
+    queryKey: ["dashboard-review-stats", mode, activeTargetId],
+    queryFn: () => {
+      if (mode === "booth") {
+        return getBoothReviewStatsApi(activeBoothId!);
+      } else {
+        return getEventReviewStatsApi(activeEventId!);
+      }
+    },
+    enabled: Boolean(activeTargetId),
+  });
+
   // Announcements Query (per_page = 5)
   const announcementsQuery = useQuery({
     queryKey: dashboardKeys.announcements(5, announcementsPage),
@@ -133,6 +152,8 @@ export function useDashboard() {
     setLeadsPage,
     reviewsData: reviewsQuery.data,
     isReviewsLoading: reviewsQuery.isLoading,
+    reviewStats: reviewStatsQuery.data,
+    isReviewStatsLoading: reviewStatsQuery.isLoading,
     announcementsData: announcementsQuery.data,
     isAnnouncementsLoading: announcementsQuery.isLoading,
     announcementsPage,
