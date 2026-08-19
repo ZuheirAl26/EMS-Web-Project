@@ -80,6 +80,7 @@
       border: 1px solid var(--color-border, #e2e8f0);
       border-radius: 12px;
       background: var(--color-page, #f8fafb);
+      animation: slideFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
       .media-preview {
         width: 140px;
@@ -87,12 +88,26 @@
         border-radius: 10px;
         overflow: hidden;
         flex-shrink: 0;
-        background: #e2e8f0;
+        background: var(--color-neutral-200, #e2e8f0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.placeholder-preview {
+          background: var(--color-primary-surface, #f0fafa);
+          border: 1px solid var(--color-border, #e2e8f0);
+
+          .placeholder-icon {
+            color: var(--color-primary, #0a8782);
+            opacity: 0.6;
+          }
+        }
 
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          display: block;
         }
       }
 
@@ -145,5 +160,16 @@
         height: 140px;
       }
     }
+  }
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

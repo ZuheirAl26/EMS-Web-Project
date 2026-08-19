@@ -4,6 +4,7 @@ import {
   Notification02Icon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
+  Image01Icon,
 } from "@hugeicons/core-free-icons";
 import { resolveMediaUrl } from "../../../ExhibitorProfile/utils/profileUtils";
 import type { AnnouncementsResponseData } from "../../types/dashboardType";
@@ -21,7 +22,8 @@ export function AnnouncementsSection({
   const items = announcementsData?.data || [];
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const currentItem = items[activeIndex];
+  const validIndex = activeIndex >= items.length ? 0 : activeIndex;
+  const currentItem = items[validIndex];
   const mediaUrl = resolveMediaUrl(currentItem?.media ?? null);
 
   const handlePrev = () => {
@@ -50,7 +52,7 @@ export function AnnouncementsSection({
               <HugeiconsIcon icon={ArrowLeft01Icon} size={16} />
             </button>
             <span className="slider-counter">
-              {activeIndex + 1} / {items.length}
+              {validIndex + 1} / {items.length}
             </span>
             <button
               type="button"
@@ -67,17 +69,31 @@ export function AnnouncementsSection({
       <div className="announcement-content">
         {isLoading ? (
           <div className="announcement-loading">Loading announcements...</div>
-        ) : items.length === 0 ? (
+        ) : items.length === 0 || !currentItem ? (
           <div className="announcement-empty">No announcements published at this time.</div>
         ) : (
-          <div className="announcement-slide">
-            {mediaUrl && (
+          <div
+            className="announcement-slide"
+            key={currentItem.id ?? validIndex}
+          >
+            {mediaUrl ? (
               <div className="media-preview">
-                <img alt={currentItem.title} src={mediaUrl} />
+                <img
+                  key={mediaUrl}
+                  alt={currentItem.title}
+                  src={mediaUrl}
+                  loading="eager"
+                />
+              </div>
+            ) : (
+              <div className="media-preview placeholder-preview">
+                <HugeiconsIcon icon={Image01Icon} size={28} className="placeholder-icon" />
               </div>
             )}
             <div className="announcement-body">
-              <span className="receiver-badge">Official Announcement</span>
+              <span className="receiver-badge">
+                {currentItem.receiver ? `Target: ${currentItem.receiver}` : "Official Announcement"}
+              </span>
               <h3 className="announcement-title">{currentItem.title}</h3>
               <p className="announcement-desc">{currentItem.description}</p>
             </div>
@@ -87,3 +103,4 @@ export function AnnouncementsSection({
     </div>
   );
 }
+
