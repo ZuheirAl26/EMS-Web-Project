@@ -110,7 +110,7 @@
     top: calc(100% + 6px); /* Always opens downwards */
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 9999;
     max-height: 135px; /* Flexible up to 3 rows max, then scroll */
     overflow-y: auto;
     background: var(--color-bg-white);
