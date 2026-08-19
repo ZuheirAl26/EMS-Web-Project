@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import {
@@ -67,18 +67,29 @@ export function useTeamManagement() {
     [boothsQuery.data],
   );
 
-  const defaultScopeKey = useMemo(() => {
-    if (role === "company_manager" && companiesList.length > 0) {
-      return `company:${companiesList[0].id}`;
-    }
-    if (role === "booth_manager" && boothsList.length > 0) {
-      return `booth:${boothsList[0].id}`;
-    }
-    if (boothsList.length > 0) return `booth:${boothsList[0].id}`;
-    return "";
-  }, [role, boothsList, companiesList]);
+  const activeScopeKey = useMemo(() => {
+    const isCompanyRole = role === "company_manager";
 
-  const activeScopeKey = selectedScopeKey || defaultScopeKey;
+    if (isCompanyRole) {
+      if (companiesList.length === 0) return "";
+      const isValid =
+        selectedScopeKey.startsWith("company:") &&
+        companiesList.some((c) => `company:${c.id}` === selectedScopeKey);
+      return isValid ? selectedScopeKey : `company:${companiesList[0].id}`;
+    } else {
+      if (boothsList.length === 0) return "";
+      const isValid =
+        selectedScopeKey.startsWith("booth:") &&
+        boothsList.some((b) => `booth:${b.id}` === selectedScopeKey);
+      return isValid ? selectedScopeKey : `booth:${boothsList[0].id}`;
+    }
+  }, [role, selectedScopeKey, companiesList, boothsList]);
+
+  useEffect(() => {
+    if (activeScopeKey && activeScopeKey !== selectedScopeKey) {
+      setSelectedScopeKey(activeScopeKey);
+    }
+  }, [activeScopeKey, selectedScopeKey, setSelectedScopeKey]);
 
   // Parse scope key (e.g. "booth:83" or "company:1")
   const parsedScope = useMemo(() => {
