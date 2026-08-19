@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getToken, onMessage } from "firebase/messaging";
+import logo from "../../../assets/logo.png";
 import { getFirebaseMessaging } from "../../../config/firebase";
 import { useAuthStore } from "../../../store/AuthStore";
 import { notificationsApi } from "../api/notificationsApi";
@@ -11,16 +12,23 @@ import type {
 
 export const NOTIFICATIONS_KEYS = {
   all: ["notifications"] as const,
-  list: (params?: FetchNotificationsParams) => ["notifications", "list", params] as const,
-  unread: (params?: FetchNotificationsParams) => ["notifications", "unread", params] as const,
+  list: (params?: FetchNotificationsParams) =>
+    ["notifications", "list", params] as const,
+  unread: (params?: FetchNotificationsParams) =>
+    ["notifications", "unread", params] as const,
   count: ["notifications", "unread-count"] as const,
   stats: ["notifications", "stats"] as const,
 };
 
 // Fetch notifications list
-export function useNotifications(params?: FetchNotificationsParams, isUnreadOnly?: boolean) {
+export function useNotifications(
+  params?: FetchNotificationsParams,
+  isUnreadOnly?: boolean,
+) {
   return useQuery({
-    queryKey: isUnreadOnly ? NOTIFICATIONS_KEYS.unread(params) : NOTIFICATIONS_KEYS.list(params),
+    queryKey: isUnreadOnly
+      ? NOTIFICATIONS_KEYS.unread(params)
+      : NOTIFICATIONS_KEYS.list(params),
     queryFn: () =>
       isUnreadOnly
         ? notificationsApi.getUnreadNotifications(params)
@@ -120,7 +128,8 @@ export function useMarkNotificationAsRead() {
                 ...cacheData.data,
                 numberOfUnreadNotifications: Math.max(
                   0,
-                  cacheData.data.numberOfUnreadNotifications - (wasUnread ? 1 : 0),
+                  cacheData.data.numberOfUnreadNotifications -
+                    (wasUnread ? 1 : 0),
                 ),
               },
             };
@@ -263,7 +272,9 @@ export function useDeleteNotification() {
         if (data && typeof data === "object") {
           const cacheData = data as QueryCacheData;
           if (cacheData.data?.data && Array.isArray(cacheData.data.data)) {
-            const found = cacheData.data.data.find((item) => item.id === deletedId);
+            const found = cacheData.data.data.find(
+              (item) => item.id === deletedId,
+            );
             if (found && !found.read_at) {
               wasUnread = true;
             }
@@ -302,7 +313,8 @@ export function useDeleteNotification() {
                 ...cacheData.data,
                 numberOfUnreadNotifications: Math.max(
                   0,
-                  cacheData.data.numberOfUnreadNotifications - (wasUnread ? 1 : 0),
+                  cacheData.data.numberOfUnreadNotifications -
+                    (wasUnread ? 1 : 0),
                 ),
               },
             };
@@ -347,10 +359,20 @@ export function useDeleteNotification() {
   });
 }
 
+let globalFcmRegisteredToken: string | null = null;
+let globalSwRegistered = false;
+
 // Hook to initialize Firebase Cloud Messaging, request permission & register token with backend
-export function useFirebaseMessaging(onForegroundPush?: (title: string, body: string) => void) {
+export function useFirebaseMessaging(
+  onForegroundPush?: (title: string, body: string) => void,
+) {
   const queryClient = useQueryClient();
   const token = useAuthStore((state) => state.token);
+  const onForegroundPushRef = useRef(onForegroundPush);
+
+  useEffect(() => {
+    onForegroundPushRef.current = onForegroundPush;
+  }, [onForegroundPush]);
 
   useEffect(() => {
     if (!token) return;
@@ -360,41 +382,143 @@ export function useFirebaseMessaging(onForegroundPush?: (title: string, body: st
     async function initMessaging() {
       try {
         const messaging = await getFirebaseMessaging();
-        if (!messaging) return;
+        if (!messaging) {
+          console.warn(
+            "[FCM Warning]: Firebase Messaging is not supported in this browser.",
+          );
+          return;
+        }
 
-        // Request browser notification permission
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-          // Get FCM device token
-          const fcmToken = await getToken(messaging, {
-            vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY || undefined,
-          });
+        // 1. Request browser notification permission
+        let permission =
+          typeof Notification !== "undefined"
+            ? Notification.permission
+            : "denied";
 
-          if (fcmToken) {
-            // Register token with backend
-            await notificationsApi.registerFcmToken({
-              token: fcmToken,
-              device_type: "web",
-            });
+        if (permission === "default") {
+          permission = await Notification.requestPermission();
+        }
+
+        if (permission !== "granted") {
+          console.warn(
+            `[FCM Permission Blocked]: Browser notification permission is '${permission}'. ` +
+              "To unblock: Click the sliders/tune icon next to http://localhost:5173 in address bar, " +
+              "change Notifications to 'Allow', then refresh the page.",
+          );
+          return;
+        }
+
+        // 2. Explicitly register FCM Service Worker for localhost/web
+        let swRegistration: ServiceWorkerRegistration | undefined = undefined;
+        if ("serviceWorker" in navigator) {
+          try {
+            swRegistration = await navigator.serviceWorker.register(
+              "/firebase-messaging-sw.js",
+            );
+            await swRegistration.update();
+            if (!globalSwRegistered) {
+              globalSwRegistered = true;
+              console.log(
+                "[FCM Service Worker Registered & Updated]:",
+                swRegistration,
+              );
+            }
+          } catch (swErr) {
+            console.warn("[FCM Service Worker Register Warning]:", swErr);
           }
         }
 
-        // Listen for foreground FCM push notifications
+        // 3. Get FCM device token
+        const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY || undefined;
+        const fcmToken = await getToken(messaging, {
+          vapidKey,
+          serviceWorkerRegistration: swRegistration,
+        });
+
+        if (fcmToken) {
+          (window as any).__FCM_TOKEN__ = fcmToken;
+
+          // Register token with backend ONLY IF it has not been registered yet in this session
+          if (globalFcmRegisteredToken !== fcmToken) {
+            globalFcmRegisteredToken = fcmToken;
+            console.log(
+              "%c[FCM TOKEN FOR TESTING]:",
+              "background: #0a8782; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px; font-size: 12px;",
+              fcmToken,
+            );
+
+            try {
+              await notificationsApi.registerFcmToken({
+                token: fcmToken,
+                device_type: "web",
+              });
+              console.log("[FCM Token Registered with Backend]");
+            } catch (apiErr) {
+              console.warn("[FCM Backend Registration Warning]:", apiErr);
+            }
+          }
+        } else {
+          console.warn("[FCM Warning]: No FCM Token returned.");
+        }
+
+        // Expose instant console test function
+        (window as any).__TEST_REALTIME_PUSH__ = (
+          testTitle = "Test Notification Received",
+          testBody = "Real-time push notification delivered successfully.",
+        ) => {
+          console.log("[Testing Realtime Push Triggered via Console]");
+          queryClient.invalidateQueries({
+            queryKey: NOTIFICATIONS_KEYS.all,
+            refetchType: "all",
+          });
+          queryClient.refetchQueries({ queryKey: NOTIFICATIONS_KEYS.all });
+
+          if (
+            typeof Notification !== "undefined" &&
+            Notification.permission === "granted"
+          ) {
+            try {
+              const testDesktopNotif = new Notification(testTitle, {
+                body: testBody,
+                icon: logo,
+              });
+              setTimeout(() => {
+                testDesktopNotif.close();
+              }, 3000);
+            } catch (err) {
+              console.warn("[Native Desktop Notification Warning]:", err);
+            }
+          }
+
+          if (onForegroundPushRef.current) {
+            onForegroundPushRef.current(testTitle, testBody);
+          }
+        };
+
+        // 4. Listen for foreground FCM push notifications
         unsubscribeOnMessage = onMessage(messaging, (payload) => {
           console.log("[FCM Realtime Push Received]:", payload);
-          
-          // Invalidate React Query notification queries to immediately refresh count and list
-          queryClient.invalidateQueries({ queryKey: NOTIFICATIONS_KEYS.all });
 
-          const title = payload.notification?.title || payload.data?.title || "New Notification";
+          // Force invalidate & refetch ALL notification category queries
+          queryClient.invalidateQueries({
+            queryKey: NOTIFICATIONS_KEYS.all,
+            refetchType: "all",
+          });
+          queryClient.refetchQueries({ queryKey: NOTIFICATIONS_KEYS.all });
+
+          const title =
+            payload.notification?.title ||
+            payload.data?.title ||
+            "New Notification";
           const body = payload.notification?.body || payload.data?.body || "";
 
-          if (onForegroundPush) {
-            onForegroundPush(title, body);
+          // In-App Floating Toast Banner
+          if (onForegroundPushRef.current) {
+            onForegroundPushRef.current(title, body);
           }
         });
       } catch (err) {
-        console.warn("[FCM Messaging Setup Warning]:", err);
+        console.error("[FCM Messaging Setup Error]:", err);
       }
     }
 
@@ -405,5 +529,5 @@ export function useFirebaseMessaging(onForegroundPush?: (title: string, body: st
         unsubscribeOnMessage();
       }
     };
-  }, [token, queryClient, onForegroundPush]);
+  }, [token, queryClient]);
 }

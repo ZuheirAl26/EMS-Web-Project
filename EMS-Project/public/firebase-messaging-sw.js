@@ -1,6 +1,10 @@
 // Firebase Messaging Service Worker for background notifications
-importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js');
+importScripts(
+  "https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js",
+);
+importScripts(
+  "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js",
+);
 
 firebase.initializeApp({
   apiKey: "AIzaSyAmI_Q5mPnvAymRKJ-nwkRTatr8OBj1ymY",
@@ -14,12 +18,24 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+self.addEventListener("install", () => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(self.clients.claim());
+});
+
 messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message: ', payload);
-  const notificationTitle = payload.notification?.title || payload.data?.title || 'Notification';
+  console.log(
+    "[firebase-messaging-sw.js] Received background message: ",
+    payload,
+  );
+  const notificationTitle =
+    payload.notification?.title || payload.data?.title || "Notification";
   const notificationOptions = {
-    body: payload.notification?.body || payload.data?.body || '',
-    icon: '/src/assets/logo.png',
+    body: payload.notification?.body || payload.data?.body || "",
+    icon: "/favicon.svg",
     data: payload.data || {},
   };
 

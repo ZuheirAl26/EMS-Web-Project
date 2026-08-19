@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Notification02Icon,
@@ -56,13 +56,20 @@ export function NotificationHeaderMenu() {
   } | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Initialize Firebase Push listener with realtime foreground toast callback
-  useFirebaseMessaging((title, body) => {
+  const handleForegroundPush = useCallback((title: string, body: string) => {
     setToastMessage({ title, body });
-    setTimeout(() => {
+  }, []);
+
+  // Initialize Firebase Push listener with realtime foreground toast callback
+  useFirebaseMessaging(handleForegroundPush);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => {
       setToastMessage(null);
-    }, 4500);
-  });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
 
   // Queries & Mutations
   const { data: countData } = useUnreadNotificationsCount();
