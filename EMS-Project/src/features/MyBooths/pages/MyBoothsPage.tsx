@@ -169,8 +169,20 @@ export function MyBoothsPage() {
             <HugeiconsIcon icon={Store01Icon} size={26} strokeWidth={1.7} />
           </span>
           <EmptyState
-            message={isOwnedView ? t("myBooths.emptyMessage") : t("myBooths.requests.emptyMessage")}
-            title={isOwnedView ? t("myBooths.emptyTitle") : t("myBooths.requests.emptyTitle")}
+            message={
+              isOwnedView
+                ? t("myBooths.emptyMessage")
+                : t("myBooths.requests.emptyMessage", {
+                    status: t(`myBooths.status.${view}`, { defaultValue: view }).toLowerCase(),
+                  })
+            }
+            title={
+              isOwnedView
+                ? t("myBooths.emptyTitle")
+                : t("myBooths.requests.emptyTitle", {
+                    status: t(`myBooths.status.${view}`, { defaultValue: view }).toLowerCase(),
+                  })
+            }
           />
         </div>
       ) : (
