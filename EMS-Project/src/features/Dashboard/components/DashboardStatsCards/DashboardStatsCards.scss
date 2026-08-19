@@ -1,0 +1,106 @@
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .stat-card {
+    background: var(--color-bg-white, #ffffff);
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: var(--radius-2xl, 14px);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-xs);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+      border-color: var(--color-primary-a30, rgba(10, 135, 130, 0.3));
+    }
+
+    .icon-wrapper {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+
+      .stat-label {
+        font-size: 0.78rem;
+        color: var(--color-neutral-500, #64748b);
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .stat-value {
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: var(--color-ink, #111827);
+        line-height: 1.2;
+      }
+
+      .stat-sub {
+        font-size: 0.72rem;
+        color: var(--color-neutral-400, #9ca3af);
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &.leads-card {
+      .icon-wrapper {
+        background: var(--color-primary-surface, #f0fafa);
+        color: var(--color-primary, #0a8782);
+      }
+    }
+
+    &.qr-scans-card {
+      .icon-wrapper {
+        background: #e0f2fe;
+        color: #0284c7;
+      }
+    }
+
+    &.services-card {
+      .icon-wrapper {
+        background: #fef3c7;
+        color: #d97706;
+      }
+    }
+
+    &.members-card {
+      .icon-wrapper {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

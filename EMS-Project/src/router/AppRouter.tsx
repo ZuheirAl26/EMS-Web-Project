@@ -22,6 +22,7 @@ import { ProtectedRoute } from "./guards";
 import TeamPage from "../features/Team&Staff/pages/TeamPage";
 import { ReviewsPage } from "../features/Reviews/pages";
 import { NotificationsPage } from "../features/Notifications";
+import { DashboardPage } from "../features/Dashboard/pages/DashboardPage";
 
 export const AppRouter = () => {
   const location = useLocation();
@@ -68,6 +69,7 @@ export const AppRouter = () => {
             element={<EventRequestPage />}
           />
           <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardPage />} />
             <Route path="booths" element={<MyBoothsPage />} />
             <Route path="visitors" element={<ReviewsPage />} />
             <Route path="events" element={<EventsPage />} />
