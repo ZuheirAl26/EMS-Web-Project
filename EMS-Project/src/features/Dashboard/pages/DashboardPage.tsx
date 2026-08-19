@@ -35,6 +35,7 @@ export function DashboardPage() {
 
   return (
     <section aria-label="Exhibitor Dashboard" className="dashboard-page">
+      {/* 1. Header */}
       <DashboardHeader
         activeBoothId={activeBoothId}
         activeEventId={activeEventId}
@@ -48,13 +49,14 @@ export function DashboardPage() {
         singleBooth={singleBooth}
       />
 
+      {/* 2. Cards */}
       <DashboardStatsCards
         isLoading={isBoothStatsLoading}
         mode={mode}
         stats={boothStats}
       />
 
-      {/* Grid: Leads Chart on Left, Review Statistics on Right */}
+      {/* 3. Chart with Rating */}
       <div className="dashboard-middle-grid">
         <LeadsChartSection
           isLoading={isLeadsLoading}
@@ -66,24 +68,24 @@ export function DashboardPage() {
         />
       </div>
 
-      {/* Under the chart grid: Recent 3 Visitors */}
-      <RecentVisitorsSection
-        isLoading={isLeadsLoading}
-        visitors={visitorsList}
-      />
-
-      {/* Announcements */}
+      {/* 4. Announcement */}
       <AnnouncementsSection
         announcementsData={announcementsData}
         isLoading={isAnnouncementsLoading}
       />
 
-      {/* Other / Bottom Details */}
-      <BottomDetailsSection
-        isLoading={isSingleBoothLoading}
-        mode={mode}
-        singleBooth={singleBooth}
-      />
+      {/* 5. Booth details with visitors (Same Row Grid) */}
+      <div className="dashboard-bottom-grid">
+        <BottomDetailsSection
+          isLoading={isSingleBoothLoading}
+          mode={mode}
+          singleBooth={singleBooth}
+        />
+        <RecentVisitorsSection
+          isLoading={isLeadsLoading}
+          visitors={visitorsList}
+        />
+      </div>
     </section>
   );
 }
