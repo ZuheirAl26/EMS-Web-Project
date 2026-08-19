@@ -20,6 +20,7 @@ interface ReviewsTableProps {
     last_page: number;
   } | null;
   onPageChange: (page: number) => void;
+  onSelectReviewer?: (reviewId: number) => void;
   t: (key: string, defaultValue?: string) => string;
 }
 
@@ -63,6 +64,7 @@ export function ReviewsTable({
   isLoading,
   pagination,
   onPageChange,
+  onSelectReviewer,
   t,
 }: ReviewsTableProps) {
   // Track expanded comment panel ID
@@ -138,7 +140,18 @@ export function ReviewsTable({
                   >
                     {/* Visitor Column */}
                     <td className="text-center">
-                      <div className="visitor-cell">
+                      <div
+                        className="visitor-cell"
+                        onClick={() => onSelectReviewer?.(review.id)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            onSelectReviewer?.(review.id);
+                          }
+                        }}
+                        title="Click to view visitor reviewer profile"
+                      >
                         <div className="avatar-box">
                           {avatarSrc ? (
                             <img src={avatarSrc} alt={review.user.name} />

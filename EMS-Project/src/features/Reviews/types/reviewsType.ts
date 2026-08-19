@@ -6,6 +6,19 @@ export interface ReviewUser {
   avatar?: string | null;
 }
 
+export interface ReviewerDetails {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  job?: string | null;
+  location?: string | null;
+  birthday?: string | null;
+  gender?: string | null;
+  phone?: string | null;
+  avatar?: string | null;
+}
+
 export interface ReviewItem {
   id: number;
   rating: number;

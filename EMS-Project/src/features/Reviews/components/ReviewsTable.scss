@@ -72,20 +72,38 @@
       gap: 12px;
       width: 220px;
       margin: 0 auto;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: var(--color-primary-surface, #f0fafa);
+
+        .avatar-box {
+          transform: scale(1.06);
+          box-shadow: 0 4px 12px rgba(10, 135, 130, 0.3);
+        }
+
+        .visitor-details .name {
+          color: var(--color-primary, #0a8782);
+        }
+      }
 
       .avatar-box {
         width: 38px;
         height: 38px;
         border-radius: 50%;
         background: var(--color-primary);
-        color: white;
+        color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 600;
-        font-size: 0.88rem;
+        font-weight: 700;
+        font-size: 0.85rem;
         flex-shrink: 0;
         overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
 
         img {
           width: 100%;

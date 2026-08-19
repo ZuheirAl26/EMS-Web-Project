@@ -5,6 +5,7 @@ import {
   getEventsLookupApi,
   getEventReviewsApi,
   getBoothReviewsApi,
+  getReviewerDetailsApi,
 } from "../api/reviewsApi";
 import { getBoothLookupApi } from "../../Team&Staff/api/teamApi";
 import type { LookupEntity } from "../../Team&Staff/types/teamsType";
@@ -31,6 +32,7 @@ export function useReviews() {
   const [selectedEntityId, setSelectedEntityId] = useState<number | "">("");
   const [page, setPage] = useState<number>(1);
   const [ratingFilter, setRatingFilter] = useState<number | null>(null);
+  const [selectedReviewIdForModal, setSelectedReviewIdForModal] = useState<number | null>(null);
 
   // Lookups
   const eventsLookupQuery = useQuery({
@@ -107,6 +109,13 @@ export function useReviews() {
     staleTime: STALE_TIME_2_MIN,
   });
 
+  // Reviewer details query for modal
+  const reviewerDetailsQuery = useQuery({
+    queryKey: ["reviewer-details", selectedReviewIdForModal],
+    queryFn: () => getReviewerDetailsApi(selectedReviewIdForModal!),
+    enabled: Boolean(selectedReviewIdForModal),
+  });
+
   const isPageLoading =
     eventsLookupQuery.isLoading || boothsLookupQuery.isLoading;
 
@@ -160,6 +169,12 @@ export function useReviews() {
     isError: reviewsQuery.isError,
     refetch: reviewsQuery.refetch,
     handleExport,
+    selectedReviewIdForModal,
+    setSelectedReviewIdForModal,
+    reviewerDetails: reviewerDetailsQuery.data,
+    isReviewerDetailsLoading: reviewerDetailsQuery.isLoading,
+    isReviewerDetailsError: reviewerDetailsQuery.isError,
+    refetchReviewerDetails: reviewerDetailsQuery.refetch,
     t,
   };
 }

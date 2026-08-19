@@ -58,3 +58,12 @@ export const getEventReviewStatsApi = async (
   >(`/v1/exhibitor/reviews/event/${eventId}/statistics`);
   return data.data;
 };
+
+export const getReviewerDetailsApi = async (
+  reviewId: number,
+): Promise<import("../types/reviewsType").ReviewerDetails> => {
+  const { data } = await apiClient.get<
+    ApiResponse<import("../types/reviewsType").ReviewerDetails>
+  >(`/v1/exhibitor/reviews/reviewer/${reviewId}`);
+  return data.data;
+};

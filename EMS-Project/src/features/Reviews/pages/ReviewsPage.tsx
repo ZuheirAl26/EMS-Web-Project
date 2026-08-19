@@ -4,6 +4,7 @@ import {
   ReviewsStatsCards,
   ReviewsTable,
   ReviewsSkeleton,
+  ReviewerDetailsModal,
 } from "../components";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Alert01Icon, Refresh01Icon } from "@hugeicons/core-free-icons";
@@ -23,6 +24,12 @@ export function ReviewsPage() {
     setPage,
     ratingFilter,
     handleRatingFilterChange,
+    selectedReviewIdForModal,
+    setSelectedReviewIdForModal,
+    reviewerDetails,
+    isReviewerDetailsLoading,
+    isReviewerDetailsError,
+    refetchReviewerDetails,
   } = hookState;
 
   if (isPageLoading) {
@@ -67,7 +74,17 @@ export function ReviewsPage() {
         isLoading={isReviewsLoading}
         pagination={pagination}
         onPageChange={setPage}
+        onSelectReviewer={(id) => setSelectedReviewIdForModal(id)}
         t={t as unknown as (key: string, defaultValue?: string) => string}
+      />
+
+      <ReviewerDetailsModal
+        isOpen={selectedReviewIdForModal !== null}
+        onClose={() => setSelectedReviewIdForModal(null)}
+        reviewer={reviewerDetails}
+        isLoading={isReviewerDetailsLoading}
+        isError={isReviewerDetailsError}
+        onRetry={() => void refetchReviewerDetails()}
       />
     </div>
   );
