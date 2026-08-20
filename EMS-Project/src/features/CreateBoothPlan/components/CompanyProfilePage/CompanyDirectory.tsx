@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { FolderLibraryIcon } from "@hugeicons/core-free-icons";
+import { FolderLibraryIcon, Building03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import { useCompanyLookup } from "../../../ExhibitorProfile/hooks/useCompanyLookup";
 import { useCompanyProfile } from "../../../ExhibitorProfile/hooks/useCompanyProfile";
 import { useCreatePlanStore } from "../../store/useCreatePlanStore";
 import type { CompanyDirectoryProps } from "../../types/componentType";
+import { CustomSelect } from "../../../../components";
+import type { SelectOption } from "../../../../components/CustomSelect/CustomSelect";
 
 export function CompanyDirectory({
   onCompanySelected,
@@ -19,8 +21,8 @@ export function CompanyDirectory({
   );
   const companyLookupQuery = useCompanyLookup();
   const companies = companyLookupQuery.data?.data ?? [];
-  const companyOptions = companies.map((company) => ({
-    id: company.id,
+  const companyOptions: SelectOption<string>[] = companies.map((company) => ({
+    value: String(company.id),
     label:
       company.name.trim() ||
       t("companyProfile.directory.fallback", { id: company.id }),
@@ -79,35 +81,42 @@ export function CompanyDirectory({
 
       {isOpen ? (
         <div className="company-profile__directory-panel">
-          <div>
+          <div className="company-profile__directory-info">
             <strong>{t("companyProfile.directory.title")}</strong>
             <span>{t("companyProfile.directory.description")}</span>
           </div>
 
-          <label>
-            <span>{t("companyProfile.directory.selectLabel")}</span>
-            <select
-              disabled={companyLookupQuery.isPending || companyLookupQuery.isError}
-              onChange={(event) => handleCompanyChange(event.target.value)}
-              value={directoryCompanyId}
+          <div className="company-profile__directory-select-wrapper">
+            <label
+              htmlFor="company-directory-select"
+              className="company-profile__directory-select-label"
             >
-              <option value="">
-                {companyLookupQuery.isPending
+              {t("companyProfile.directory.selectLabel")}
+            </label>
+            <CustomSelect<string>
+              id="company-directory-select"
+              options={companyOptions}
+              value={directoryCompanyId}
+              onChange={handleCompanyChange}
+              placeholder={
+                companyLookupQuery.isPending
                   ? t("companyProfile.directory.loading")
-                  : t("companyProfile.directory.empty")}
-              </option>
-              {companyOptions.map((company) => (
-                <option key={company.id} value={company.id}>
-                  {company.label}
-                </option>
-              ))}
-            </select>
-          </label>
+                  : t("companyProfile.directory.empty")
+              }
+              disabled={
+                companyLookupQuery.isPending || companyLookupQuery.isError
+              }
+              icon={<HugeiconsIcon icon={Building03Icon} size={16} />}
+            />
+          </div>
 
           {companyLookupQuery.isError ? (
             <div className="company-profile__directory-status company-profile__directory-status--error">
               <span>{t("companyProfile.directory.error")}</span>
-              <button onClick={() => void companyLookupQuery.refetch()} type="button">
+              <button
+                onClick={() => void companyLookupQuery.refetch()}
+                type="button"
+              >
                 {t("companyProfile.directory.retry")}
               </button>
             </div>
@@ -122,7 +131,10 @@ export function CompanyDirectory({
           {selectedCompanyId !== null && companyProfileQuery.isError ? (
             <div className="company-profile__directory-status company-profile__directory-status--error">
               <span>{t("companyProfile.directory.detailsError")}</span>
-              <button onClick={() => void companyProfileQuery.refetch()} type="button">
+              <button
+                onClick={() => void companyProfileQuery.refetch()}
+                type="button"
+              >
                 {t("companyProfile.directory.retry")}
               </button>
             </div>
