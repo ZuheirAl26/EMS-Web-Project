@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDashboard } from "../hooks/useDashboard";
 import { DashboardHeader } from "../components/DashboardHeader/DashboardHeader";
 import { DashboardStatsCards } from "../components/DashboardStatsCards/DashboardStatsCards";
@@ -6,6 +7,7 @@ import { DashboardReviewsSection } from "../components/DashboardReviewsSection/D
 import { RecentVisitorsSection } from "../components/RecentVisitorsSection/RecentVisitorsSection";
 import { AnnouncementsSection } from "../components/AnnouncementsSection/AnnouncementsSection";
 import { BottomDetailsSection } from "../components/BottomDetailsSection/BottomDetailsSection";
+import { VisitorLeadsPanel } from "../components/VisitorLeadsPanel";
 import { ReviewerDetailsModal } from "../../Reviews/components/ReviewerDetailsModal";
 import "./DashboardPage.scss";
 
@@ -43,7 +45,24 @@ export function DashboardPage() {
     handleSelectVisitorLead,
   } = useDashboard();
 
+  const [isAllVisitorsPanelOpen, setIsAllVisitorsPanelOpen] = useState(false);
+
   const visitorsList = leadsData?.visitors?.data || [];
+
+  const currentBooth = boothsList.find((b) => b.id === activeBoothId);
+  const currentEvent = eventsList.find((e) => e.id === activeEventId);
+  const activeTargetLabel =
+    mode === "booth"
+      ? currentBooth?.label ||
+        currentBooth?.name ||
+        (singleBooth?.number
+          ? `Booth #${singleBooth.number}`
+          : activeBoothId
+            ? `Booth #${activeBoothId}`
+            : "Booth")
+      : currentEvent?.label ||
+        currentEvent?.name ||
+        (activeEventId ? `Event #${activeEventId}` : "Event");
 
   return (
     <section aria-label="Exhibitor Dashboard" className="dashboard-page">
@@ -107,8 +126,20 @@ export function DashboardPage() {
           onRetry={refetchLeads}
           visitors={visitorsList}
           onSelectVisitor={handleSelectVisitorLead}
+          onViewAll={() => setIsAllVisitorsPanelOpen(true)}
         />
       </div>
+
+      {/* Scrollable All Visitor Leads Drawer / Panel */}
+      <VisitorLeadsPanel
+        isOpen={isAllVisitorsPanelOpen}
+        onClose={() => setIsAllVisitorsPanelOpen(false)}
+        mode={mode}
+        activeBoothId={activeBoothId}
+        activeEventId={activeEventId}
+        activeTargetLabel={activeTargetLabel}
+        onSelectVisitor={handleSelectVisitorLead}
+      />
 
       {/* Visitor Profile Details Modal */}
       <ReviewerDetailsModal

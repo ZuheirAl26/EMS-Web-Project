@@ -5,7 +5,9 @@ import {
   Calendar03Icon,
   AlertCircleIcon,
   RefreshIcon,
+  ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
 import { resolveMediaUrl } from "../../../ExhibitorProfile/utils/profileUtils";
 import {
   getVisitorFullName,
@@ -19,6 +21,7 @@ interface RecentVisitorsSectionProps {
   isError?: boolean;
   onRetry?: () => void;
   onSelectVisitor?: (lead: VisitorLead) => void;
+  onViewAll?: () => void;
 }
 
 function formatDate(isoString: string) {
@@ -36,13 +39,15 @@ function formatDate(isoString: string) {
 }
 
 function getInitials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((p) => p.charAt(0))
-    .join("")
-    .toUpperCase();
+  return (
+    name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((p) => p.charAt(0))
+      .join("")
+      .toUpperCase() || "V"
+  );
 }
 
 export function RecentVisitorsSection({
@@ -51,16 +56,37 @@ export function RecentVisitorsSection({
   isError,
   onRetry,
   onSelectVisitor,
+  onViewAll,
 }: RecentVisitorsSectionProps) {
+  const { t } = useTranslation("dashboard");
   const recentThree = visitors.slice(0, 3);
 
   return (
     <div className="card recent-visitors-card">
       <div className="card-header">
         <div>
-          <h2>Recent Visitor Leads</h2>
-          <p className="card-sub">Last 3 scanned visitor profiles</p>
+          <h2>{t("recentVisitors.title", "Recent Visitor Leads")}</h2>
+          <p className="card-sub">
+            {t("recentVisitors.sub", "Last 3 scanned visitor profiles")}
+          </p>
         </div>
+
+        {onViewAll && (
+          <button
+            type="button"
+            className="view-all-btn"
+            onClick={onViewAll}
+            title={t("recentVisitors.viewAll", "View All")}
+            aria-label="View all visitor leads"
+          >
+            <span>{t("recentVisitors.viewAll", "View All")}</span>
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
+              size={15}
+              className="arrow-icon"
+            />
+          </button>
+        )}
       </div>
 
       <div className="visitors-list">
@@ -73,11 +99,11 @@ export function RecentVisitorsSection({
               size={28}
               className="error-icon"
             />
-            <p>Failed to load visitor leads.</p>
+            <p>{t("recentVisitors.errorMsg", "Failed to load visitor leads.")}</p>
             {onRetry && (
               <button type="button" className="retry-btn" onClick={onRetry}>
                 <HugeiconsIcon icon={RefreshIcon} size={14} />
-                <span>Retry</span>
+                <span>{t("recentVisitors.retry", "Retry")}</span>
               </button>
             )}
           </div>
@@ -88,7 +114,12 @@ export function RecentVisitorsSection({
               size={36}
               className="empty-icon"
             />
-            <p>No recent visitors recorded for this selection.</p>
+            <p>
+              {t(
+                "recentVisitors.emptyState",
+                "No recent visitors recorded for this selection."
+              )}
+            </p>
           </div>
         ) : (
           recentThree.map((item: VisitorLead) => {
@@ -107,7 +138,10 @@ export function RecentVisitorsSection({
                     onSelectVisitor?.(item);
                   }
                 }}
-                title="Click to view visitor details"
+                title={t(
+                  "recentVisitors.clickToView",
+                  "Click to view visitor details"
+                )}
               >
                 <div className="avatar">
                   {avatarUrl ? (
@@ -137,3 +171,5 @@ export function RecentVisitorsSection({
     </div>
   );
 }
+
+export default RecentVisitorsSection;

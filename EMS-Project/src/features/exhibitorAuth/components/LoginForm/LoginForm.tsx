@@ -119,9 +119,9 @@ function LoginForm() {
         <div className="form-footer">
           <p>
             {t("login.footer.needHelp")}{" "}
-            <Link to="/contact-support">
+            <a href="mailto:info@seife.gov.sy">
               {t("login.footer.contactSupport")}
-            </Link>
+            </a>
           </p>
           <p>
             {t("login.footer.noAccount")}{" "}

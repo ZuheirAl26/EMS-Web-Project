@@ -307,5 +307,22 @@
       "title": "Failed to Load Reviews",
       "message": "We encountered an issue retrieving visitor feedback. Please try again."
     }
+  },
+  "recentVisitors": {
+    "title": "Recent Visitor Leads",
+    "sub": "Last 3 scanned visitor profiles",
+    "viewAll": "View All",
+    "allLeads": "All Visitor Leads",
+    "drawerSub": "Live scanned visitor profiles for {{target}}",
+    "searchPlaceholder": "Search by name, email, or phone...",
+    "totalCount": "{{count}} Leads",
+    "emptyState": "No visitor leads recorded yet for this selection.",
+    "noMatch": "No visitors matching \"{{term}}\"",
+    "retry": "Retry Connection",
+    "errorMsg": "Failed to load visitor leads.",
+    "allLoaded": "All {{count}} visitor leads loaded",
+    "loadingMore": "Loading more leads...",
+    "clickToView": "Click to view full visitor profile",
+    "scannedOn": "Scanned"
   }
 }

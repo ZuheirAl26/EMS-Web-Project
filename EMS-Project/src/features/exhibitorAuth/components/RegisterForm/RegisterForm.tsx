@@ -148,6 +148,12 @@ function RegisterForm() {
 
         <div className="form-footer">
           <p>
+            {t("login.footer.needHelp", "Need help accessing your account?")}{" "}
+            <a href="mailto:info@seife.gov.sy">
+              {t("login.footer.contactSupport", "Contact Support")}
+            </a>
+          </p>
+          <p>
             {t("register.footer.hasAccount")}{" "}
             <Link to="/login">{t("login.tabs.logIn")}</Link>
           </p>
