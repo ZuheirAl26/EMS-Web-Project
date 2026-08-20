@@ -1,7 +1,7 @@
 import { apiClient } from "../../../api/ApiClient";
 import type { ApiResponse } from "../../Team&Staff/types/teamsType";
 import type {
-  AnnouncementsResponseData,
+  AnnouncementItem,
   BoothStatisticsData,
   DetailedBoothData,
   LeadsResponseData,
@@ -47,13 +47,20 @@ export const getEventLeadsApi = async (
   return data.data;
 };
 
-export const getAnnouncementsApi = async (
-  perPage = 5,
-  page = 1,
-): Promise<AnnouncementsResponseData> => {
-  const { data } = await apiClient.get<ApiResponse<AnnouncementsResponseData>>(
-    "/v1/exhibitor/announcements",
-    { params: { per_page: perPage, page } },
-  );
-  return data.data;
+export const getAnnouncementsApi = async (): Promise<AnnouncementItem[]> => {
+  const { data } = await apiClient.get<
+    ApiResponse<AnnouncementItem[] | { data: AnnouncementItem[] }>
+  >("/v1/exhibitor/announcements");
+  const rawData = data.data;
+  if (Array.isArray(rawData)) {
+    return rawData;
+  }
+  if (
+    rawData &&
+    typeof rawData === "object" &&
+    Array.isArray((rawData as { data?: AnnouncementItem[] }).data)
+  ) {
+    return (rawData as { data: AnnouncementItem[] }).data;
+  }
+  return [];
 };

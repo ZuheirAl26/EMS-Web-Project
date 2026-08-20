@@ -11,6 +11,7 @@ import {
   useNotifications,
   useUnreadNotificationsCount,
 } from "../hooks/useNotifications";
+import { isNotificationValid } from "../types/notificationsType";
 import type { NotificationItem } from "../types/notificationsType";
 import { DeleteNotificationDialog } from "./DeleteNotificationDialog";
 import { NotificationCard } from "./NotificationCard";
@@ -68,15 +69,16 @@ export function NotificationsList() {
   const deleteMutation = useDeleteNotification();
 
   const pagination = notificationsData?.data;
-  const rawList = pagination?.data ?? [];
+  const rawList = (pagination?.data ?? []).filter(isNotificationValid);
 
   // Apply tab prefix filtering for category tabs (booth, event, review)
   const displayList = rawList.filter((item) => {
     if (activeTab === "all" || activeTab === "unread") return true;
-    if (activeTab === "booth") return item.type.includes("booth");
-    if (activeTab === "event") return item.type.includes("event");
-    if (activeTab === "review") return item.type.includes("review");
-    if (activeTab === "announcement") return item.type.includes("announcement");
+    const safeType = item.type ? String(item.type).toLowerCase() : "";
+    if (activeTab === "booth") return safeType.includes("booth");
+    if (activeTab === "event") return safeType.includes("event");
+    if (activeTab === "review") return safeType.includes("review");
+    if (activeTab === "announcement") return safeType.includes("announcement");
     return true;
   });
 

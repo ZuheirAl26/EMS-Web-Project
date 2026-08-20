@@ -45,7 +45,9 @@ export function useUnreadNotificationsCount() {
     queryFn: () => notificationsApi.getUnreadCount(),
     enabled: Boolean(token),
     refetchInterval: 30000, // Poll every 30s
-    staleTime: 10000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 }
 
@@ -359,6 +361,11 @@ export function useDeleteNotification() {
   });
 }
 
+interface CustomWindow extends Window {
+  __FCM_TOKEN__?: string;
+  __TEST_REALTIME_PUSH__?: (testTitle?: string, testBody?: string) => void;
+}
+
 let globalFcmRegisteredToken: string | null = null;
 let globalSwRegistered = false;
 
@@ -436,7 +443,7 @@ export function useFirebaseMessaging(
         });
 
         if (fcmToken) {
-          (window as any).__FCM_TOKEN__ = fcmToken;
+          (window as unknown as CustomWindow).__FCM_TOKEN__ = fcmToken;
 
           // Register token with backend ONLY IF it has not been registered yet in this session
           if (globalFcmRegisteredToken !== fcmToken) {
@@ -462,7 +469,7 @@ export function useFirebaseMessaging(
         }
 
         // Expose instant console test function
-        (window as any).__TEST_REALTIME_PUSH__ = (
+        (window as unknown as CustomWindow).__TEST_REALTIME_PUSH__ = (
           testTitle = "Test Notification Received",
           testBody = "Real-time push notification delivered successfully.",
         ) => {

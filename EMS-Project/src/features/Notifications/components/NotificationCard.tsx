@@ -15,9 +15,11 @@ import {
   useDeleteNotification,
   useMarkNotificationAsRead,
 } from "../hooks/useNotifications";
-import type {
-  NotificationItem,
-  NotificationType,
+import {
+  formatNotificationBody,
+  formatNotificationTitle,
+  type NotificationItem,
+  type NotificationType,
 } from "../types/notificationsType";
 import { DeleteNotificationDialog } from "./DeleteNotificationDialog";
 import "./NotificationCard.scss";
@@ -27,19 +29,23 @@ interface NotificationCardProps {
   onDeleteClick?: (notification: NotificationItem) => void;
 }
 
-function getTypeIcon(type: NotificationType) {
-  if (type.includes("booth")) return Building03Icon;
-  if (type.includes("event")) return Calendar03Icon;
-  if (type.includes("review")) return StarIcon;
-  if (type.includes("announcement")) return MegaphoneIcon;
+function getTypeIcon(type?: NotificationType | null) {
+  if (!type) return Notification02Icon;
+  const safeType = String(type).toLowerCase();
+  if (safeType.includes("booth")) return Building03Icon;
+  if (safeType.includes("event")) return Calendar03Icon;
+  if (safeType.includes("review")) return StarIcon;
+  if (safeType.includes("announcement")) return MegaphoneIcon;
   return Notification02Icon;
 }
 
-function getTypeCategoryLabel(type: NotificationType) {
-  if (type.includes("booth")) return "Booth Request";
-  if (type.includes("event")) return "Event Request";
-  if (type.includes("review")) return "New Review";
-  if (type.includes("announcement")) return "Announcement";
+function getTypeCategoryLabel(type?: NotificationType | null) {
+  if (!type) return "System";
+  const safeType = String(type).toLowerCase();
+  if (safeType.includes("booth")) return "Booth Request";
+  if (safeType.includes("event")) return "Event Request";
+  if (safeType.includes("review")) return "New Review";
+  if (safeType.includes("announcement")) return "Announcement";
   return "System";
 }
 
@@ -71,18 +77,33 @@ export function NotificationCard({
   const isUnread = !notification.read_at;
   const IconComponent = getTypeIcon(notification.type);
   const categoryLabel = getTypeCategoryLabel(notification.type);
+  const safeTypeClass = notification.type ? String(notification.type) : "default";
+  const formattedTitle = formatNotificationTitle(notification);
+  const formattedBody = formatNotificationBody(notification);
 
   const handleCardClick = () => {
     if (isUnread) {
       markAsReadMutation.mutate(notification.id);
     }
 
-    if (notification.type.includes("booth")) {
+    const safeType = notification.type ? String(notification.type).toLowerCase() : "";
+    const targetId =
+      notification.target_id ??
+      (notification.data as Record<string, unknown> | null)?.announcement_id ??
+      (notification.data as Record<string, unknown> | null)?.id;
+
+    if (safeType.includes("booth")) {
       navigate("/dashboard/booths");
-    } else if (notification.type.includes("event")) {
+    } else if (safeType.includes("event")) {
       navigate("/dashboard/events");
-    } else if (notification.type.includes("review")) {
+    } else if (safeType.includes("review")) {
       navigate("/dashboard/visitors");
+    } else if (safeType.includes("announcement")) {
+      navigate(
+        targetId
+          ? `/dashboard?announcementId=${encodeURIComponent(String(targetId))}`
+          : "/dashboard",
+      );
     }
   };
 
@@ -116,13 +137,13 @@ export function NotificationCard({
         role="button"
         tabIndex={0}
       >
-        <div className={`card-icon-badge type-${notification.type}`}>
+        <div className={`card-icon-badge type-${safeTypeClass}`}>
           <HugeiconsIcon icon={IconComponent} size={20} />
         </div>
 
         <div className="card-content">
           <div className="card-header-meta">
-            <span className={`category-tag category-${notification.type}`}>
+            <span className={`category-tag category-${safeTypeClass}`}>
               {categoryLabel}
             </span>
             <span className="card-timestamp">
@@ -130,8 +151,8 @@ export function NotificationCard({
             </span>
           </div>
 
-          <h4 className="card-title">{notification.title}</h4>
-          <p className="card-body-text">{notification.body}</p>
+          <h4 className="card-title">{formattedTitle}</h4>
+          <p className="card-body-text">{formattedBody}</p>
         </div>
 
         <div className="card-actions">

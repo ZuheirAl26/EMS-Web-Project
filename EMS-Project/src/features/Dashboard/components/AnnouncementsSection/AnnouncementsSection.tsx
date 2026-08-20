@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Notification02Icon,
@@ -25,23 +26,64 @@ export function AnnouncementsSection({
   isError,
   onRetry,
 }: AnnouncementsSectionProps) {
-  const items = announcementsData?.data || [];
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [searchParams] = useSearchParams();
+  const targetIdParam = searchParams.get("announcementId");
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  const validIndex = activeIndex >= items.length ? 0 : activeIndex;
+  const items = useMemo(() => {
+    return Array.isArray(announcementsData)
+      ? announcementsData
+      : announcementsData?.data || [];
+  }, [announcementsData]);
+
+  const targetIndex = useMemo(() => {
+    if (!targetIdParam || items.length === 0) return -1;
+    const targetIdNum = Number(targetIdParam);
+    return items.findIndex((item) => Number(item.id) === targetIdNum);
+  }, [targetIdParam, items]);
+
+  const [manualIndex, setManualIndex] = useState<number | null>(null);
+  const [prevTargetParam, setPrevTargetParam] = useState(targetIdParam);
+
+  if (prevTargetParam !== targetIdParam) {
+    setPrevTargetParam(targetIdParam);
+    setManualIndex(null);
+  }
+
+  const computedIndex =
+    manualIndex !== null
+      ? manualIndex
+      : targetIndex !== -1
+        ? targetIndex
+        : 0;
+
+  const validIndex =
+    items.length > 0 && computedIndex >= items.length ? 0 : computedIndex;
+
+  useEffect(() => {
+    if (targetIndex !== -1 && sectionRef.current) {
+      sectionRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [targetIndex]);
+
   const currentItem = items[validIndex];
   const mediaUrl = resolveMediaUrl(currentItem?.media ?? null);
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev > 0 ? prev - 1 : items.length - 1));
+    const nextIdx = validIndex > 0 ? validIndex - 1 : items.length - 1;
+    setManualIndex(nextIdx);
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev < items.length - 1 ? prev + 1 : 0));
+    const nextIdx = validIndex < items.length - 1 ? validIndex + 1 : 0;
+    setManualIndex(nextIdx);
   };
 
   return (
-    <div className="card announcements-card">
+    <div className="card announcements-card" ref={sectionRef}>
       <div className="card-header">
         <div className="header-title">
           <HugeiconsIcon icon={Notification02Icon} size={20} className="icon" />

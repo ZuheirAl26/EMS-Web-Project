@@ -92,10 +92,12 @@ export interface AnnouncementItem {
   media: string | null;
 }
 
-export interface AnnouncementsResponseData {
-  data: AnnouncementItem[];
-  current_page: number;
-  per_page: number;
-  total: number;
-  last_page: number;
-}
+export type AnnouncementsResponseData =
+  | AnnouncementItem[]
+  | {
+      data: AnnouncementItem[];
+      current_page?: number;
+      per_page?: number;
+      total?: number;
+      last_page?: number;
+    };

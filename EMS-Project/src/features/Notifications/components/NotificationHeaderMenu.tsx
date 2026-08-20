@@ -17,17 +17,22 @@ import {
   useNotifications,
   useUnreadNotificationsCount,
 } from "../hooks/useNotifications";
-import type {
-  NotificationItem,
-  NotificationType,
+import {
+  formatNotificationBody,
+  formatNotificationTitle,
+  isNotificationValid,
+  type NotificationItem,
+  type NotificationType,
 } from "../types/notificationsType";
 import "./NotificationHeaderMenu.scss";
 
-function getTypeIcon(type: NotificationType) {
-  if (type.includes("booth")) return Building03Icon;
-  if (type.includes("event")) return Calendar03Icon;
-  if (type.includes("review")) return StarIcon;
-  if (type.includes("announcement")) return MegaphoneIcon;
+function getTypeIcon(type?: NotificationType | null) {
+  if (!type) return Notification02Icon;
+  const safeType = String(type).toLowerCase();
+  if (safeType.includes("booth")) return Building03Icon;
+  if (safeType.includes("event")) return Calendar03Icon;
+  if (safeType.includes("review")) return StarIcon;
+  if (safeType.includes("announcement")) return MegaphoneIcon;
   return Notification02Icon;
 }
 
@@ -83,7 +88,7 @@ export function NotificationHeaderMenu() {
   const markAsReadMutation = useMarkNotificationAsRead();
   const markAllMutation = useMarkAllNotificationsAsRead();
 
-  const notifications = notificationsData?.data?.data ?? [];
+  const notifications = (notificationsData?.data?.data ?? []).filter(isNotificationValid);
   const displayNotifications =
     activeTab === "unread"
       ? notifications.filter((n) => !n.read_at)
@@ -116,13 +121,25 @@ export function NotificationHeaderMenu() {
     }
     setIsOpen(false);
 
+    const safeType = item.type ? String(item.type).toLowerCase() : "";
+    const targetId =
+      item.target_id ??
+      (item.data as Record<string, unknown> | null)?.announcement_id ??
+      (item.data as Record<string, unknown> | null)?.id;
+
     // Route based on type
-    if (item.type.includes("booth")) {
+    if (safeType.includes("booth")) {
       navigate("/dashboard/booths");
-    } else if (item.type.includes("event")) {
+    } else if (safeType.includes("event")) {
       navigate("/dashboard/events");
-    } else if (item.type.includes("review")) {
+    } else if (safeType.includes("review")) {
       navigate("/dashboard/visitors");
+    } else if (safeType.includes("announcement")) {
+      navigate(
+        targetId
+          ? `/dashboard?announcementId=${encodeURIComponent(String(targetId))}`
+          : "/dashboard",
+      );
     } else {
       navigate("/dashboard/notifications");
     }
@@ -200,6 +217,9 @@ export function NotificationHeaderMenu() {
               displayNotifications.map((item) => {
                 const IconComponent = getTypeIcon(item.type);
                 const isUnread = !item.read_at;
+                const safeTypeClass = item.type ? String(item.type) : "default";
+                const formattedTitle = formatNotificationTitle(item);
+                const formattedBody = formatNotificationBody(item);
 
                 return (
                   <div
@@ -209,17 +229,17 @@ export function NotificationHeaderMenu() {
                     role="button"
                     tabIndex={0}
                   >
-                    <div className={`type-icon-box type-${item.type}`}>
+                    <div className={`type-icon-box type-${safeTypeClass}`}>
                       <HugeiconsIcon icon={IconComponent} size={15} />
                     </div>
                     <div className="notification-body">
                       <div className="title-row">
-                        <strong className="item-title">{item.title}</strong>
+                        <strong className="item-title">{formattedTitle}</strong>
                         <span className="item-time">
                           {formatRelativeTime(item.created_at)}
                         </span>
                       </div>
-                      <p className="item-text">{item.body}</p>
+                      <p className="item-text">{formattedBody}</p>
                     </div>
                     {isUnread && <div className="unread-dot" />}
                   </div>

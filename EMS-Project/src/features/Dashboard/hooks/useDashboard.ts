@@ -25,8 +25,7 @@ export const dashboardKeys = {
     [...dashboardKeys.all, "boothStats", id] as const,
   leads: (mode: DashboardScopeMode, id?: number, page?: number) =>
     [...dashboardKeys.all, "leads", mode, id, page] as const,
-  announcements: (perPage: number, page?: number) =>
-    [...dashboardKeys.all, "announcements", perPage, page] as const,
+  announcements: () => [...dashboardKeys.all, "announcements"] as const,
 };
 
 const STALE_TIME_2_MIN = 1000 * 60 * 2; // 2 minutes
@@ -137,10 +136,10 @@ export function useDashboard() {
     gcTime: GC_TIME_30_MIN,
   });
 
-  // Announcements Query (per_page = 5)
+  // Announcements Query (full announcements array)
   const announcementsQuery = useQuery({
-    queryKey: dashboardKeys.announcements(5, announcementsPage),
-    queryFn: () => getAnnouncementsApi(5, announcementsPage),
+    queryKey: dashboardKeys.announcements(),
+    queryFn: getAnnouncementsApi,
     staleTime: STALE_TIME_2_MIN,
     gcTime: GC_TIME_30_MIN,
   });
