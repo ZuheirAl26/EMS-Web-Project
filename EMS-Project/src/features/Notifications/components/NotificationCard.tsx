@@ -43,6 +43,10 @@ function getTypeIcon(type?: NotificationType | null) {
 function getTypeCategoryLabel(type?: NotificationType | null) {
   if (!type) return "System";
   const safeType = String(type).toLowerCase();
+  if (safeType === "booth_payment_reminder") return "Booth Payment";
+  if (safeType === "event_payment_reminder") return "Event Payment";
+  if (safeType === "booth_canceled") return "Booth Canceled";
+  if (safeType === "event_canceled") return "Event Canceled";
   if (safeType.includes("booth")) return "Booth Request";
   if (safeType.includes("event")) return "Event Request";
   if (safeType.includes("review")) return "New Review";

@@ -2,6 +2,20 @@
   position: relative;
   display: inline-flex;
 
+  .dashboard-header__notifications {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:focus,
+    &:focus-visible,
+    &:active {
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+
   .notification-header-dropdown {
     position: absolute;
     top: calc(100% + 8px);
@@ -183,17 +197,27 @@
             background: #dcfce7;
             color: #166534;
           }
-          &.type-booth_rejected {
+          &.type-booth_rejected,
+          &.type-booth_canceled {
             background: #fee2e2;
             color: #991b1b;
+          }
+          &.type-booth_payment_reminder {
+            background: #fef3c7;
+            color: #b45309;
           }
           &.type-event_approved {
             background: #e0f2fe;
             color: #0369a1;
           }
-          &.type-event_rejected {
+          &.type-event_rejected,
+          &.type-event_canceled {
+            background: #fee2e2;
+            color: #991b1b;
+          }
+          &.type-event_payment_reminder {
             background: #fef3c7;
-            color: #92400e;
+            color: #b45309;
           }
           &.type-review_created {
             background: #fef9c3;

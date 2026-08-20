@@ -1,12 +1,16 @@
 export type NotificationType =
   | "event_approved"
   | "event_rejected"
+  | "event_payment_reminder"
+  | "event_canceled"
   | "event_event_expired"
   | "_event_event_expired"
   | "event_event_schedule_conflict"
   | "_event_event_schedule_conflict"
   | "booth_approved"
   | "booth_rejected"
+  | "booth_payment_reminder"
+  | "booth_canceled"
   | "booth_booth_conflict"
   | "_booth_booth_conflict"
   | "announcement"
@@ -35,6 +39,10 @@ export function formatNotificationTitle(item: NotificationItem): string {
   const title = item.title?.trim() || "";
   if (!title) {
     const safeType = item.type ? String(item.type).toLowerCase() : "";
+    if (safeType === "booth_payment_reminder") return "Booth Payment Reminder";
+    if (safeType === "event_payment_reminder") return "Event Payment Reminder";
+    if (safeType === "booth_canceled") return "Booth Reservation Canceled";
+    if (safeType === "event_canceled") return "Event Request Canceled";
     if (safeType.includes("announcement")) return "Announcement";
     if (safeType.includes("review")) return "New Review Received";
     if (safeType.includes("event")) return "Event Notification";

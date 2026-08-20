@@ -238,7 +238,8 @@
     padding: 0;
     display: grid;
     place-items: center;
-    border: 0;
+    border: none;
+    outline: none;
     border-radius: 6px;
     background: transparent;
     color: #9ca3af;
@@ -249,9 +250,12 @@
       color: var(--color-ebony);
     }
 
-    &:focus-visible {
-      outline: 3px solid rgba(10, 135, 130, 0.24);
-      outline-offset: 2px;
+    &:focus,
+    &:focus-visible,
+    &:active {
+      outline: none;
+      border: none;
+      box-shadow: none;
     }
 
     span {
