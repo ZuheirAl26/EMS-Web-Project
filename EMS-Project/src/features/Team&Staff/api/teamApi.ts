@@ -1,4 +1,5 @@
 import { apiClient } from "../../../api/ApiClient";
+import { useAuthStore } from "../../../store/AuthStore";
 import type {
   LookupEntity,
   ApiResponse,
@@ -65,6 +66,27 @@ export const deleteInvitationApi = async (
 ): Promise<ApiResponse<null>> => {
   const { data } = await apiClient.delete<ApiResponse<null>>(
     `/v1/exhibitor/invitations/${invitation}`,
+  );
+  return data;
+};
+
+export const getInvitationDetailsApi = async (
+  invitationToken: string,
+): Promise<TeamInvitation> => {
+  const { data } = await apiClient.get<ApiResponse<TeamInvitation>>(
+    `/v1/exhibitor/invitations/${invitationToken}`,
+  );
+  return data.data;
+};
+
+export const acceptInvitationApi = async (
+  invitationToken: string,
+): Promise<ApiResponse<null>> => {
+  const token = useAuthStore.getState().token;
+  const { data } = await apiClient.post<ApiResponse<null>>(
+    `/v1/exhibitor/invitations/${invitationToken}/accept`,
+    {},
+    token ? { headers: { Authorization: `Bearer ${token}` } } : undefined,
   );
   return data;
 };

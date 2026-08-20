@@ -31,6 +31,23 @@ export const registerApi = async (
   return response.data;
 };
 
+export interface RegisterInvitationPayload {
+  name: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export const registerInvitationApi = async (
+  invitationToken: string,
+  data: RegisterInvitationPayload,
+): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>(
+    `/v1/exhibitor/register/${invitationToken}`,
+    data,
+  );
+  return response.data;
+};
+
 export const checkAuthStatusApi = async (): Promise<AuthStatusResponse> => {
   const response = await apiClient.get<AuthStatusResponse>(
     "/v1/exhibitor/auth/status",

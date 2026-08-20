@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -40,6 +40,14 @@ export function useReviews() {
     }
     return "event";
   });
+  const [prevTargetTypeParam, setPrevTargetTypeParam] = useState(targetTypeParam);
+  if (prevTargetTypeParam !== targetTypeParam) {
+    setPrevTargetTypeParam(targetTypeParam);
+    if (targetTypeParam === "booth" || targetTypeParam === "event") {
+      setTargetType(targetTypeParam);
+    }
+  }
+
   const [selectedEntityId, setSelectedEntityId] = useState<number | "">(
     () => {
       if (entityIdParam) {
@@ -49,6 +57,17 @@ export function useReviews() {
       return "";
     },
   );
+  const [prevEntityIdParam, setPrevEntityIdParam] = useState(entityIdParam);
+  if (prevEntityIdParam !== entityIdParam) {
+    setPrevEntityIdParam(entityIdParam);
+    if (entityIdParam) {
+      const parsed = Number(entityIdParam);
+      if (!isNaN(parsed) && parsed > 0) {
+        setSelectedEntityId(parsed);
+      }
+    }
+  }
+
   const [page, setPage] = useState<number>(1);
   const [ratingFilter, setRatingFilter] = useState<number | null>(null);
   const [selectedReviewIdForModal, setSelectedReviewIdForModal] =
@@ -60,23 +79,16 @@ export function useReviews() {
       return null;
     });
 
-  useEffect(() => {
-    if (targetTypeParam === "booth" || targetTypeParam === "event") {
-      setTargetType(targetTypeParam);
-    }
-    if (entityIdParam) {
-      const parsed = Number(entityIdParam);
-      if (!isNaN(parsed) && parsed > 0) {
-        setSelectedEntityId(parsed);
-      }
-    }
+  const [prevReviewIdParam, setPrevReviewIdParam] = useState(reviewIdParam);
+  if (prevReviewIdParam !== reviewIdParam) {
+    setPrevReviewIdParam(reviewIdParam);
     if (reviewIdParam) {
       const parsed = Number(reviewIdParam);
       if (!isNaN(parsed) && parsed > 0) {
         setSelectedReviewIdForModal(parsed);
       }
     }
-  }, [targetTypeParam, entityIdParam, reviewIdParam]);
+  }
 
   // Lookups
   const eventsLookupQuery = useQuery({

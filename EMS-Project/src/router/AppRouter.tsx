@@ -19,7 +19,7 @@ import { ExhibitorProfilePage } from "../features/ExhibitorProfile/pages";
 import { EventRequestPage, EventsPage } from "../features/Events/pages";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { ProtectedRoute } from "./guards";
-import TeamPage from "../features/Team&Staff/pages/TeamPage";
+import TeamPage, { InvitationResponsePage } from "../features/Team&Staff/pages";
 import { ReviewsPage } from "../features/Reviews/pages";
 import { NotificationsPage } from "../features/Notifications";
 import { DashboardPage } from "../features/Dashboard/pages/DashboardPage";
@@ -46,6 +46,7 @@ export const AppRouter = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/check-email" element={<CheckEmailPage />} />
         <Route path="/verify-email" element={<VerifyAccountPage />} />
+        <Route path="/invitations/:token" element={<InvitationResponsePage />} />
 
         <Route element={<ProtectedRoute />}>
           <Route
