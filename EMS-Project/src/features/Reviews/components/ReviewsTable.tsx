@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   StarIcon,
   Comment01Icon,
@@ -67,10 +68,23 @@ export function ReviewsTable({
   onSelectReviewer,
   t,
 }: ReviewsTableProps) {
+  const [searchParams] = useSearchParams();
+  const targetReviewId = searchParams.get("reviewId");
+  const highlightedRowRef = useRef<HTMLTableRowElement>(null);
+
   // Track expanded comment panel ID
   const [expandedCommentId, setExpandedCommentId] = useState<number | null>(
     null,
   );
+
+  useEffect(() => {
+    if (targetReviewId && highlightedRowRef.current) {
+      highlightedRowRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [targetReviewId, reviews]);
 
   const toggleComment = (id: number) => {
     setExpandedCommentId((prev) => (prev === id ? null : id));
@@ -129,6 +143,9 @@ export function ReviewsTable({
               reviews.map((review) => {
                 const avatarSrc = resolveAvatarUrl(review.user.avatar);
                 const isExpanded = expandedCommentId === review.id;
+                const isTargetReview =
+                  Boolean(targetReviewId) &&
+                  String(review.id) === String(targetReviewId);
                 const hasComment = Boolean(
                   review.comment && review.comment.trim().length > 0,
                 );
@@ -136,7 +153,8 @@ export function ReviewsTable({
                 return (
                   <tr
                     key={review.id}
-                    className={isExpanded ? "row-expanded" : ""}
+                    ref={isTargetReview ? highlightedRowRef : undefined}
+                    className={`${isExpanded ? "row-expanded" : ""} ${isTargetReview ? "row-highlighted" : ""}`}
                   >
                     {/* Visitor Column */}
                     <td className="text-center">

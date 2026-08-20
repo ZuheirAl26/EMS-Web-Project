@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Notification02Icon,
   CheckmarkSquare01Icon,
@@ -53,6 +54,7 @@ function formatRelativeTime(dateStr: string) {
 
 export function NotificationHeaderMenu() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"all" | "unread">("all");
   const [toastMessage, setToastMessage] = useState<{
@@ -130,6 +132,9 @@ export function NotificationHeaderMenu() {
     }
     setIsOpen(false);
 
+    // Invalidate queries so destination page fetches fresh server data
+    queryClient.invalidateQueries();
+
     const safeType = item.type ? String(item.type).toLowerCase() : "";
     const targetId =
       item.target_id ??
@@ -142,7 +147,23 @@ export function NotificationHeaderMenu() {
     } else if (safeType.includes("event")) {
       navigate("/dashboard/events");
     } else if (safeType.includes("review")) {
-      navigate("/dashboard/visitors");
+      const dataObj = item.data as Record<string, unknown> | null;
+      const rawReviewable = dataObj?.reviewable_type ? String(dataObj.reviewable_type) : "";
+      const targetType = rawReviewable.toLowerCase().includes("booth")
+        ? "booth"
+        : rawReviewable.toLowerCase().includes("event")
+          ? "event"
+          : "";
+      const entityId = dataObj?.reviewable_id ? String(dataObj.reviewable_id) : "";
+      const reviewId = targetId ? String(targetId) : "";
+
+      const queryParams = new URLSearchParams();
+      if (reviewId) queryParams.set("reviewId", reviewId);
+      if (targetType) queryParams.set("targetType", targetType);
+      if (entityId) queryParams.set("entityId", entityId);
+
+      const searchStr = queryParams.toString();
+      navigate(`/dashboard/visitors${searchStr ? `?${searchStr}` : ""}`);
     } else if (safeType.includes("announcement")) {
       navigate(
         targetId

@@ -59,7 +59,7 @@ export function NotificationsList() {
   const { data: notificationsData, isLoading } = useNotifications(
     {
       page,
-      per_page: 20,
+      per_page: 15,
       "filter[type]": activeOption.exactType,
     },
     isUnreadOnly,

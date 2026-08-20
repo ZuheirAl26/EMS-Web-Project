@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Building03Icon,
   Calendar03Icon,
@@ -69,6 +70,7 @@ export function NotificationCard({
   onDeleteClick,
 }: NotificationCardProps) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const markAsReadMutation = useMarkNotificationAsRead();
   const deleteMutation = useDeleteNotification();
 
@@ -86,6 +88,9 @@ export function NotificationCard({
       markAsReadMutation.mutate(notification.id);
     }
 
+    // Invalidate target query caches so destination page displays fresh server data
+    queryClient.invalidateQueries();
+
     const safeType = notification.type ? String(notification.type).toLowerCase() : "";
     const targetId =
       notification.target_id ??
@@ -97,7 +102,23 @@ export function NotificationCard({
     } else if (safeType.includes("event")) {
       navigate("/dashboard/events");
     } else if (safeType.includes("review")) {
-      navigate("/dashboard/visitors");
+      const dataObj = notification.data as Record<string, unknown> | null;
+      const rawReviewable = dataObj?.reviewable_type ? String(dataObj.reviewable_type) : "";
+      const targetType = rawReviewable.toLowerCase().includes("booth")
+        ? "booth"
+        : rawReviewable.toLowerCase().includes("event")
+          ? "event"
+          : "";
+      const entityId = dataObj?.reviewable_id ? String(dataObj.reviewable_id) : "";
+      const reviewId = targetId ? String(targetId) : "";
+
+      const queryParams = new URLSearchParams();
+      if (reviewId) queryParams.set("reviewId", reviewId);
+      if (targetType) queryParams.set("targetType", targetType);
+      if (entityId) queryParams.set("entityId", entityId);
+
+      const searchStr = queryParams.toString();
+      navigate(`/dashboard/visitors${searchStr ? `?${searchStr}` : ""}`);
     } else if (safeType.includes("announcement")) {
       navigate(
         targetId

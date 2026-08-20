@@ -43,6 +43,13 @@
       background: var(--color-surface, #f9fafb);
     }
 
+    tr.row-highlighted {
+      background: var(--color-primary-surface, #f0fafa);
+      outline: 2px solid var(--color-primary, #0a8782);
+      outline-offset: -2px;
+      transition: background 0.3s ease;
+    }
+
     .table-loading,
     .table-empty {
       text-align: center;
@@ -75,14 +82,14 @@
       cursor: pointer;
       padding: 4px 6px;
       border-radius: 10px;
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease;
 
       &:hover {
-        background: var(--color-primary-surface, #f0fafa);
+        transform: translateY(-2px);
 
         .avatar-box {
-          transform: scale(1.06);
-          box-shadow: 0 4px 12px rgba(10, 135, 130, 0.3);
+          transform: scale(1.08);
+          box-shadow: 0 4px 12px rgba(10, 135, 130, 0.25);
         }
 
         .visitor-details .name {
