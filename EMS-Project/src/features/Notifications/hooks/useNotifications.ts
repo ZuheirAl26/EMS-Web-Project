@@ -25,6 +25,7 @@ export function useNotifications(
   params?: FetchNotificationsParams,
   isUnreadOnly?: boolean,
 ) {
+  const token = useAuthStore((state) => state.token);
   return useQuery({
     queryKey: isUnreadOnly
       ? NOTIFICATIONS_KEYS.unread(params)
@@ -33,7 +34,11 @@ export function useNotifications(
       isUnreadOnly
         ? notificationsApi.getUnreadNotifications(params)
         : notificationsApi.getNotifications(params),
-    staleTime: 15000,
+    enabled: Boolean(token),
+    refetchInterval: 30000, // Poll every 30s in sync with unread count
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 }
 

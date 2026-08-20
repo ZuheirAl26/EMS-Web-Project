@@ -80,10 +80,19 @@ export function NotificationHeaderMenu() {
   const { data: countData } = useUnreadNotificationsCount();
   const unreadCount = countData?.data?.numberOfUnreadNotifications ?? 0;
 
-  const { data: notificationsData, isLoading } = useNotifications({
+  const { data: notificationsData, isLoading, refetch: refetchNotifications } = useNotifications({
     per_page: 8,
-    "filter[type]": activeTab === "unread" ? undefined : undefined,
   });
+
+  const handleToggleMenu = () => {
+    setIsOpen((prev) => {
+      const next = !prev;
+      if (next) {
+        refetchNotifications();
+      }
+      return next;
+    });
+  };
 
   const markAsReadMutation = useMarkNotificationAsRead();
   const markAllMutation = useMarkAllNotificationsAsRead();
@@ -152,7 +161,7 @@ export function NotificationHeaderMenu() {
         className="dashboard-header__notifications"
         aria-label={`Notifications (${unreadCount} unread)`}
         aria-expanded={isOpen}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={handleToggleMenu}
       >
         <HugeiconsIcon icon={Notification02Icon} size={18} strokeWidth={1.8} />
         {unreadCount > 0 && (
