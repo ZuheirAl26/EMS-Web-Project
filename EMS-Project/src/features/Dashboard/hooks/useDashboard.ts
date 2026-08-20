@@ -153,9 +153,15 @@ export function useDashboard() {
   ) => {
     const v = lead.visitor;
     if (!v) return;
-    const nameParts = (v.full_name || "").trim().split(/\s+/);
-    const firstName = nameParts[0] || "Visitor";
-    const lastName = nameParts.slice(1).join(" ");
+    const firstName =
+      v.first_name ||
+      (v.full_name || "").trim().split(/\s+/)[0] ||
+      "Visitor";
+    const lastName =
+      v.last_name ||
+      (v.full_name || "").trim().split(/\s+/).slice(1).join(" ") ||
+      "";
+
     setSelectedVisitorForModal({
       id: v.id,
       first_name: firstName,
@@ -163,7 +169,10 @@ export function useDashboard() {
       email: v.email || "—",
       phone: v.phone || "—",
       avatar: v.avatar,
-      job: "Exhibition Visitor",
+      job: v.job || "Exhibition Visitor",
+      location: v.location || null,
+      birthday: v.birthday || null,
+      gender: v.gender || null,
     });
   };
 

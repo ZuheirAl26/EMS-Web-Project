@@ -7,7 +7,10 @@ import {
   RefreshIcon,
 } from "@hugeicons/core-free-icons";
 import { resolveMediaUrl } from "../../../ExhibitorProfile/utils/profileUtils";
-import type { VisitorLead } from "../../types/dashboardType";
+import {
+  getVisitorFullName,
+  type VisitorLead,
+} from "../../types/dashboardType";
 import "./RecentVisitorsSection.scss";
 
 interface RecentVisitorsSectionProps {
@@ -65,7 +68,11 @@ export function RecentVisitorsSection({
           <div className="list-loading">Loading visitor leads...</div>
         ) : isError ? (
           <div className="list-error">
-            <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
+            <HugeiconsIcon
+              icon={AlertCircleIcon}
+              size={28}
+              className="error-icon"
+            />
             <p>Failed to load visitor leads.</p>
             {onRetry && (
               <button type="button" className="retry-btn" onClick={onRetry}>
@@ -76,15 +83,18 @@ export function RecentVisitorsSection({
           </div>
         ) : recentThree.length === 0 ? (
           <div className="list-empty">
-            <HugeiconsIcon icon={UserGroupIcon} size={36} className="empty-icon" />
+            <HugeiconsIcon
+              icon={UserGroupIcon}
+              size={36}
+              className="empty-icon"
+            />
             <p>No recent visitors recorded for this selection.</p>
           </div>
         ) : (
           recentThree.map((item: VisitorLead) => {
             const visitor = item.visitor;
             const avatarUrl = resolveMediaUrl(visitor?.avatar ?? null);
-            const name = visitor?.full_name || "Anonymous Visitor";
-
+            const name = getVisitorFullName(visitor);
             return (
               <div
                 className="visitor-item clickable-visitor"
@@ -97,7 +107,7 @@ export function RecentVisitorsSection({
                     onSelectVisitor?.(item);
                   }
                 }}
-                title="Click to view visitor reviewer profile"
+                title="Click to view visitor details"
               >
                 <div className="avatar">
                   {avatarUrl ? (

@@ -51,10 +51,25 @@ export interface BoothStatisticsData {
 
 export interface VisitorInfo {
   id: number;
-  full_name: string;
+  first_name?: string | null;
+  last_name?: string | null;
+  full_name?: string | null;
   email: string | null;
   phone: string | null;
   avatar: string | null;
+  job?: string | null;
+  location?: string | null;
+  birthday?: string | null;
+  gender?: string | null;
+}
+
+export function getVisitorFullName(visitor?: VisitorInfo | null): string {
+  if (!visitor) return "Anonymous Visitor";
+  if (visitor.full_name?.trim()) return visitor.full_name.trim();
+  const first = visitor.first_name?.trim() || "";
+  const last = visitor.last_name?.trim() || "";
+  const combined = `${first} ${last}`.trim();
+  return combined || "Anonymous Visitor";
 }
 
 export interface VisitorLead {
