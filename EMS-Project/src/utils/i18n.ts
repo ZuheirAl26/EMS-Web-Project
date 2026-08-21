@@ -12,6 +12,12 @@ import createBoothPlanAR from "../locales/ar/createBoothPlan.json";
 import eventsEN from "../locales/en/events.json";
 import eventsAR from "../locales/ar/events.json";
 
+const savedLang =
+  typeof window !== "undefined"
+    ? localStorage.getItem("app_language") || "en"
+    : "en";
+const initialLang = savedLang === "ar" ? "ar" : "en";
+
 i18n.use(initReactI18next).init({
   resources: {
     en: {
@@ -29,11 +35,17 @@ i18n.use(initReactI18next).init({
       events: eventsAR,
     },
   },
-  lng: "en",
+  lng: initialLang,
   fallbackLng: "en",
   ns: ["auth", "landing", "dashboard", "createBoothPlan", "events"],
   defaultNS: "auth",
   interpolation: { escapeValue: false },
 });
+
+if (typeof document !== "undefined") {
+  const direction = initialLang === "ar" ? "rtl" : "ltr";
+  document.documentElement.setAttribute("dir", direction);
+  document.documentElement.setAttribute("lang", initialLang);
+}
 
 export default i18n;
