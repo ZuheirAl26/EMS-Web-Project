@@ -6,12 +6,22 @@ import type {
   DetailedBoothData,
   LeadsResponseData,
 } from "../types/dashboardType";
+import type { ExhibitorEvent } from "../../Events/types/eventType";
 
 export const getSingleBoothApi = async (
   boothId: number,
 ): Promise<DetailedBoothData> => {
   const { data } = await apiClient.get<ApiResponse<DetailedBoothData>>(
     `/v1/exhibitor/booth/${boothId}`,
+  );
+  return data.data;
+};
+
+export const getSingleEventApi = async (
+  eventId: number,
+): Promise<ExhibitorEvent> => {
+  const { data } = await apiClient.get<ApiResponse<ExhibitorEvent>>(
+    `/v1/exhibitor/event/${eventId}`,
   );
   return data.data;
 };

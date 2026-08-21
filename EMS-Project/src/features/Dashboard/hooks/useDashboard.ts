@@ -11,6 +11,7 @@ import {
 } from "../../Reviews/api/reviewsApi";
 import {
   getSingleBoothApi,
+  getSingleEventApi,
   getBoothStatisticsApi,
   getBoothLeadsApi,
   getEventLeadsApi,
@@ -21,6 +22,7 @@ import type { DashboardScopeMode } from "../types/dashboardType";
 export const dashboardKeys = {
   all: ["dashboard"] as const,
   booth: (id?: number) => [...dashboardKeys.all, "booth", id] as const,
+  event: (id?: number) => [...dashboardKeys.all, "event", id] as const,
   boothStats: (id?: number) =>
     [...dashboardKeys.all, "boothStats", id] as const,
   leads: (mode: DashboardScopeMode, id?: number, page?: number) =>
@@ -66,17 +68,26 @@ export function useDashboard() {
     [eventsLookupQuery.data],
   );
 
-  // Active Target ID
+  // Active Target ID: null if list is empty
   const activeBoothId =
     selectedBoothId ?? (boothsList.length > 0 ? boothsList[0].id : null);
   const activeEventId =
     selectedEventId ?? (eventsList.length > 0 ? eventsList[0].id : null);
 
-  // Single Booth Details Query
+  // Single Booth Details Query (only enabled if activeBoothId exists and mode is booth)
   const singleBoothQuery = useQuery({
     queryKey: dashboardKeys.booth(activeBoothId ?? undefined),
     queryFn: () => getSingleBoothApi(activeBoothId!),
     enabled: Boolean(activeBoothId) && mode === "booth",
+    staleTime: STALE_TIME_2_MIN,
+    gcTime: GC_TIME_30_MIN,
+  });
+
+  // Single Event Details Query (only enabled if activeEventId exists and mode is event)
+  const singleEventQuery = useQuery({
+    queryKey: dashboardKeys.event(activeEventId ?? undefined),
+    queryFn: () => getSingleEventApi(activeEventId!),
+    enabled: Boolean(activeEventId) && mode === "event",
     staleTime: STALE_TIME_2_MIN,
     gcTime: GC_TIME_30_MIN,
   });
@@ -205,6 +216,10 @@ export function useDashboard() {
     isSingleBoothLoading: singleBoothQuery.isLoading,
     isSingleBoothError: singleBoothQuery.isError,
     refetchSingleBooth: singleBoothQuery.refetch,
+    singleEvent: singleEventQuery.data,
+    isSingleEventLoading: singleEventQuery.isLoading,
+    isSingleEventError: singleEventQuery.isError,
+    refetchSingleEvent: singleEventQuery.refetch,
     boothStats: boothStatsQuery.data,
     isBoothStatsLoading: boothStatsQuery.isLoading,
     isBoothStatsError: boothStatsQuery.isError,

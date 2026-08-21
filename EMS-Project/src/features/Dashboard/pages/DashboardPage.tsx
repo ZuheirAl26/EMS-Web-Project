@@ -26,6 +26,10 @@ export function DashboardPage() {
     isSingleBoothLoading,
     isSingleBoothError,
     refetchSingleBooth,
+    singleEvent,
+    isSingleEventLoading,
+    isSingleEventError,
+    refetchSingleEvent,
     boothStats,
     isBoothStatsLoading,
     leadsData,
@@ -111,14 +115,20 @@ export function DashboardPage() {
         onRetry={refetchAnnouncements}
       />
 
-      {/* 5. Booth details with visitors (Same Row Grid) */}
+      {/* 5. Booth/Event details with visitors (Same Row Grid) */}
       <div className="dashboard-bottom-grid">
         <BottomDetailsSection
-          isLoading={isSingleBoothLoading}
-          isError={isSingleBoothError}
           mode={mode}
-          onRetry={refetchSingleBooth}
           singleBooth={singleBooth}
+          isBoothLoading={isSingleBoothLoading}
+          isBoothError={isSingleBoothError}
+          onRetryBooth={refetchSingleBooth}
+          singleEvent={singleEvent}
+          isEventLoading={isSingleEventLoading}
+          isEventError={isSingleEventError}
+          onRetryEvent={refetchSingleEvent}
+          hasActiveBooth={Boolean(activeBoothId)}
+          hasActiveEvent={Boolean(activeEventId)}
         />
         <RecentVisitorsSection
           isLoading={isLeadsLoading}
