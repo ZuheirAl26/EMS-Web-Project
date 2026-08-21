@@ -31,13 +31,43 @@ messaging.onBackgroundMessage((payload) => {
     "[firebase-messaging-sw.js] Received background message: ",
     payload,
   );
+
   const notificationTitle =
-    payload.notification?.title || payload.data?.title || "Notification";
+    payload.data?.web_notification_title ||
+    payload.data?.title ||
+    payload.notification?.title ||
+    "Notification";
+
+  const notificationBody =
+    payload.data?.web_notification_body ||
+    payload.data?.body ||
+    payload.notification?.body ||
+    "";
+
   const notificationOptions = {
-    body: payload.notification?.body || payload.data?.body || "",
-    icon: "/favicon.svg",
+    body: notificationBody,
+    icon: payload.data?.icon || payload.notification?.icon || "/favicon.svg",
+    badge: "/favicon.svg",
     data: payload.data || {},
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clientList) => {
+        for (const client of clientList) {
+          if (client.url && "focus" in client) {
+            return client.focus();
+          }
+        }
+        if (self.clients.openWindow) {
+          return self.clients.openWindow("/dashboard/notifications");
+        }
+      }),
+  );
 });

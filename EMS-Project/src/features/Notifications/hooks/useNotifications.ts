@@ -521,10 +521,15 @@ export function useFirebaseMessaging(
           queryClient.refetchQueries({ queryKey: NOTIFICATIONS_KEYS.all });
 
           const title =
-            payload.notification?.title ||
+            payload.data?.web_notification_title ||
             payload.data?.title ||
+            payload.notification?.title ||
             "New Notification";
-          const body = payload.notification?.body || payload.data?.body || "";
+          const body =
+            payload.data?.web_notification_body ||
+            payload.data?.body ||
+            payload.notification?.body ||
+            "";
 
           // In-App Floating Toast Banner
           if (onForegroundPushRef.current) {
