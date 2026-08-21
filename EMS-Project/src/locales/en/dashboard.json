@@ -219,6 +219,55 @@
     "error": {
       "title": "Failed to Load Target Data",
       "desc": "We couldn't fetch your booths and companies. Please verify your connection."
+    },
+    "invitationResponse": {
+      "brand": "Exhibition Management System",
+      "loadingTitle": "Retrieving Invitation...",
+      "loadingDesc": "Please wait while we load your team invitation details.",
+      "errorTitle": "Invalid or Expired Invitation",
+      "errorDesc": "We couldn't find an active invitation matching this token. The link may have expired or been revoked.",
+      "retry": "Retry",
+      "invitedTitle": "{{sender}} invited you to join {{target}}",
+      "invitedSub": "You've been invited as a Team Manager for {{target}} ({{type}}).",
+      "company": "Company",
+      "booth": "Booth",
+      "acceptedBannerTitle": "Invitation Accepted!",
+      "acceptedBannerDesc": "You are now a team member for {{target}}.",
+      "expiredBannerTitle": "Invitation Expired",
+      "expiredBannerDesc": "This invitation link expired on {{date}}. Please contact {{sender}} for a new invitation.",
+      "loginRequired": "You cannot accept the invitation until you are logged in. Please log in first.",
+      "acceptError": "Failed to accept invitation. Please try again.",
+      "regSuccessTitle": "Registration Successful!",
+      "regSuccessDesc": "Your account has been created. Please log in to accept the invitation and join {{target}}.",
+      "proceedLogin": "Proceed to Login",
+      "form": {
+        "email": "Invited Email Address",
+        "name": "Your Full Name",
+        "namePlaceholder": "e.g. Alex Morgan",
+        "password": "Set Password",
+        "passwordPlaceholder": "Enter a strong password",
+        "confirmPassword": "Confirm Password",
+        "confirmPlaceholder": "Re-enter password",
+        "submit": "Complete Registration & Continue",
+        "submitting": "Registering..."
+      },
+      "validation": {
+        "nameRequired": "Please enter your name.",
+        "passwordRequired": "Please enter a password.",
+        "passwordMismatch": "Passwords do not match.",
+        "registerError": "Registration failed. Please check your details."
+      },
+      "meta": {
+        "email": "Invited Email:",
+        "invitedBy": "Invited By:",
+        "expiresAt": "Expires At:"
+      },
+      "actions": {
+        "accept": "Accept Invitation",
+        "accepting": "Accepting...",
+        "dashboard": "Go to Dashboard",
+        "home": "Return to Home"
+      }
     }
   },
   "notifications": {

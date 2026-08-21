@@ -2,12 +2,35 @@
   font-family: Inter, "Segoe UI", Arial, sans-serif;
   min-height: 100vh;
   width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: var(--color-bg-subtle, #f8fafc);
   padding: 32px 20px;
+
+  .language-toggle {
+    position: absolute;
+    top: 24px;
+    inset-inline-end: 24px;
+    z-index: 10;
+
+    &:hover {
+      filter: brightness(0.95);
+    }
+
+    button {
+      background: var(--color-muted-surface, #f1f5f9);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--color-text-strong, #334155);
+      transition: all 0.2s ease;
+    }
+  }
 
   &__brand {
     display: flex;

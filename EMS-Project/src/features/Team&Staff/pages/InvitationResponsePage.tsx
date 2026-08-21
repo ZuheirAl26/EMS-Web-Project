@@ -14,9 +14,11 @@ import {
   LockKeyIcon,
   UserIcon,
 } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
 import logo from "../../../assets/logo.png";
 import { useAuthStore } from "../../../store/AuthStore";
 import { resolveMediaUrl } from "../../ExhibitorProfile/utils/profileUtils";
+import LanguageButton from "../../ExhibitorAuth/components/Button/LangButton";
 import {
   useInvitationDetails,
   useAcceptInvitation,
@@ -35,11 +37,11 @@ function getInitials(name?: string) {
     .toUpperCase();
 }
 
-function formatDate(dateStr?: string) {
+function formatDate(dateStr: string | undefined, locale: string) {
   if (!dateStr) return "N/A";
   try {
     const d = new Date(dateStr);
-    return d.toLocaleString(undefined, {
+    return d.toLocaleString(locale, {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -52,6 +54,8 @@ function formatDate(dateStr?: string) {
 }
 
 export function InvitationResponsePage() {
+  const { t, i18n } = useTranslation("dashboard");
+  const locale = i18n.language.startsWith("ar") ? "ar-SY" : "en-US";
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
 
@@ -96,7 +100,10 @@ export function InvitationResponsePage() {
     // Case 2: User exists but is NOT logged in -> Require login
     if (!isUserLoggedIn || !isAuthenticated) {
       setErrorMessage(
-        "You cannot accept the invitation until you are logged in. Please log in first.",
+        t(
+          "team.invitationResponse.loginRequired",
+          "You cannot accept the invitation until you are logged in. Please log in first.",
+        ),
       );
       setTimeout(() => {
         navigate(
@@ -116,7 +123,11 @@ export function InvitationResponsePage() {
       onError: (err: unknown) => {
         const msg =
           (err as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message || "Failed to accept invitation. Please try again.";
+            ?.data?.message ||
+          t(
+            "team.invitationResponse.acceptError",
+            "Failed to accept invitation. Please try again.",
+          );
         setErrorMessage(msg);
       },
     });
@@ -127,15 +138,21 @@ export function InvitationResponsePage() {
     if (!token) return;
 
     if (!name.trim()) {
-      setErrorMessage("Please enter your name.");
+      setErrorMessage(
+        t("team.invitationResponse.validation.nameRequired", "Please enter your name."),
+      );
       return;
     }
     if (!password) {
-      setErrorMessage("Please enter a password.");
+      setErrorMessage(
+        t("team.invitationResponse.validation.passwordRequired", "Please enter a password."),
+      );
       return;
     }
     if (password !== passwordConfirmation) {
-      setErrorMessage("Passwords do not match.");
+      setErrorMessage(
+        t("team.invitationResponse.validation.passwordMismatch", "Passwords do not match."),
+      );
       return;
     }
 
@@ -158,7 +175,10 @@ export function InvitationResponsePage() {
           const msg =
             (err as { response?: { data?: { message?: string } } })?.response
               ?.data?.message ||
-            "Registration failed. Please check your details.";
+            t(
+              "team.invitationResponse.validation.registerError",
+              "Registration failed. Please check your details.",
+            );
           setErrorMessage(msg);
         },
       },
@@ -168,7 +188,9 @@ export function InvitationResponsePage() {
   const currentStatus = isAccepted ? "accepted" : invitation?.status || "pending";
   const isExpired = invitation?.is_expired || currentStatus === "expired";
   const isCompany = (invitation?.type || "").toLowerCase().includes("company");
-  const targetLabel = isCompany ? "Company" : "Booth";
+  const targetLabel = isCompany
+    ? t("team.invitationResponse.company", "Company")
+    : t("team.invitationResponse.booth", "Booth");
   const TargetIcon = isCompany ? Building03Icon : Store01Icon;
 
   const senderName = invitation?.sender?.name || "Organization Manager";
@@ -178,24 +200,31 @@ export function InvitationResponsePage() {
 
   return (
     <div className="invitation-page">
+      <div className="language-toggle">
+        <LanguageButton />
+      </div>
+
       <Link to="/" className="invitation-page__brand">
         <img src={logo} alt="EMS Logo" className="brand-logo" />
-        <span>Exhibition Management System</span>
+        <span>{t("team.invitationResponse.brand", "Exhibition Management System")}</span>
       </Link>
 
       <div className="invitation-page__card">
         {isLoading ? (
           <div className="invitation-page__state-box">
             <div className="loading-spinner" />
-            <h3>Retrieving Invitation...</h3>
-            <p>Please wait while we load your team invitation details.</p>
+            <h3>{t("team.invitationResponse.loadingTitle", "Retrieving Invitation...")}</h3>
+            <p>{t("team.invitationResponse.loadingDesc", "Please wait while we load your team invitation details.")}</p>
           </div>
         ) : isError || !invitation ? (
           <div className="invitation-page__state-box">
             <HugeiconsIcon icon={AlertCircleIcon} size={48} className="error-icon" />
-            <h3>Invalid or Expired Invitation</h3>
+            <h3>{t("team.invitationResponse.errorTitle", "Invalid or Expired Invitation")}</h3>
             <p>
-              We couldn't find an active invitation matching this token. The link may have expired or been revoked.
+              {t(
+                "team.invitationResponse.errorDesc",
+                "We couldn't find an active invitation matching this token. The link may have expired or been revoked.",
+              )}
             </p>
 
             <button
@@ -205,7 +234,7 @@ export function InvitationResponsePage() {
               style={{ marginTop: 16, width: "auto" }}
             >
               <HugeiconsIcon icon={RefreshIcon} size={16} />
-              <span>Retry</span>
+              <span>{t("team.invitationResponse.retry", "Retry")}</span>
             </button>
           </div>
         ) : (
@@ -225,10 +254,18 @@ export function InvitationResponsePage() {
               </div>
 
               <h2 className="invitation-page__title">
-                {senderName} invited you to join {targetName}
+                {t("team.invitationResponse.invitedTitle", {
+                  sender: senderName,
+                  target: targetName,
+                  defaultValue: `${senderName} invited you to join ${targetName}`,
+                })}
               </h2>
               <p className="invitation-page__subtitle">
-                You've been invited as a Team Manager for <strong>{targetName}</strong> ({targetLabel}).
+                {t("team.invitationResponse.invitedSub", {
+                  target: targetName,
+                  type: targetLabel,
+                  defaultValue: `You've been invited as a Team Manager for ${targetName} (${targetLabel}).`,
+                })}
               </p>
             </div>
 
@@ -238,8 +275,13 @@ export function InvitationResponsePage() {
                 <div className="invitation-page__status-banner status-accepted">
                   <HugeiconsIcon icon={CheckmarkCircle02Icon} size={22} className="status-icon" />
                   <div className="status-text">
-                    <strong>Invitation Accepted!</strong>
-                    <span>You are now a team member for {targetName}.</span>
+                    <strong>{t("team.invitationResponse.acceptedBannerTitle", "Invitation Accepted!")}</strong>
+                    <span>
+                      {t("team.invitationResponse.acceptedBannerDesc", {
+                        target: targetName,
+                        defaultValue: `You are now a team member for ${targetName}.`,
+                      })}
+                    </span>
                   </div>
                 </div>
               )}
@@ -248,8 +290,14 @@ export function InvitationResponsePage() {
                 <div className="invitation-page__status-banner status-expired">
                   <HugeiconsIcon icon={AlertCircleIcon} size={22} className="status-icon" />
                   <div className="status-text">
-                    <strong>Invitation Expired</strong>
-                    <span>This invitation link expired on {formatDate(invitation.expires_at)}. Please contact {senderName} for a new invitation.</span>
+                    <strong>{t("team.invitationResponse.expiredBannerTitle", "Invitation Expired")}</strong>
+                    <span>
+                      {t("team.invitationResponse.expiredBannerDesc", {
+                        date: formatDate(invitation.expires_at, locale),
+                        sender: senderName,
+                        defaultValue: `This invitation link expired on ${formatDate(invitation.expires_at, locale)}. Please contact ${senderName} for a new invitation.`,
+                      })}
+                    </span>
                   </div>
                 </div>
               )}
@@ -267,9 +315,12 @@ export function InvitationResponsePage() {
               {registrationSuccess ? (
                 <div className="invitation-page__state-box" style={{ padding: "16px 0" }}>
                   <HugeiconsIcon icon={CheckmarkCircle02Icon} size={44} style={{ color: "#16a34a" }} />
-                  <h3>Registration Successful!</h3>
+                  <h3>{t("team.invitationResponse.regSuccessTitle", "Registration Successful!")}</h3>
                   <p>
-                    Your account has been created. Please log in to accept the invitation and join {targetName}.
+                    {t("team.invitationResponse.regSuccessDesc", {
+                      target: targetName,
+                      defaultValue: `Your account has been created. Please log in to accept the invitation and join ${targetName}.`,
+                    })}
                   </p>
                   <button
                     type="button"
@@ -284,14 +335,16 @@ export function InvitationResponsePage() {
                     style={{ marginTop: 12 }}
                   >
                     <HugeiconsIcon icon={LockKeyIcon} size={18} />
-                    <span>Proceed to Login</span>
+                    <span>{t("team.invitationResponse.proceedLogin", "Proceed to Login")}</span>
                   </button>
                 </div>
               ) : showRegisterForm ? (
                 /* Inline Registration Form Panel */
                 <form className="invitation-page__register-form" onSubmit={handleRegisterSubmit}>
                   <div className="form-group">
-                    <label htmlFor="invitee-email">Invited Email Address</label>
+                    <label htmlFor="invitee-email">
+                      {t("team.invitationResponse.form.email", "Invited Email Address")}
+                    </label>
                     <input
                       id="invitee-email"
                       type="email"
@@ -301,11 +354,13 @@ export function InvitationResponsePage() {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="invitee-name">Your Full Name</label>
+                    <label htmlFor="invitee-name">
+                      {t("team.invitationResponse.form.name", "Your Full Name")}
+                    </label>
                     <input
                       id="invitee-name"
                       type="text"
-                      placeholder="e.g. Alex Morgan"
+                      placeholder={t("team.invitationResponse.form.namePlaceholder", "e.g. Alex Morgan")}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
@@ -313,11 +368,13 @@ export function InvitationResponsePage() {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="invitee-password">Set Password</label>
+                    <label htmlFor="invitee-password">
+                      {t("team.invitationResponse.form.password", "Set Password")}
+                    </label>
                     <input
                       id="invitee-password"
                       type="password"
-                      placeholder="Enter a strong password"
+                      placeholder={t("team.invitationResponse.form.passwordPlaceholder", "Enter a strong password")}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
@@ -325,11 +382,13 @@ export function InvitationResponsePage() {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="invitee-password-confirm">Confirm Password</label>
+                    <label htmlFor="invitee-password-confirm">
+                      {t("team.invitationResponse.form.confirmPassword", "Confirm Password")}
+                    </label>
                     <input
                       id="invitee-password-confirm"
                       type="password"
-                      placeholder="Re-enter password"
+                      placeholder={t("team.invitationResponse.form.confirmPlaceholder", "Re-enter password")}
                       value={passwordConfirmation}
                       onChange={(e) => setPasswordConfirmation(e.target.value)}
                       required
@@ -345,8 +404,8 @@ export function InvitationResponsePage() {
                     <HugeiconsIcon icon={UserIcon} size={18} />
                     <span>
                       {registerMutation.isPending
-                        ? "Registering..."
-                        : "Complete Registration & Continue"}
+                        ? t("team.invitationResponse.form.submitting", "Registering...")
+                        : t("team.invitationResponse.form.submit", "Complete Registration & Continue")}
                     </span>
                   </button>
                 </form>
@@ -357,7 +416,7 @@ export function InvitationResponsePage() {
                     <div className="invitation-page__meta-item">
                       <span className="meta-label">
                         <HugeiconsIcon icon={Mail01Icon} size={15} />
-                        Invited Email:
+                        {t("team.invitationResponse.meta.email", "Invited Email:")}
                       </span>
                       <span className="meta-value">{invitation.email}</span>
                     </div>
@@ -365,7 +424,7 @@ export function InvitationResponsePage() {
                     <div className="invitation-page__meta-item">
                       <span className="meta-label">
                         <HugeiconsIcon icon={UserGroupIcon} size={15} />
-                        Invited By:
+                        {t("team.invitationResponse.meta.invitedBy", "Invited By:")}
                       </span>
                       <span className="meta-value">
                         {senderName} {senderEmail ? `(${senderEmail})` : ""}
@@ -376,9 +435,9 @@ export function InvitationResponsePage() {
                       <div className="invitation-page__meta-item">
                         <span className="meta-label">
                           <HugeiconsIcon icon={Calendar03Icon} size={15} />
-                          Expires At:
+                          {t("team.invitationResponse.meta.expiresAt", "Expires At:")}
                         </span>
-                        <span className="meta-value">{formatDate(invitation.expires_at)}</span>
+                        <span className="meta-value">{formatDate(invitation.expires_at, locale)}</span>
                       </div>
                     )}
                   </div>
@@ -394,7 +453,9 @@ export function InvitationResponsePage() {
                       >
                         <HugeiconsIcon icon={CheckmarkCircle02Icon} size={18} />
                         <span>
-                          {acceptMutation.isPending ? "Accepting..." : "Accept Invitation"}
+                          {acceptMutation.isPending
+                            ? t("team.invitationResponse.actions.accepting", "Accepting...")
+                            : t("team.invitationResponse.actions.accept", "Accept Invitation")}
                         </span>
                       </button>
                     )}
@@ -405,7 +466,7 @@ export function InvitationResponsePage() {
                         className="btn-nav"
                         onClick={() => navigate("/dashboard")}
                       >
-                        <span>Go to Dashboard</span>
+                        <span>{t("team.invitationResponse.actions.dashboard", "Go to Dashboard")}</span>
                         <HugeiconsIcon icon={ArrowRight01Icon} size={18} />
                       </button>
                     )}
@@ -416,7 +477,7 @@ export function InvitationResponsePage() {
                         className="btn-nav"
                         onClick={() => navigate("/")}
                       >
-                        <span>Return to Home</span>
+                        <span>{t("team.invitationResponse.actions.home", "Return to Home")}</span>
                         <HugeiconsIcon icon={ArrowRight01Icon} size={18} />
                       </button>
                     )}
