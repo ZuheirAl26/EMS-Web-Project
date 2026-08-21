@@ -376,6 +376,17 @@ interface CustomWindow extends Window {
 let globalFcmRegisteredToken: string | null = null;
 let globalSwRegistered = false;
 
+export const FCM_REGISTERED_STORAGE_KEY = "ems_fcm_registered_token";
+
+export function clearFcmRegistration() {
+  globalFcmRegisteredToken = null;
+  try {
+    localStorage.removeItem(FCM_REGISTERED_STORAGE_KEY);
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 // Hook to initialize Firebase Cloud Messaging, request permission & register token with backend
 export function useFirebaseMessaging(
   onForegroundPush?: (title: string, body: string) => void,
@@ -452,11 +463,22 @@ export function useFirebaseMessaging(
         if (fcmToken) {
           (window as unknown as CustomWindow).__FCM_TOKEN__ = fcmToken;
 
-          // Register token with backend ONLY IF it has not been registered yet in this session
-          if (globalFcmRegisteredToken !== fcmToken) {
+          const lastRegisteredToken = (() => {
+            try {
+              return localStorage.getItem(FCM_REGISTERED_STORAGE_KEY);
+            } catch {
+              return null;
+            }
+          })();
+
+          // Register token with backend ONLY IF it has not been registered yet in localStorage for this user session
+          if (
+            globalFcmRegisteredToken !== fcmToken &&
+            lastRegisteredToken !== fcmToken
+          ) {
             globalFcmRegisteredToken = fcmToken;
             console.log(
-              "%c[FCM TOKEN FOR TESTING]:",
+              "%c[FCM TOKEN REGISTERED]:",
               "background: #0a8782; color: #ffffff; font-weight: bold; padding: 4px 8px; border-radius: 4px; font-size: 12px;",
               fcmToken,
             );
@@ -466,6 +488,11 @@ export function useFirebaseMessaging(
                 token: fcmToken,
                 device_type: "web",
               });
+              try {
+                localStorage.setItem(FCM_REGISTERED_STORAGE_KEY, fcmToken);
+              } catch {
+                // Ignore storage error
+              }
               console.log("[FCM Token Registered with Backend]");
             } catch (apiErr) {
               console.warn("[FCM Backend Registration Warning]:", apiErr);
@@ -530,6 +557,22 @@ export function useFirebaseMessaging(
             payload.data?.body ||
             payload.notification?.body ||
             "";
+
+          // Native Desktop Notification with logo.png
+          if (
+            typeof Notification !== "undefined" &&
+            Notification.permission === "granted"
+          ) {
+            try {
+              new Notification(title, {
+                body,
+                icon: "/logo.png",
+                badge: "/logo.png",
+              });
+            } catch (desktopErr) {
+              console.warn("[Desktop Notification Error]:", desktopErr);
+            }
+          }
 
           // In-App Floating Toast Banner
           if (onForegroundPushRef.current) {

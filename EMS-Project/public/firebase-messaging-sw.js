@@ -46,8 +46,8 @@ messaging.onBackgroundMessage((payload) => {
 
   const notificationOptions = {
     body: notificationBody,
-    icon: payload.data?.icon || payload.notification?.icon || "/favicon.svg",
-    badge: "/favicon.svg",
+    icon: payload.data?.icon || payload.notification?.icon || "/logo.png",
+    badge: "/assets/logo.png",
     data: payload.data || {},
   };
 

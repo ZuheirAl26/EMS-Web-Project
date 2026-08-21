@@ -6,6 +6,7 @@ import { useAuthStore } from "../../../store/AuthStore";
 import { getApiErrorMessage } from "../../../utils/apiError";
 import { logoutApi } from "../api/Authapi";
 import { clearCachedExhibitorProfile } from "../../ExhibitorProfile/utils/profileCache";
+import { clearFcmRegistration } from "../../Notifications/hooks/useNotifications";
 
 export function useLogout() {
   const { t } = useTranslation("dashboard");
@@ -22,6 +23,7 @@ export function useLogout() {
     onSuccess: () => {
       clearAuth();
       clearCachedExhibitorProfile();
+      clearFcmRegistration();
       navigate("/login", { replace: true });
     },
     onError: (error: unknown) => {
