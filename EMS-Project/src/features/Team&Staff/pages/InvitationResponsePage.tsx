@@ -24,6 +24,7 @@ import {
   useAcceptInvitation,
   useRegisterInvitation,
 } from "../hooks/useInvitationResponse";
+import { getApiErrorMessage } from "../../../utils/apiError";
 import "./InvitationResponsePage.scss";
 
 function getInitials(name?: string) {
@@ -121,14 +122,15 @@ export function InvitationResponsePage() {
         setIsAccepted(true);
       },
       onError: (err: unknown) => {
-        const msg =
-          (err as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message ||
-          t(
-            "team.invitationResponse.acceptError",
-            "Failed to accept invitation. Please try again.",
-          );
-        setErrorMessage(msg);
+        setErrorMessage(
+          getApiErrorMessage(
+            err,
+            t(
+              "team.invitationResponse.acceptError",
+              "Failed to accept invitation. Please try again.",
+            ),
+          ),
+        );
       },
     });
   };
@@ -172,14 +174,15 @@ export function InvitationResponsePage() {
           setRegistrationSuccess(true);
         },
         onError: (err: unknown) => {
-          const msg =
-            (err as { response?: { data?: { message?: string } } })?.response
-              ?.data?.message ||
-            t(
-              "team.invitationResponse.validation.registerError",
-              "Registration failed. Please check your details.",
-            );
-          setErrorMessage(msg);
+          setErrorMessage(
+            getApiErrorMessage(
+              err,
+              t(
+                "team.invitationResponse.validation.registerError",
+                "Registration failed. Please check your details.",
+              ),
+            ),
+          );
         },
       },
     );

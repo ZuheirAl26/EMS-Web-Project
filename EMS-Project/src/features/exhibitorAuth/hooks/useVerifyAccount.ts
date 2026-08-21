@@ -4,9 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../../store/AuthStore";
 import { verifyEmailApi } from "../api/Authapi";
 import { authKeys } from "../api/AuthKeys";
+import { useTranslation } from "react-i18next";
 import { getApiErrorMessage } from "../../../utils/apiError";
 
 export function useVerifyAccount() {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const login = useAuthStore((state) => state.login);
 
@@ -30,9 +32,9 @@ export function useVerifyAccount() {
   const isSuccess =
     data?.status === true || data?.data?.user?.is_verified === true;
   const errorMessage = !isLinkValidShape
-    ? "Invalid verification link. Security parameters missing."
+    ? t("checkEmail.invalidLink", "Invalid verification link. Security parameters missing.")
     : isError
-      ? getApiErrorMessage(error, "Verification failed.")
+      ? getApiErrorMessage(error, t("checkEmail.verifyFailed", "Verification failed."))
       : data && !data.status
         ? data.message
         : null;

@@ -37,14 +37,14 @@ export function useRegisterForm() {
           setApiError("No token received from server.");
         }
       } else {
-        setApiError(response.message || "Registration Failed.");
+        setApiError(response.message || t("register.errorMsg", "Registration Failed."));
       }
     },
     onError: (error: unknown) => {
       setApiError(
         getApiErrorMessage(
           error,
-          "An error occurred during registration.",
+          t("register.errorMsg", "An error occurred during registration."),
         ),
       );
     },

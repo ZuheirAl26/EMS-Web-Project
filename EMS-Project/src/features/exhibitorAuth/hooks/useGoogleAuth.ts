@@ -7,9 +7,11 @@ import type {
   AuthResponse,
   GoogleAuthPayload,
 } from "../types/authType";
+import { useTranslation } from "react-i18next";
 import { getApiErrorMessage } from "../../../utils/apiError";
 
 export function useGoogleAuth() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
 
@@ -46,7 +48,8 @@ export function useGoogleAuth() {
     isGoogleLoading: mutation.isPending,
     isGoogleError: mutation.isError,
     googleErrorMessage: mutation.error
-      ? getApiErrorMessage(mutation.error, mutation.error.message)
+      ? getApiErrorMessage(mutation.error, t("login.errorMsg"))
       : null,
   };
 }
+
