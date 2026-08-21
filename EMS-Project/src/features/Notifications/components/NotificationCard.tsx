@@ -12,6 +12,8 @@ import {
   ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import {
   useDeleteNotification,
   useMarkNotificationAsRead,
@@ -40,24 +42,35 @@ function getTypeIcon(type?: NotificationType | null) {
   return Notification02Icon;
 }
 
-function getTypeCategoryLabel(type?: NotificationType | null) {
-  if (!type) return "System";
+function getTypeCategoryLabel(
+  type: NotificationType | null | undefined,
+  t: TFunction<"dashboard">,
+) {
+  if (!type) return t("notifications.categories.system", "System");
   const safeType = String(type).toLowerCase();
-  if (safeType === "booth_payment_reminder") return "Booth Payment";
-  if (safeType === "event_payment_reminder") return "Event Payment";
-  if (safeType === "booth_canceled") return "Booth Canceled";
-  if (safeType === "event_canceled") return "Event Canceled";
-  if (safeType.includes("booth")) return "Booth Request";
-  if (safeType.includes("event")) return "Event Request";
-  if (safeType.includes("review")) return "New Review";
-  if (safeType.includes("announcement")) return "Announcement";
-  return "System";
+  if (safeType === "booth_payment_reminder")
+    return t("notifications.categories.boothPayment", "Booth Payment");
+  if (safeType === "event_payment_reminder")
+    return t("notifications.categories.eventPayment", "Event Payment");
+  if (safeType === "booth_canceled")
+    return t("notifications.categories.boothCanceled", "Booth Canceled");
+  if (safeType === "event_canceled")
+    return t("notifications.categories.eventCanceled", "Event Canceled");
+  if (safeType.includes("booth"))
+    return t("notifications.categories.boothRequest", "Booth Request");
+  if (safeType.includes("event"))
+    return t("notifications.categories.eventRequest", "Event Request");
+  if (safeType.includes("review"))
+    return t("notifications.categories.newReview", "New Review");
+  if (safeType.includes("announcement"))
+    return t("notifications.categories.announcement", "Announcement");
+  return t("notifications.categories.system", "System");
 }
 
-function formatFullDate(dateStr: string) {
+function formatFullDate(dateStr: string, locale: string) {
   try {
     const d = new Date(dateStr);
-    return d.toLocaleString(undefined, {
+    return d.toLocaleString(locale, {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -73,6 +86,7 @@ export function NotificationCard({
   notification,
   onDeleteClick,
 }: NotificationCardProps) {
+  const { t, i18n } = useTranslation("dashboard");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const markAsReadMutation = useMarkNotificationAsRead();
@@ -82,10 +96,13 @@ export function NotificationCard({
 
   const isUnread = !notification.read_at;
   const IconComponent = getTypeIcon(notification.type);
-  const categoryLabel = getTypeCategoryLabel(notification.type);
-  const safeTypeClass = notification.type ? String(notification.type) : "default";
+  const categoryLabel = getTypeCategoryLabel(notification.type, t);
+  const safeTypeClass = notification.type
+    ? String(notification.type)
+    : "default";
   const formattedTitle = formatNotificationTitle(notification);
   const formattedBody = formatNotificationBody(notification);
+  const locale = i18n.language.startsWith("ar") ? "ar-SY" : "en-US";
 
   const handleCardClick = () => {
     if (isUnread) {
@@ -95,7 +112,9 @@ export function NotificationCard({
     // Invalidate target query caches so destination page displays fresh server data
     queryClient.invalidateQueries();
 
-    const safeType = notification.type ? String(notification.type).toLowerCase() : "";
+    const safeType = notification.type
+      ? String(notification.type).toLowerCase()
+      : "";
     const targetId =
       notification.target_id ??
       (notification.data as Record<string, unknown> | null)?.announcement_id ??
@@ -107,13 +126,17 @@ export function NotificationCard({
       navigate("/dashboard/events");
     } else if (safeType.includes("review")) {
       const dataObj = notification.data as Record<string, unknown> | null;
-      const rawReviewable = dataObj?.reviewable_type ? String(dataObj.reviewable_type) : "";
+      const rawReviewable = dataObj?.reviewable_type
+        ? String(dataObj.reviewable_type)
+        : "";
       const targetType = rawReviewable.toLowerCase().includes("booth")
         ? "booth"
         : rawReviewable.toLowerCase().includes("event")
           ? "event"
           : "";
-      const entityId = dataObj?.reviewable_id ? String(dataObj.reviewable_id) : "";
+      const entityId = dataObj?.reviewable_id
+        ? String(dataObj.reviewable_id)
+        : "";
       const reviewId = targetId ? String(targetId) : "";
 
       const queryParams = new URLSearchParams();
@@ -172,7 +195,7 @@ export function NotificationCard({
               {categoryLabel}
             </span>
             <span className="card-timestamp">
-              {formatFullDate(notification.created_at)}
+              {formatFullDate(notification.created_at, locale)}
             </span>
           </div>
 
@@ -185,26 +208,29 @@ export function NotificationCard({
             <button
               type="button"
               className="action-btn mark-read-btn"
-              title="Mark as read"
+              title={t("notifications.markRead", "Mark Read")}
               onClick={handleMarkAsRead}
               disabled={markAsReadMutation.isPending}
             >
               <HugeiconsIcon icon={CheckmarkSquare01Icon} size={16} />
-              <span>Mark Read</span>
+              <span>{t("notifications.markRead", "Mark Read")}</span>
             </button>
           )}
 
           <button
             type="button"
             className="action-btn delete-btn"
-            title="Delete notification"
+            title={t("notifications.delete", "Delete notification")}
             onClick={handleDelete}
             disabled={deleteMutation.isPending}
           >
             <HugeiconsIcon icon={Delete02Icon} size={16} />
           </button>
 
-          <div className="navigate-arrow" title="View details">
+          <div
+            className="navigate-arrow"
+            title={t("notifications.viewDetails", "View details")}
+          >
             <HugeiconsIcon icon={ArrowRight01Icon} size={16} />
           </div>
         </div>

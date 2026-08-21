@@ -6,6 +6,7 @@ import {
   UserAdd01Icon,
   Calendar03Icon,
 } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
 import type {
   BoothStatisticsData,
   DashboardScopeMode,
@@ -23,6 +24,7 @@ export function DashboardStatsCards({
   stats,
   isLoading,
 }: DashboardStatsCardsProps) {
+  const { t } = useTranslation("dashboard");
   const isBoothMode = mode === "booth";
 
   const leads = stats?.leads_count ?? 0;
@@ -42,9 +44,13 @@ export function DashboardStatsCards({
           <HugeiconsIcon icon={UserGroupIcon} size={22} />
         </div>
         <div className="stat-info">
-          <span className="stat-label">Total Leads</span>
+          <span className="stat-label">
+            {t("dashboardHome.stats.totalLeads", "Total Leads")}
+          </span>
           <strong className="stat-value">{isLoading ? "…" : leads}</strong>
-          <small className="stat-sub">Captured visitors</small>
+          <small className="stat-sub">
+            {t("dashboardHome.stats.capturedVisitors", "Captured visitors")}
+          </small>
         </div>
       </div>
 
@@ -54,9 +60,13 @@ export function DashboardStatsCards({
           <HugeiconsIcon icon={QrCodeIcon} size={22} />
         </div>
         <div className="stat-info">
-          <span className="stat-label">Recent QR Scans</span>
+          <span className="stat-label">
+            {t("dashboardHome.stats.recentQrScans", "Recent QR Scans")}
+          </span>
           <strong className="stat-value">{isLoading ? "…" : qrScans}</strong>
-          <small className="stat-sub">Visitor badge scans</small>
+          <small className="stat-sub">
+            {t("dashboardHome.stats.visitorBadgeScans", "Visitor badge scans")}
+          </small>
         </div>
       </div>
 
@@ -66,12 +76,17 @@ export function DashboardStatsCards({
           <HugeiconsIcon icon={ShoppingBag01Icon} size={22} />
         </div>
         <div className="stat-info">
-          <span className="stat-label">Requested Services</span>
+          <span className="stat-label">
+            {t("dashboardHome.stats.requestedServices", "Requested Services")}
+          </span>
           <strong className="stat-value">
             {isLoading ? "…" : servicesCount}
           </strong>
           <small className="stat-sub">
-            ${isLoading ? "0" : servicesTotalPrice} total
+            {t("dashboardHome.stats.servicesTotal", {
+              price: isLoading ? "0" : servicesTotalPrice,
+              defaultValue: `$${isLoading ? "0" : servicesTotalPrice} total`,
+            })}
           </small>
         </div>
       </div>
@@ -86,7 +101,9 @@ export function DashboardStatsCards({
         </div>
         <div className="stat-info">
           <span className="stat-label">
-            {isBoothMode ? "Booth Members" : "Approved Events"}
+            {isBoothMode
+              ? t("dashboardHome.stats.boothMembers", "Booth Members")
+              : t("dashboardHome.stats.approvedEvents", "Approved Events")}
           </span>
           <strong className="stat-value">
             {isLoading
@@ -97,8 +114,14 @@ export function DashboardStatsCards({
           </strong>
           <small className="stat-sub">
             {isBoothMode
-              ? `${pendingInvitations} pending invitations`
-              : `${totalEvents} total requested`}
+              ? t("dashboardHome.stats.pendingInvitations", {
+                  count: pendingInvitations,
+                  defaultValue: `${pendingInvitations} pending invitations`,
+                })
+              : t("dashboardHome.stats.totalRequested", {
+                  count: totalEvents,
+                  defaultValue: `${totalEvents} total requested`,
+                })}
           </small>
         </div>
       </div>

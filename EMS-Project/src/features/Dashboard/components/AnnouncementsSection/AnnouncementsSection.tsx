@@ -9,6 +9,7 @@ import {
   AlertCircleIcon,
   RefreshIcon,
 } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
 import { resolveMediaUrl } from "../../../ExhibitorProfile/utils/profileUtils";
 import type { AnnouncementsResponseData } from "../../types/dashboardType";
 import "./AnnouncementsSection.scss";
@@ -26,6 +27,7 @@ export function AnnouncementsSection({
   isError,
   onRetry,
 }: AnnouncementsSectionProps) {
+  const { t } = useTranslation("dashboard");
   const [searchParams] = useSearchParams();
   const targetIdParam = searchParams.get("announcementId");
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -87,7 +89,7 @@ export function AnnouncementsSection({
       <div className="card-header">
         <div className="header-title">
           <HugeiconsIcon icon={Notification02Icon} size={20} className="icon" />
-          <h2>Exhibition Announcements</h2>
+          <h2>{t("dashboardHome.announcements.title", "Exhibition Announcements")}</h2>
         </div>
         {items.length > 1 && (
           <div className="slider-controls">
@@ -95,7 +97,7 @@ export function AnnouncementsSection({
               type="button"
               className="ctrl-btn"
               onClick={handlePrev}
-              aria-label="Previous announcement"
+              aria-label={t("dashboardHome.announcements.prev", "Previous announcement")}
             >
               <HugeiconsIcon icon={ArrowLeft01Icon} size={16} />
             </button>
@@ -106,7 +108,7 @@ export function AnnouncementsSection({
               type="button"
               className="ctrl-btn"
               onClick={handleNext}
-              aria-label="Next announcement"
+              aria-label={t("dashboardHome.announcements.next", "Next announcement")}
             >
               <HugeiconsIcon icon={ArrowRight01Icon} size={16} />
             </button>
@@ -116,20 +118,24 @@ export function AnnouncementsSection({
 
       <div className="announcement-content">
         {isLoading ? (
-          <div className="announcement-loading">Loading announcements...</div>
+          <div className="announcement-loading">
+            {t("dashboardHome.announcements.loading", "Loading announcements...")}
+          </div>
         ) : isError ? (
           <div className="announcement-error">
             <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
-            <p>Failed to load exhibition announcements.</p>
+            <p>{t("dashboardHome.announcements.error", "Failed to load exhibition announcements.")}</p>
             {onRetry && (
               <button type="button" className="retry-btn" onClick={onRetry}>
                 <HugeiconsIcon icon={RefreshIcon} size={14} />
-                <span>Retry</span>
+                <span>{t("common.retry", "Retry Connection")}</span>
               </button>
             )}
           </div>
         ) : items.length === 0 || !currentItem ? (
-          <div className="announcement-empty">No announcements published at this time.</div>
+          <div className="announcement-empty">
+            {t("dashboardHome.announcements.empty", "No announcements published at this time.")}
+          </div>
         ) : (
           <div
             className="announcement-slide"
@@ -151,7 +157,12 @@ export function AnnouncementsSection({
             )}
             <div className="announcement-body">
               <span className="receiver-badge">
-                {currentItem.receiver ? `Target: ${currentItem.receiver}` : "Official Announcement"}
+                {currentItem.receiver
+                  ? t("dashboardHome.announcements.target", {
+                      receiver: currentItem.receiver,
+                      defaultValue: `Target: ${currentItem.receiver}`,
+                    })
+                  : t("dashboardHome.announcements.official", "Official Announcement")}
               </span>
               <h3 className="announcement-title">{currentItem.title}</h3>
               <p className="announcement-desc">{currentItem.description}</p>
@@ -162,4 +173,3 @@ export function AnnouncementsSection({
     </div>
   );
 }
-

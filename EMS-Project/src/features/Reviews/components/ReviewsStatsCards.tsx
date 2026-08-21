@@ -19,7 +19,7 @@ export function ReviewsStatsCards({
   ratingFilter,
   onSelectRatingFilter,
 }: ReviewsStatsCardsProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard");
   const avgRatingNum = typeof statistics.average_rating === "number"
     ? statistics.average_rating
     : 0;

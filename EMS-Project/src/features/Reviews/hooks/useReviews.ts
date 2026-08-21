@@ -28,7 +28,7 @@ export const reviewKeys = {
 const STALE_TIME_2_MIN = 1000 * 60 * 2;
 
 export function useReviews() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard");
   const [searchParams] = useSearchParams();
   const reviewIdParam = searchParams.get("reviewId");
   const targetTypeParam = searchParams.get("targetType");

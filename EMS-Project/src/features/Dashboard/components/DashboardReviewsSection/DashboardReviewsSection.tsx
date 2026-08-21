@@ -1,5 +1,6 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { StarIcon, AlertCircleIcon, RefreshIcon } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
 import type { ReviewStatsData } from "../../../Reviews/types/reviewsType";
 import "./DashboardReviewsSection.scss";
 
@@ -16,15 +17,16 @@ export function DashboardReviewsSection({
   isError,
   onRetry,
 }: DashboardReviewsSectionProps) {
+  const { t } = useTranslation("dashboard");
   const totalReviews = stats?.total_reviews ?? 0;
   const avgRating = stats?.average_rating ?? 0;
 
   const starRows = [
-    { stars: 5, label: "5 Stars", count: stats?.five_star_reviews ?? 0 },
-    { stars: 4, label: "4 Stars", count: stats?.four_star_reviews ?? 0 },
-    { stars: 3, label: "3 Stars", count: stats?.three_star_reviews ?? 0 },
-    { stars: 2, label: "2 Stars", count: stats?.two_star_reviews ?? 0 },
-    { stars: 1, label: "1 Star", count: stats?.one_star_reviews ?? 0 },
+    { stars: 5, label: t("dashboardHome.ratingsBreakdown.stars", { count: 5, defaultValue: "5 Stars" }), count: stats?.five_star_reviews ?? 0 },
+    { stars: 4, label: t("dashboardHome.ratingsBreakdown.stars", { count: 4, defaultValue: "4 Stars" }), count: stats?.four_star_reviews ?? 0 },
+    { stars: 3, label: t("dashboardHome.ratingsBreakdown.stars", { count: 3, defaultValue: "3 Stars" }), count: stats?.three_star_reviews ?? 0 },
+    { stars: 2, label: t("dashboardHome.ratingsBreakdown.stars", { count: 2, defaultValue: "2 Stars" }), count: stats?.two_star_reviews ?? 0 },
+    { stars: 1, label: t("dashboardHome.ratingsBreakdown.star", "1 Star"), count: stats?.one_star_reviews ?? 0 },
   ].map((row) => ({
     ...row,
     percent: totalReviews > 0 ? Math.round((row.count / totalReviews) * 100) : 0,
@@ -34,22 +36,37 @@ export function DashboardReviewsSection({
     <div className="card dashboard-reviews-card">
       <div className="card-header">
         <div>
-          <h2>Ratings Breakdown</h2>
-          <p className="card-sub">Visitor satisfaction & rating metrics</p>
+          <h2>{t("dashboardHome.ratingsBreakdown.title", "Ratings Breakdown")}</h2>
+          <p className="card-sub">
+            {t(
+              "dashboardHome.ratingsBreakdown.sub",
+              "Visitor satisfaction & rating metrics",
+            )}
+          </p>
         </div>
       </div>
 
       <div className="reviews-body">
         {isLoading ? (
-          <div className="reviews-loading">Loading rating statistics...</div>
+          <div className="reviews-loading">
+            {t(
+              "dashboardHome.ratingsBreakdown.loading",
+              "Loading rating statistics...",
+            )}
+          </div>
         ) : isError ? (
           <div className="reviews-error">
             <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
-            <p>Failed to load rating statistics.</p>
+            <p>
+              {t(
+                "dashboardHome.ratingsBreakdown.error",
+                "Failed to load rating statistics.",
+              )}
+            </p>
             {onRetry && (
               <button type="button" className="retry-btn" onClick={onRetry}>
                 <HugeiconsIcon icon={RefreshIcon} size={14} />
-                <span>Retry</span>
+                <span>{t("common.retry", "Retry Connection")}</span>
               </button>
             )}
           </div>
@@ -61,7 +78,12 @@ export function DashboardReviewsSection({
                 <HugeiconsIcon icon={StarIcon} size={22} className="star-icon" />
               </div>
               <div className="score-meta">
-                <strong>{totalReviews} Total Reviews</strong>
+                <strong>
+                  {t("dashboardHome.ratingsBreakdown.totalReviews", {
+                    count: totalReviews,
+                    defaultValue: `${totalReviews} Total Reviews`,
+                  })}
+                </strong>
                 <div className="stars-row">
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <HugeiconsIcon
@@ -98,4 +120,3 @@ export function DashboardReviewsSection({
     </div>
   );
 }
-

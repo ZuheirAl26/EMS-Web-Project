@@ -4,10 +4,12 @@ import {
   CheckmarkCircle01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useTranslation } from "react-i18next";
 import { useNotificationStats } from "../hooks/useNotifications";
 import "./NotificationsStatsCards.scss";
 
 export function NotificationsStatsCards() {
+  const { t } = useTranslation("dashboard");
   const { data: statsData, isLoading } = useNotificationStats();
   const stats = statsData?.data;
 
@@ -23,7 +25,9 @@ export function NotificationsStatsCards() {
           <HugeiconsIcon icon={Notification02Icon} size={22} />
         </div>
         <div className="stat-info">
-          <span className="stat-label">Total Notifications</span>
+          <span className="stat-label">
+            {t("notifications.stats.total", "Total Notifications")}
+          </span>
           <strong className="stat-value">{isLoading ? "…" : total}</strong>
         </div>
       </div>
@@ -34,7 +38,9 @@ export function NotificationsStatsCards() {
           <HugeiconsIcon icon={Mail01Icon} size={22} />
         </div>
         <div className="stat-info">
-          <span className="stat-label">Unread</span>
+          <span className="stat-label">
+            {t("notifications.stats.unread", "Unread")}
+          </span>
           <strong className="stat-value">{isLoading ? "…" : unread}</strong>
         </div>
       </div>
@@ -45,7 +51,9 @@ export function NotificationsStatsCards() {
           <HugeiconsIcon icon={CheckmarkCircle01Icon} size={22} />
         </div>
         <div className="stat-info">
-          <span className="stat-label">Read</span>
+          <span className="stat-label">
+            {t("notifications.stats.read", "Read")}
+          </span>
           <strong className="stat-value">{isLoading ? "…" : read}</strong>
         </div>
       </div>

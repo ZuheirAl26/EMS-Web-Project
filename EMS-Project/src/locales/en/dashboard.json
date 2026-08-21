@@ -49,6 +49,89 @@
       "notification": "Notifications"
     }
   },
+  "common": {
+    "retry": "Retry Connection",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading...",
+    "previous": "Previous",
+    "next": "Next",
+    "all": "All"
+  },
+  "dashboardHome": {
+    "welcome": "Welcome back,",
+    "defaultName": "Exhibitor",
+    "subtitle": "Overview of your pavilion activity, visitor leads, services, and event metrics.",
+    "mode": {
+      "booth": "Booth",
+      "event": "Event",
+      "selectBooth": "Select Booth...",
+      "selectEvent": "Select Event...",
+      "boothLabel": "Booth #{{id}}",
+      "eventLabel": "Event #{{id}}"
+    },
+    "stats": {
+      "totalLeads": "Total Leads",
+      "capturedVisitors": "Captured visitors",
+      "recentQrScans": "Recent QR Scans",
+      "visitorBadgeScans": "Visitor badge scans",
+      "requestedServices": "Requested Services",
+      "servicesTotal": "${{price}} total",
+      "boothMembers": "Booth Members",
+      "pendingInvitations": "{{count}} pending invitations",
+      "approvedEvents": "Approved Events",
+      "totalRequested": "{{count}} total requested"
+    },
+    "leadsChart": {
+      "title": "Leads This Week",
+      "sub": "Daily captured visitors over the past 7 days",
+      "totalBadge": "Total Leads",
+      "loading": "Loading weekly analytics...",
+      "error": "Failed to load lead activity analytics.",
+      "empty": "No lead activity recorded this week yet."
+    },
+    "ratingsBreakdown": {
+      "title": "Ratings Breakdown",
+      "sub": "Visitor satisfaction & rating metrics",
+      "loading": "Loading rating statistics...",
+      "error": "Failed to load rating statistics.",
+      "totalReviews": "{{count}} Total Reviews",
+      "stars": "{{count}} Stars",
+      "star": "1 Star"
+    },
+    "announcements": {
+      "title": "Exhibition Announcements",
+      "loading": "Loading announcements...",
+      "error": "Failed to load exhibition announcements.",
+      "empty": "No announcements published at this time.",
+      "target": "Target: {{receiver}}",
+      "official": "Official Announcement",
+      "prev": "Previous announcement",
+      "next": "Next announcement"
+    },
+    "bottomDetails": {
+      "boothTitle": "Booth Details",
+      "loading": "Loading booth details...",
+      "error": "Failed to load booth details.",
+      "boothNumber": "Booth Number",
+      "hall": "Hall",
+      "hallValue": "Hall {{number}}",
+      "area": "Area",
+      "basePrice": "Base Price",
+      "qrTitle": "Visitor Entry QR",
+      "eventTitle": "Event Space Details",
+      "eventLocation": "Location",
+      "capacity": "Capacity",
+      "attendeesCount": "{{count}} Attendees",
+      "statusLabel": "Status",
+      "status": {
+        "approved": "APPROVED",
+        "booked": "BOOKED",
+        "pending": "PENDING",
+        "rejected": "REJECTED"
+      }
+    }
+  },
   "invite": {
     "title": "Team & Staff",
     "description": "Invite colleagues to co-manage your pavilion with the same dashboard access.",
@@ -76,6 +159,125 @@
     "currentTeam": {
       "aria": "Current team members",
       "title": "Current Team ({{count}})"
+    }
+  },
+  "team": {
+    "title": "Team & Staff",
+    "subtitle": "Invite colleagues to co-manage your pavilion with the same dashboard access.",
+    "form": {
+      "title": "Invite a Team Member",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "colleague@company.com",
+      "roleLabel": "ROLE",
+      "boothLabel": "Booth",
+      "assignBooth": "ASSIGN TO BOOTH",
+      "selectBooth": "Select a booth...",
+      "assignCompany": "ASSIGN TO COMPANY",
+      "selectCompany": "Select a company...",
+      "sending": "Sending...",
+      "submitBtn": "Send Invitation"
+    },
+    "roles": {
+      "boothManager": "Booth Manager",
+      "boothDesc": "Manages a specific booth",
+      "companyManager": "Company Manager",
+      "companyDesc": "Full company-wide access"
+    },
+    "list": {
+      "title": "Current Team ({{count}})",
+      "all": "All Members",
+      "selectCategory": "Select scope...",
+      "loading": "Loading invitations...",
+      "empty": "No team members invited yet.",
+      "emptyFilter": "No team members for this selection.",
+      "removeMember": "Remove member from team",
+      "cancelInvitation": "Decline / Cancel Invitation",
+      "status": {
+        "pending": "Pending",
+        "accepted": "Active Member",
+        "rejected": "Declined",
+        "expired": "Expired"
+      }
+    },
+    "cancelDialog": {
+      "removeTitle": "Remove Team Member?",
+      "title": "Cancel Invitation?",
+      "removeMessage": "Are you sure you want to remove {{name}} ({{email}}) from your team? They will immediately lose access to this pavilion.",
+      "cancelMessage": "Are you sure you want to cancel the pending invitation sent to {{email}}?",
+      "keepMemberBtn": "Keep Member",
+      "keepBtn": "Keep Invitation",
+      "removing": "Removing...",
+      "canceling": "Canceling...",
+      "confirmRemoveBtn": "Yes, Remove Member",
+      "confirmBtn": "Yes, Cancel"
+    },
+    "validation": {
+      "emailRequired": "Please enter a valid email address.",
+      "entityRequired": "Please select a target entity."
+    },
+    "inviteSuccess": "Invitation sent successfully!",
+    "error": {
+      "title": "Failed to Load Target Data",
+      "desc": "We couldn't fetch your booths and companies. Please verify your connection."
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Stay updated with your booth approvals, event requests, new visitor reviews, and announcements.",
+    "stats": {
+      "total": "Total Notifications",
+      "unread": "Unread",
+      "read": "Read"
+    },
+    "tabs": {
+      "all": "All Notifications",
+      "unread": "Unread",
+      "booth": "Booths",
+      "event": "Events",
+      "review": "Reviews",
+      "announcement": "Announcements"
+    },
+    "markAllRead": "Mark All as Read",
+    "markRead": "Mark Read",
+    "delete": "Delete notification",
+    "viewDetails": "View details",
+    "empty": {
+      "title": "No notifications found",
+      "all": "You have no notifications in your account yet.",
+      "tab": "No notifications under \"{{category}}\"."
+    },
+    "dropdown": {
+      "title": "Notifications",
+      "newCount": "{{count}} new",
+      "markAll": "Mark all read",
+      "tabsAll": "All",
+      "tabsUnread": "Unread",
+      "empty": "No notifications found",
+      "loading": "Loading notifications...",
+      "viewAll": "View all notifications"
+    },
+    "categories": {
+      "boothApproved": "Booth Approved",
+      "boothRejected": "Booth Rejected",
+      "boothPayment": "Booth Payment",
+      "boothCanceled": "Booth Canceled",
+      "boothRequest": "Booth Request",
+      "eventApproved": "Event Approved",
+      "eventRejected": "Event Rejected",
+      "eventPayment": "Event Payment",
+      "eventCanceled": "Event Canceled",
+      "eventRequest": "Event Request",
+      "newReview": "New Review",
+      "announcement": "Announcement",
+      "system": "System"
+    },
+    "deleteDialog": {
+      "title": "Delete Notification?",
+      "message": "Are you sure you want to delete this notification? This action cannot be undone.",
+      "messageWithTitle": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete Notification",
+      "deleting": "Deleting..."
     }
   },
   "myBooths": {
@@ -138,7 +340,7 @@
       "hallValue": "Hall {{number}}",
       "boothNumber": "Booth Number",
       "area": "Area",
-    "price": "Booth Price",
+      "price": "Booth Price",
       "areaValue": "{{area}} m²",
       "company": "Company",
       "qrToken": "QR Token",
@@ -302,6 +504,24 @@
       "viewComment": "View Comment",
       "sendMessage": "Send email to visitor",
       "commentLabel": "Comment"
+    },
+    "reviewerModal": {
+      "title": "Visitor Profile",
+      "role": "Exhibition Visitor",
+      "verified": "Verified Lead",
+      "info": "Contact & Profile Details",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "location": "Location / City",
+      "birthDate": "Date of Birth",
+      "gender": "Gender",
+      "bio": "Visitor Bio / Notes",
+      "noBio": "No bio provided by the visitor.",
+      "loading": "Loading visitor profile...",
+      "error": "Failed to load visitor details.",
+      "close": "Close",
+      "male": "Male",
+      "female": "Female"
     },
     "error": {
       "title": "Failed to Load Reviews",

@@ -11,6 +11,7 @@ import {
   ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useTranslation } from "react-i18next";
 import {
   useFirebaseMessaging,
   useMarkAllNotificationsAsRead,
@@ -37,22 +38,33 @@ function getTypeIcon(type?: NotificationType | null) {
   return Notification02Icon;
 }
 
-function formatRelativeTime(dateStr: string) {
+function formatRelativeTime(dateStr: string, isArabic: boolean) {
   try {
     const d = new Date(dateStr);
     const now = new Date();
     const diffSec = Math.floor((now.getTime() - d.getTime()) / 1000);
 
-    if (diffSec < 60) return "Just now";
-    if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
-    if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
-    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    if (diffSec < 60) return isArabic ? "الآن" : "Just now";
+    if (diffSec < 3600) {
+      const mins = Math.floor(diffSec / 60);
+      return isArabic ? `منذ ${mins} دقيقة` : `${mins}m ago`;
+    }
+    if (diffSec < 86400) {
+      const hours = Math.floor(diffSec / 3600);
+      return isArabic ? `منذ ${hours} ساعة` : `${hours}h ago`;
+    }
+    return d.toLocaleDateString(isArabic ? "ar-SY" : "en-US", {
+      month: "short",
+      day: "numeric",
+    });
   } catch {
     return dateStr;
   }
 }
 
 export function NotificationHeaderMenu() {
+  const { t, i18n } = useTranslation("dashboard");
+  const isArabic = i18n.language.startsWith("ar");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
@@ -82,7 +94,11 @@ export function NotificationHeaderMenu() {
   const { data: countData } = useUnreadNotificationsCount();
   const unreadCount = countData?.data?.numberOfUnreadNotifications ?? 0;
 
-  const { data: notificationsData, isLoading, refetch: refetchNotifications } = useNotifications({
+  const {
+    data: notificationsData,
+    isLoading,
+    refetch: refetchNotifications,
+  } = useNotifications({
     per_page: 8,
   });
 
@@ -99,7 +115,9 @@ export function NotificationHeaderMenu() {
   const markAsReadMutation = useMarkNotificationAsRead();
   const markAllMutation = useMarkAllNotificationsAsRead();
 
-  const notifications = (notificationsData?.data?.data ?? []).filter(isNotificationValid);
+  const notifications = (notificationsData?.data?.data ?? []).filter(
+    isNotificationValid,
+  );
   const displayNotifications =
     activeTab === "unread"
       ? notifications.filter((n) => !n.read_at)
@@ -148,13 +166,17 @@ export function NotificationHeaderMenu() {
       navigate("/dashboard/events");
     } else if (safeType.includes("review")) {
       const dataObj = item.data as Record<string, unknown> | null;
-      const rawReviewable = dataObj?.reviewable_type ? String(dataObj.reviewable_type) : "";
+      const rawReviewable = dataObj?.reviewable_type
+        ? String(dataObj.reviewable_type)
+        : "";
       const targetType = rawReviewable.toLowerCase().includes("booth")
         ? "booth"
         : rawReviewable.toLowerCase().includes("event")
           ? "event"
           : "";
-      const entityId = dataObj?.reviewable_id ? String(dataObj.reviewable_id) : "";
+      const entityId = dataObj?.reviewable_id
+        ? String(dataObj.reviewable_id)
+        : "";
       const reviewId = targetId ? String(targetId) : "";
 
       const queryParams = new URLSearchParams();
@@ -197,9 +219,14 @@ export function NotificationHeaderMenu() {
           {/* Header */}
           <div className="dropdown-header">
             <div className="header-title">
-              <strong>Notifications</strong>
+              <strong>{t("notifications.dropdown.title", "Notifications")}</strong>
               {unreadCount > 0 && (
-                <span className="unread-pill">{unreadCount} new</span>
+                <span className="unread-pill">
+                  {t("notifications.dropdown.newCount", {
+                    count: unreadCount,
+                    defaultValue: `${unreadCount} new`,
+                  })}
+                </span>
               )}
             </div>
             {unreadCount > 0 && (
@@ -208,10 +235,10 @@ export function NotificationHeaderMenu() {
                 className="mark-all-btn"
                 onClick={() => markAllMutation.mutate()}
                 disabled={markAllMutation.isPending}
-                title="Mark all as read"
+                title={t("notifications.dropdown.markAll", "Mark all read")}
               >
                 <HugeiconsIcon icon={CheckmarkSquare01Icon} size={14} />
-                <span>Mark all read</span>
+                <span>{t("notifications.dropdown.markAll", "Mark all read")}</span>
               </button>
             )}
           </div>
@@ -223,31 +250,35 @@ export function NotificationHeaderMenu() {
               className={`tab-btn ${activeTab === "all" ? "active" : ""}`}
               onClick={() => setActiveTab("all")}
             >
-              All
+              {t("notifications.dropdown.tabsAll", "All")}
             </button>
             <button
               type="button"
               className={`tab-btn ${activeTab === "unread" ? "active" : ""}`}
               onClick={() => setActiveTab("unread")}
             >
-              Unread ({unreadCount})
+              {t("notifications.dropdown.tabsUnread", "Unread")} ({unreadCount})
             </button>
           </div>
 
           {/* List */}
           <div className="dropdown-list">
             {isLoading ? (
-              <div className="dropdown-loading">Loading notifications...</div>
+              <div className="dropdown-loading">
+                {t("notifications.dropdown.loading", "Loading notifications...")}
+              </div>
             ) : displayNotifications.length === 0 ? (
               <div className="dropdown-empty">
                 <HugeiconsIcon icon={Notification02Icon} size={28} />
-                <p>No notifications found</p>
+                <p>{t("notifications.dropdown.empty", "No notifications found")}</p>
               </div>
             ) : (
               displayNotifications.map((item) => {
                 const IconComponent = getTypeIcon(item.type);
                 const isUnread = !item.read_at;
-                const safeTypeClass = item.type ? String(item.type) : "default";
+                const safeTypeClass = item.type
+                  ? String(item.type)
+                  : "default";
                 const formattedTitle = formatNotificationTitle(item);
                 const formattedBody = formatNotificationBody(item);
 
@@ -266,7 +297,7 @@ export function NotificationHeaderMenu() {
                       <div className="title-row">
                         <strong className="item-title">{formattedTitle}</strong>
                         <span className="item-time">
-                          {formatRelativeTime(item.created_at)}
+                          {formatRelativeTime(item.created_at, isArabic)}
                         </span>
                       </div>
                       <p className="item-text">{formattedBody}</p>
@@ -285,7 +316,12 @@ export function NotificationHeaderMenu() {
               className="view-all-link"
               onClick={() => setIsOpen(false)}
             >
-              <span>View all notifications</span>
+              <span>
+                {t(
+                  "notifications.dropdown.viewAll",
+                  "View all notifications",
+                )}
+              </span>
               <HugeiconsIcon icon={ArrowRight01Icon} size={14} />
             </NavLink>
           </div>

@@ -4,6 +4,7 @@ import {
   Notification02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useTranslation } from "react-i18next";
 import { Pagination } from "../../../components";
 import {
   useDeleteNotification,
@@ -27,20 +28,22 @@ export type TabFilter =
 
 interface FilterTabOption {
   id: TabFilter;
-  label: string;
+  labelKey: string;
+  defaultLabel: string;
   exactType?: string;
 }
 
 const FILTER_TABS: FilterTabOption[] = [
-  { id: "all", label: "All Notifications" },
-  { id: "unread", label: "Unread" },
-  { id: "booth", label: "Booths" },
-  { id: "event", label: "Events" },
-  { id: "review", label: "Reviews", exactType: "review_created" },
-  { id: "announcement", label: "Announcements", exactType: "announcement" },
+  { id: "all", labelKey: "notifications.tabs.all", defaultLabel: "All Notifications" },
+  { id: "unread", labelKey: "notifications.tabs.unread", defaultLabel: "Unread" },
+  { id: "booth", labelKey: "notifications.tabs.booth", defaultLabel: "Booths" },
+  { id: "event", labelKey: "notifications.tabs.event", defaultLabel: "Events" },
+  { id: "review", labelKey: "notifications.tabs.review", defaultLabel: "Reviews", exactType: "review_created" },
+  { id: "announcement", labelKey: "notifications.tabs.announcement", defaultLabel: "Announcements", exactType: "announcement" },
 ];
 
 export function NotificationsList() {
+  const { t } = useTranslation("dashboard");
   const [activeTab, setActiveTab] = useState<TabFilter>("all");
   const [page, setPage] = useState(1);
   const [notificationToDelete, setNotificationToDelete] =
@@ -52,7 +55,7 @@ export function NotificationsList() {
 
   // Active option configuration
   const activeOption =
-    FILTER_TABS.find((t) => t.id === activeTab) ?? FILTER_TABS[0];
+    FILTER_TABS.find((tab) => tab.id === activeTab) ?? FILTER_TABS[0];
   const isUnreadOnly = activeTab === "unread";
 
   // Fetch API notifications list
@@ -113,7 +116,7 @@ export function NotificationsList() {
                   className={`filter-pill ${isActive ? "active" : ""}`}
                   onClick={() => handleTabChange(tab.id)}
                 >
-                  <span>{tab.label}</span>
+                  <span>{t(tab.labelKey, tab.defaultLabel)}</span>
                   {isUnreadTab && unreadCount > 0 && (
                     <span className="pill-badge">{unreadCount}</span>
                   )}
@@ -131,7 +134,7 @@ export function NotificationsList() {
             disabled={markAllMutation.isPending}
           >
             <HugeiconsIcon icon={CheckmarkSquare01Icon} size={16} />
-            <span>Mark All as Read</span>
+            <span>{t("notifications.markAllRead", "Mark All as Read")}</span>
           </button>
         )}
       </div>
@@ -149,11 +152,17 @@ export function NotificationsList() {
             <div className="empty-icon-circle">
               <HugeiconsIcon icon={Notification02Icon} size={36} />
             </div>
-            <h3>No notifications found</h3>
+            <h3>{t("notifications.empty.title", "No notifications found")}</h3>
             <p>
               {activeTab === "all"
-                ? "You have no notifications in your account yet."
-                : `No notifications under "${activeOption.label}".`}
+                ? t(
+                    "notifications.empty.all",
+                    "You have no notifications in your account yet.",
+                  )
+                : t("notifications.empty.tab", {
+                    category: t(activeOption.labelKey, activeOption.defaultLabel),
+                    defaultValue: `No notifications under "${activeOption.defaultLabel}".`,
+                  })}
             </p>
           </div>
         ) : (
@@ -177,8 +186,8 @@ export function NotificationsList() {
             totalPages={pagination.last_page}
             onPageChange={(newPage) => setPage(newPage)}
             labels={{
-              previousLabel: "Previous",
-              nextLabel: "Next",
+              previousLabel: t("common.previous", "Previous"),
+              nextLabel: t("common.next", "Next"),
               pageLabel: (p) => `${p}`,
               ariaLabel: "Notifications pagination",
             }}

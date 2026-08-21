@@ -30,7 +30,7 @@ export const teamKeys = {
 export type { RoleType };
 
 export function useTeamManagement() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard");
   const queryClient = useQueryClient();
 
   const {

@@ -20,7 +20,7 @@ export function CancelInvitationDialog({
   onCancel,
   onConfirm,
 }: CancelInvitationDialogProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard");
 
   if (!open || !invitation) {
     return null;

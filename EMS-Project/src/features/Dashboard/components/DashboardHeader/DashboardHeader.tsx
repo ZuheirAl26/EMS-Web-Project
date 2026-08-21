@@ -4,6 +4,7 @@ import {
   Store01Icon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
 import { CustomSelect } from "../../../../components";
 import type { SelectOption } from "../../../../components/CustomSelect/CustomSelect";
 import type {
@@ -37,17 +38,26 @@ export function DashboardHeader({
   onBoothChange,
   onEventChange,
 }: DashboardHeaderProps) {
+  const { t, i18n } = useTranslation("dashboard");
+  const isArabic = i18n.language.startsWith("ar");
   const isBoothMode = mode === "booth";
 
   const boothOptions: SelectOption<number>[] = boothsList.map((b) => ({
     value: b.id,
     label:
-      b.label || b.name || (b.number ? `Booth #${b.number}` : `Booth #${b.id}`),
+      b.label ||
+      b.name ||
+      (b.number
+        ? `${t("dashboardHome.mode.booth", "Booth")} #${b.number}`
+        : t("dashboardHome.mode.boothLabel", { id: b.id, defaultValue: `Booth #${b.id}` })),
   }));
 
   const eventOptions: SelectOption<number>[] = eventsList.map((e) => ({
     value: e.id,
-    label: e.label || e.name || `Event #${e.id}`,
+    label:
+      e.label ||
+      e.name ||
+      t("dashboardHome.mode.eventLabel", { id: e.id, defaultValue: `Event #${e.id}` }),
   }));
 
   return (
@@ -56,16 +66,15 @@ export function DashboardHeader({
         <div className="welcome-info">
           <div className="title-row">
             <h1>
-              Welcome back, <span>{exhibitorName || "Exhibitor"}</span>
+              {t("dashboardHome.welcome", "Welcome back,")}{" "}
+              <span>{exhibitorName || t("dashboardHome.defaultName", "Exhibitor")}</span>
             </h1>
-            {/* <div className="countdown-pill">
-              <HugeiconsIcon icon={Clock01Icon} size={14} />
-              <span>12 Days Left</span>
-            </div> */}
           </div>
           <p className="subtitle">
-            Overview of your pavilion activity, visitor leads, services, and
-            event metrics.
+            {t(
+              "dashboardHome.subtitle",
+              "Overview of your pavilion activity, visitor leads, services, and event metrics.",
+            )}
           </p>
 
           <div className="header-date-badge">
@@ -75,7 +84,7 @@ export function DashboardHeader({
               className="date-icon"
             />
             <span>
-              {new Date().toLocaleDateString(undefined, {
+              {new Date().toLocaleDateString(isArabic ? "ar-SY" : "en-US", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
@@ -94,7 +103,7 @@ export function DashboardHeader({
               onClick={() => onModeChange("booth")}
             >
               <HugeiconsIcon icon={Store01Icon} size={16} />
-              <span>Booth</span>
+              <span>{t("dashboardHome.mode.booth", "Booth")}</span>
               {isBoothMode && <HugeiconsIcon icon={Tick02Icon} size={14} />}
             </button>
             <button
@@ -103,7 +112,7 @@ export function DashboardHeader({
               onClick={() => onModeChange("event")}
             >
               <HugeiconsIcon icon={Calendar03Icon} size={16} />
-              <span>Event</span>
+              <span>{t("dashboardHome.mode.event", "Event")}</span>
               {!isBoothMode && <HugeiconsIcon icon={Tick02Icon} size={14} />}
             </button>
           </div>
@@ -116,7 +125,7 @@ export function DashboardHeader({
                 onChange={(val: number | "") =>
                   typeof val === "number" && onBoothChange(val)
                 }
-                placeholder="Select Booth..."
+                placeholder={t("dashboardHome.mode.selectBooth", "Select Booth...")}
               />
             ) : (
               <CustomSelect<number>
@@ -125,7 +134,7 @@ export function DashboardHeader({
                 onChange={(val: number | "") =>
                   typeof val === "number" && onEventChange(val)
                 }
-                placeholder="Select Event..."
+                placeholder={t("dashboardHome.mode.selectEvent", "Select Event...")}
               />
             )}
           </div>

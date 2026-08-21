@@ -8,6 +8,8 @@ import {
   AlertCircleIcon,
   RefreshIcon,
 } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { resolveMediaUrl } from "../../../ExhibitorProfile/utils/profileUtils";
 import type {
   DashboardScopeMode,
@@ -23,14 +25,19 @@ interface BottomDetailsSectionProps {
   onRetry?: () => void;
 }
 
-function renderStatusBadge(status?: string) {
+function renderStatusBadge(
+  status: string | undefined,
+  t: TFunction<"dashboard">,
+) {
   if (!status) return null;
   const s = status.toLowerCase();
   if (s === "approved" || s === "booked") {
     return (
       <span className="status-badge status-approved">
         <HugeiconsIcon icon={CheckmarkCircle02Icon} size={14} />
-        {status.toUpperCase()}
+        {s === "approved"
+          ? t("dashboardHome.bottomDetails.status.approved", "APPROVED")
+          : t("dashboardHome.bottomDetails.status.booked", "BOOKED")}
       </span>
     );
   }
@@ -38,14 +45,14 @@ function renderStatusBadge(status?: string) {
     return (
       <span className="status-badge status-pending">
         <HugeiconsIcon icon={Clock01Icon} size={14} />
-        {status.toUpperCase()}
+        {t("dashboardHome.bottomDetails.status.pending", "PENDING")}
       </span>
     );
   }
   return (
     <span className="status-badge status-rejected">
       <HugeiconsIcon icon={Cancel01Icon} size={14} />
-      {status.toUpperCase()}
+      {t("dashboardHome.bottomDetails.status.rejected", "REJECTED")}
     </span>
   );
 }
@@ -57,6 +64,7 @@ export function BottomDetailsSection({
   isError,
   onRetry,
 }: BottomDetailsSectionProps) {
+  const { t } = useTranslation("dashboard");
   const isBoothMode = mode === "booth";
   const qrUrl = resolveMediaUrl(singleBooth?.qr_code_url ?? null);
 
@@ -66,21 +74,23 @@ export function BottomDetailsSection({
         <div className="card-header">
           <div className="header-title">
             <HugeiconsIcon icon={Store01Icon} size={20} className="icon" />
-            <h2>Booth Details</h2>
+            <h2>{t("dashboardHome.bottomDetails.boothTitle", "Booth Details")}</h2>
           </div>
-          {renderStatusBadge(singleBooth?.status)}
+          {renderStatusBadge(singleBooth?.status, t)}
         </div>
 
         {isLoading ? (
-          <div className="card-loading">Loading booth details...</div>
+          <div className="card-loading">
+            {t("dashboardHome.bottomDetails.loading", "Loading booth details...")}
+          </div>
         ) : isError ? (
           <div className="card-error">
             <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
-            <p>Failed to load booth details.</p>
+            <p>{t("dashboardHome.bottomDetails.error", "Failed to load booth details.")}</p>
             {onRetry && (
               <button type="button" className="retry-btn" onClick={onRetry}>
                 <HugeiconsIcon icon={RefreshIcon} size={14} />
-                <span>Retry</span>
+                <span>{t("common.retry", "Retry Connection")}</span>
               </button>
             )}
           </div>
@@ -88,21 +98,32 @@ export function BottomDetailsSection({
           <div className="booth-details-content">
             <div className="details-grid">
               <div className="detail-item">
-                <span className="detail-label">Booth Number</span>
+                <span className="detail-label">
+                  {t("dashboardHome.bottomDetails.boothNumber", "Booth Number")}
+                </span>
                 <strong className="detail-val">{singleBooth?.number || "25B-01"}</strong>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Hall</span>
+                <span className="detail-label">
+                  {t("dashboardHome.bottomDetails.hall", "Hall")}
+                </span>
                 <strong className="detail-val">
-                  Hall {singleBooth?.hall_id?.number || "25"}
+                  {t("dashboardHome.bottomDetails.hallValue", {
+                    number: singleBooth?.hall_id?.number || "25",
+                    defaultValue: `Hall ${singleBooth?.hall_id?.number || "25"}`,
+                  })}
                 </strong>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Area</span>
+                <span className="detail-label">
+                  {t("dashboardHome.bottomDetails.area", "Area")}
+                </span>
                 <strong className="detail-val">{singleBooth?.area || 48} m²</strong>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Base Price</span>
+                <span className="detail-label">
+                  {t("dashboardHome.bottomDetails.basePrice", "Base Price")}
+                </span>
                 <strong className="detail-val">${singleBooth?.price || "1200.00"}</strong>
               </div>
             </div>
@@ -113,7 +134,9 @@ export function BottomDetailsSection({
                   <img alt="Booth QR Code" src={qrUrl} />
                 </div>
                 <div className="qr-copy">
-                  <span className="qr-title">Visitor Entry QR</span>
+                  <span className="qr-title">
+                    {t("dashboardHome.bottomDetails.qrTitle", "Visitor Entry QR")}
+                  </span>
                   <code className="qr-token">{singleBooth?.qr_token}</code>
                 </div>
               </div>
@@ -130,38 +153,41 @@ export function BottomDetailsSection({
       <div className="card-header">
         <div className="header-title">
           <HugeiconsIcon icon={Calendar03Icon} size={20} className="icon" />
-          <h2>Event Session & Workshop Schedule</h2>
+          <h2>{t("dashboardHome.bottomDetails.eventTitle", "Event Space Details")}</h2>
         </div>
         <span className="status-badge status-approved">
           <HugeiconsIcon icon={CheckmarkCircle02Icon} size={14} />
-          CONFIRMED
+          {t("dashboardHome.bottomDetails.status.approved", "APPROVED")}
         </span>
       </div>
 
       <div className="event-content">
         <div className="event-info-box">
           <div className="info-row">
-            <span className="label">Session Title:</span>
+            <span className="label">
+              {t("dashboardHome.bottomDetails.eventTitle", "Event Space")}:
+            </span>
             <strong className="val">Building Scalable Laravel Applications</strong>
           </div>
           <div className="info-row">
-            <span className="label">Location & Hall:</span>
+            <span className="label">
+              {t("dashboardHome.bottomDetails.eventLocation", "Location")}:
+            </span>
             <strong className="val">Hall 25 · Technology Workshop Stage A</strong>
           </div>
           <div className="info-row">
-            <span className="label">Timing:</span>
-            <strong className="val">10:00 AM - 12:00 PM (2 Hours Duration)</strong>
-          </div>
-          <div className="info-row">
-            <span className="label">Description:</span>
-            <p className="desc">
-              A practical workshop about designing and scaling modern Laravel applications
-              with exhibitor team demonstrations and Q&A session.
-            </p>
+            <span className="label">
+              {t("dashboardHome.bottomDetails.capacity", "Capacity")}:
+            </span>
+            <strong className="val">
+              {t("dashboardHome.bottomDetails.attendeesCount", {
+                count: 120,
+                defaultValue: "120 Attendees",
+              })}
+            </strong>
           </div>
         </div>
       </div>
     </div>
   );
 }
-

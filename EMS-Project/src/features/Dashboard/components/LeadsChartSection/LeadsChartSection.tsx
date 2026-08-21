@@ -5,6 +5,7 @@ import {
   RefreshIcon,
   ChartBreakoutSquareIcon,
 } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
 import type { LeadsResponseData, WeeklyStat } from "../../types/dashboardType";
 import "./LeadsChartSection.scss";
 
@@ -21,6 +22,7 @@ export function LeadsChartSection({
   isError,
   onRetry,
 }: LeadsChartSectionProps) {
+  const { t } = useTranslation("dashboard");
   const weeklyStats: WeeklyStat[] = leadsData?.weekly_stats || [];
   const totalLeads = leadsData?.leads_count ?? 0;
 
@@ -34,32 +36,50 @@ export function LeadsChartSection({
     <div className="card leads-chart-card">
       <div className="card-header">
         <div>
-          <h2>Leads This Week</h2>
-          <p className="card-sub">Daily captured visitors over the past 7 days</p>
+          <h2>{t("dashboardHome.leadsChart.title", "Leads This Week")}</h2>
+          <p className="card-sub">
+            {t(
+              "dashboardHome.leadsChart.sub",
+              "Daily captured visitors over the past 7 days",
+            )}
+          </p>
         </div>
         <div className="total-badge">
-          <strong>{totalLeads}</strong> Total Leads
+          <strong>{totalLeads}</strong>{" "}
+          {t("dashboardHome.leadsChart.totalBadge", "Total Leads")}
         </div>
       </div>
 
       <div className="chart-body">
         {isLoading ? (
-          <div className="chart-loading">Loading weekly analytics...</div>
+          <div className="chart-loading">
+            {t("dashboardHome.leadsChart.loading", "Loading weekly analytics...")}
+          </div>
         ) : isError ? (
           <div className="chart-error">
             <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
-            <p>Failed to load lead activity analytics.</p>
+            <p>
+              {t(
+                "dashboardHome.leadsChart.error",
+                "Failed to load lead activity analytics.",
+              )}
+            </p>
             {onRetry && (
               <button type="button" className="retry-btn" onClick={onRetry}>
                 <HugeiconsIcon icon={RefreshIcon} size={14} />
-                <span>Retry</span>
+                <span>{t("common.retry", "Retry Connection")}</span>
               </button>
             )}
           </div>
         ) : weeklyStats.length === 0 ? (
           <div className="chart-empty">
             <HugeiconsIcon icon={ChartBreakoutSquareIcon} size={32} className="empty-icon" />
-            <p>No lead activity recorded this week yet.</p>
+            <p>
+              {t(
+                "dashboardHome.leadsChart.empty",
+                "No lead activity recorded this week yet.",
+              )}
+            </p>
           </div>
         ) : (
           <div className="bars-container">
@@ -76,7 +96,7 @@ export function LeadsChartSection({
                     <div
                       className="bar-fill"
                       style={{ height: `${heightPercent}%` }}
-                      title={`${stat.day_name}: ${stat.count} leads`}
+                      title={`${stat.day_name}: ${stat.count}`}
                     />
                   </div>
                   <span className="day-label">{stat.day_name.slice(0, 3)}</span>
@@ -89,4 +109,3 @@ export function LeadsChartSection({
     </div>
   );
 }
-

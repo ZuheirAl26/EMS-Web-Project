@@ -18,7 +18,7 @@ export function ReviewsHeader({
   handleExport,
   reviewsList,
 }: ReviewsHeaderProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard");
   const targetTypeOptions: SelectOption<string>[] = [
     { value: "event", label: t("reviews.header.typeEvent", "Event Reviews") },
     { value: "booth", label: t("reviews.header.typeBooth", "Booth Reviews") },

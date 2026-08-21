@@ -97,15 +97,27 @@ export default function CurrentTeamList({
             </div>
           ) : (
             invitationList.map((item: TeamInvitation) => {
-              const isPending =
-                item.status?.toLowerCase() === "pending" || !item.status;
+              const statusLower = (item.status || "pending").toLowerCase();
+              const isPending = statusLower === "pending" || !item.status;
               const isApproved =
-                item.status?.toLowerCase() === "approved" ||
-                item.status?.toLowerCase() === "accepted";
-              const isRejected = item.status?.toLowerCase() === "rejected";
+                statusLower === "approved" || statusLower === "accepted";
+              const isRejected = statusLower === "rejected";
               const displayName = item.name || item.sender?.name;
-              const roleText = capitalize(item.role || item.type);
-              const statusText = capitalize(item.status || "pending");
+              
+              const safeRole = String(item.role || item.type || "").toLowerCase();
+              const roleText = safeRole.includes("company")
+                ? t("team.roles.companyManager", "Company Manager")
+                : safeRole.includes("booth")
+                  ? t("team.roles.boothManager", "Booth Manager")
+                  : capitalize(item.role || item.type);
+
+              const statusText = isApproved
+                ? t("team.list.status.accepted", "Active Member")
+                : isRejected
+                  ? t("team.list.status.rejected", "Declined")
+                  : statusLower === "expired"
+                    ? t("team.list.status.expired", "Expired")
+                    : t("team.list.status.pending", "Pending");
 
               return (
                 <div key={item.id} className="member-row">
@@ -122,11 +134,7 @@ export default function CurrentTeamList({
                   <div className="member-meta">
                     {roleText && <span className="role">{roleText}</span>}
 
-                    <span
-                      className={`status-badge status-${(
-                        item.status || "pending"
-                      ).toLowerCase()}`}
-                    >
+                    <span className={`status-badge status-${statusLower}`}>
                       {isRejected
                         ? "⊗ "
                         : isPending

@@ -11,6 +11,7 @@ import {
   AlertCircleIcon,
   RefreshIcon,
 } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
 import { resolveMediaUrl } from "../../ExhibitorProfile/utils/profileUtils";
 import type { ReviewerDetails } from "../types/reviewsType";
 import "./ReviewerDetailsModal.scss";
@@ -30,11 +31,11 @@ function getInitials(firstName?: string, lastName?: string) {
   return (f + l).toUpperCase() || "V";
 }
 
-function formatDate(dateStr?: string | null) {
-  if (!dateStr) return "N/A";
+function formatDate(dateStr: string | null | undefined, locale: string) {
+  if (!dateStr) return "—";
   try {
     const d = new Date(dateStr);
-    return d.toLocaleDateString(undefined, {
+    return d.toLocaleDateString(locale, {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -52,6 +53,9 @@ export function ReviewerDetailsModal({
   isError,
   onRetry,
 }: ReviewerDetailsModalProps) {
+  const { t, i18n } = useTranslation("dashboard");
+  const locale = i18n.language.startsWith("ar") ? "ar-SY" : "en-US";
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -71,7 +75,15 @@ export function ReviewerDetailsModal({
   const avatarUrl = resolveMediaUrl(reviewer?.avatar ?? null);
   const fullName = reviewer
     ? `${reviewer.first_name || ""} ${reviewer.last_name || ""}`.trim()
-    : "Visitor Profile";
+    : t("reviews.reviewerModal.title", "Visitor Profile");
+
+  const genderLabel = reviewer?.gender
+    ? reviewer.gender.toLowerCase() === "male"
+      ? t("reviews.reviewerModal.male", "Male")
+      : reviewer.gender.toLowerCase() === "female"
+        ? t("reviews.reviewerModal.female", "Female")
+        : reviewer.gender
+    : "";
 
   return (
     <div className="modal-backdrop-blur" onClick={onClose}>
@@ -84,13 +96,13 @@ export function ReviewerDetailsModal({
         {/* Header Cover Banner */}
         <div className="modal-header-banner">
           <div className="banner-badge">
-            <span>Visitor Profile</span>
+            <span>{t("reviews.reviewerModal.title", "Visitor Profile")}</span>
           </div>
           <button
             type="button"
             className="close-modal-btn"
             onClick={onClose}
-            aria-label="Close modal"
+            aria-label={t("reviews.reviewerModal.close", "Close")}
           >
             <HugeiconsIcon icon={Cancel01Icon} size={18} />
           </button>
@@ -117,12 +129,12 @@ export function ReviewerDetailsModal({
                 size={36}
                 className="error-icon"
               />
-              <h3>Failed to Load Profile</h3>
-              <p>Unable to retrieve visitor reviewer details.</p>
+              <h3>{t("reviews.reviewerModal.error", "Failed to Load Profile")}</h3>
+              <p>{t("reviews.reviewerModal.errorDesc", "Unable to retrieve visitor reviewer details.")}</p>
               {onRetry && (
                 <button type="button" className="retry-btn" onClick={onRetry}>
                   <HugeiconsIcon icon={RefreshIcon} size={14} />
-                  <span>Retry Connection</span>
+                  <span>{t("common.retry", "Retry Connection")}</span>
                 </button>
               )}
             </div>
@@ -155,7 +167,9 @@ export function ReviewerDetailsModal({
                     <HugeiconsIcon icon={Mail01Icon} size={18} />
                   </div>
                   <div className="info-meta">
-                    <span className="label">Email Address</span>
+                    <span className="label">
+                      {t("reviews.reviewerModal.email", "Email Address")}
+                    </span>
                     <strong className="value">{reviewer.email || "—"}</strong>
                   </div>
                 </div>
@@ -165,7 +179,9 @@ export function ReviewerDetailsModal({
                     <HugeiconsIcon icon={CallIcon} size={18} />
                   </div>
                   <div className="info-meta">
-                    <span className="label">Phone Number</span>
+                    <span className="label">
+                      {t("reviews.reviewerModal.phone", "Phone Number")}
+                    </span>
                     <strong className="value">{reviewer.phone || "—"}</strong>
                   </div>
                 </div>
@@ -175,7 +191,9 @@ export function ReviewerDetailsModal({
                     <HugeiconsIcon icon={Location01Icon} size={18} />
                   </div>
                   <div className="info-meta">
-                    <span className="label">Location</span>
+                    <span className="label">
+                      {t("reviews.reviewerModal.location", "Location")}
+                    </span>
                     <strong className="value">
                       {reviewer.location || "—"}
                     </strong>
@@ -187,9 +205,11 @@ export function ReviewerDetailsModal({
                     <HugeiconsIcon icon={Calendar03Icon} size={18} />
                   </div>
                   <div className="info-meta">
-                    <span className="label">Date of Birth</span>
+                    <span className="label">
+                      {t("reviews.reviewerModal.birthDate", "Date of Birth")}
+                    </span>
                     <strong className="value">
-                      {formatDate(reviewer.birthday)}
+                      {formatDate(reviewer.birthday, locale)}
                     </strong>
                   </div>
                 </div>
@@ -200,9 +220,11 @@ export function ReviewerDetailsModal({
                       <HugeiconsIcon icon={UserIcon} size={18} />
                     </div>
                     <div className="info-meta">
-                      <span className="label">Gender</span>
+                      <span className="label">
+                        {t("reviews.reviewerModal.gender", "Gender")}
+                      </span>
                       <strong className="value text-capitalize">
-                        {reviewer.gender}
+                        {genderLabel}
                       </strong>
                     </div>
                   </div>
