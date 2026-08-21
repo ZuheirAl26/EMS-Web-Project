@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../../../components";
 import "./PlanSection.scss";
@@ -21,9 +22,11 @@ export function PlanSection() {
             <h2>{t("plan.title")}</h2>
           </div>
           <span>{t("plan.description")}</span>
-          <Button size="hero" variant="secondary">
-            {t("plan.button")}
-          </Button>
+          <Link to="/register" style={{ textDecoration: "none", width: "fit-content" }}>
+            <Button size="hero" variant="secondary">
+              {t("plan.button")}
+            </Button>
+          </Link>
         </div>
         <div className="plan-section__card">
           <h3>{t("plan.cardTitle")}</h3>

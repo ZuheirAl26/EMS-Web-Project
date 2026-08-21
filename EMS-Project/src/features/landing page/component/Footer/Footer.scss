@@ -1,10 +1,13 @@
 .landing-footer {
   position: relative;
   overflow: hidden;
-  min-height: 374px;
-  padding: 43px 0;
-  background: var(--color-ebony);
+  width: 100%;
+  box-sizing: border-box;
+  min-height: auto;
+  padding: 32px 0 20px;
+  background: var(--color-footer-bg);
   color: var(--color-white);
+  border-top: 1px solid var(--color-border);
 
   &__shell {
     width: min(100%, 1280px);
@@ -15,19 +18,21 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
-    gap: 48px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+    align-items: start;
   }
 
   &__brand {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 14px;
 
     p {
       color: var(--color-white-a60);
-      font-size: 14px;
+      font-size: 13.5px;
       line-height: 20px;
+      margin: 0;
     }
   }
 
@@ -35,18 +40,29 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    text-decoration: none;
+    color: var(--color-white);
 
     h2 {
       margin: 0;
-      font-size: 20px;
-      line-height: 28px;
+      font-size: 19px;
+      line-height: 26px;
+      color: var(--color-white);
+      text-decoration: none;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: none;
+      color: var(--color-white);
     }
   }
 
   &__links,
   &__contact {
     h3 {
-      margin: 0 0 16px;
+      margin: 0 0 12px;
       color: var(--color-white);
       font-size: 14px;
       line-height: 20px;
@@ -56,7 +72,7 @@
     ul {
       list-style: none;
       display: grid;
-      gap: 12px;
+      gap: 10px;
       padding: 0;
       margin: 0;
     }
@@ -64,43 +80,21 @@
     a,
     li {
       color: var(--color-white-a60);
-      font-size: 14px;
-      line-height: 20px;
-    }
-  }
-
-  &__form {
-    display: grid;
-    gap: 12px;
-
-    input,
-    textarea {
-      width: 100%;
-      border: 1px solid var(--color-white-a10);
-      background: var(--color-white-a05);
-      border-radius: var(--radius-md);
-      padding: 9px 12px;
-      color: var(--color-white);
-      font-size: 14px;
-      line-height: 20px;
-    }
-
-    textarea {
-      min-height: 58px;
-      resize: vertical;
+      font-size: 13.5px;
+      line-height: 18px;
     }
   }
 
   &__bottom {
-    margin-top: 48px;
-    padding-top: 32px;
+    margin-top: 28px;
+    padding-top: 18px;
     display: flex;
     justify-content: space-between;
-    gap: 24px;
+    gap: 20px;
     border-top: 1px solid var(--color-white-a10);
     color: var(--color-white-a40);
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 13px;
+    line-height: 18px;
 
     > div {
       display: flex;

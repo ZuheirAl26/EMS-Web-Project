@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../../../components";
 import { Icon } from "../Icon/Icon";
+import mapImage from "../../../../assets/map.png";
 import "./HeroSection.scss";
 
 export function HeroSection() {
@@ -13,10 +14,24 @@ export function HeroSection() {
         <div className="hero-section__copy">
           <h1>{t("hero.title")}</h1>
           <p>{t("hero.description")}</p>
+          <div className="hero-section__app-hint">
+            <span>{t("hero.appHintText")}</span>
+            <a href="#visitor-app" className="hero-section__app-hint-link">
+              {t("hero.appHintLink")}
+            </a>
+          </div>
           <div className="hero-section__actions">
-            <Button size="hero" variant="secondary">
-              {t("hero.explore")}
-            </Button>
+            <a
+              href="/map1_نسخة.pdf"
+              download="Damascus_International_Fair_Floor_Map.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              <Button size="hero" variant="secondary">
+                {t("hero.explore")}
+              </Button>
+            </a>
             <Link to="/register" style={{ textDecoration: "none" }}>
               <Button size="hero">{t("hero.register")}</Button>
             </Link>
@@ -38,7 +53,13 @@ export function HeroSection() {
             </span>
           </div>
         </div>
-        <div aria-hidden="true" className="hero-section__map-card" />
+        <div className="hero-section__map-card">
+          <img
+            src={mapImage}
+            alt={t("nav.floorMap")}
+            className="hero-section__map-img"
+          />
+        </div>
       </div>
     </section>
   );

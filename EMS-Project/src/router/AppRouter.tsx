@@ -23,6 +23,7 @@ import TeamPage, { InvitationResponsePage } from "../features/Team&Staff/pages";
 import { ReviewsPage } from "../features/Reviews/pages";
 import { NotificationsPage } from "../features/Notifications";
 import { DashboardPage } from "../features/Dashboard/pages/DashboardPage";
+import { LandingPage } from "../features/landing page/pages";
 
 export const AppRouter = () => {
   const location = useLocation();
@@ -41,12 +42,15 @@ export const AppRouter = () => {
     <>
       {/* <Route element={<GuestRoute />}> */}
       <Routes location={background || location}>
-        {/* <Route path="/" element={<LandingPage />} /> */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/check-email" element={<CheckEmailPage />} />
         <Route path="/verify-email" element={<VerifyAccountPage />} />
-        <Route path="/invitations/:token" element={<InvitationResponsePage />} />
+        <Route
+          path="/invitations/:token"
+          element={<InvitationResponsePage />}
+        />
 
         <Route element={<ProtectedRoute />}>
           <Route

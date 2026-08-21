@@ -1,9 +1,11 @@
 .features-section {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
   min-height: 567px;
   padding: 66px 0;
-  background: var(--color-white);
+  background: var(--color-bg-white);
 
   &__shell {
     width: min(100%, 1280px);
@@ -23,7 +25,7 @@
 
     p {
       margin: 0;
-      color: var(--color-blue-chill);
+      color: var(--color-primary);
       font-size: 12px;
       line-height: 16px;
       font-weight: 800;
@@ -33,7 +35,7 @@
 
     h2 {
       margin: 0;
-      color: var(--color-ebony);
+      color: var(--color-ink);
       font-size: 36px;
       line-height: 45px;
       font-weight: 800;
@@ -50,8 +52,8 @@
   &__card {
     min-height: 196px;
     padding: 28px;
-    background: var(--color-white);
-    border: 1px solid var(--color-athens-gray);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
     box-shadow: var(--shadow-sm);
     border-radius: var(--radius-4xl);
 
@@ -61,14 +63,14 @@
       margin-bottom: 16px;
       display: grid;
       place-items: center;
-      background: var(--color-primary-a10);
-      color: var(--color-blue-chill);
+      background: var(--color-primary-surface);
+      color: var(--color-primary);
       border-radius: var(--radius-2xl);
     }
 
     h3 {
       margin: 0 0 8px;
-      color: var(--color-ebony);
+      color: var(--color-ink);
       font-size: 16px;
       line-height: 24px;
       font-weight: 800;
@@ -76,7 +78,7 @@
 
     p {
       margin: 0;
-      color: var(--color-pale-sky);
+      color: var(--color-ink-muted);
       font-size: 14px;
       line-height: 22px;
     }

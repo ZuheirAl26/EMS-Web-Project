@@ -6,4 +6,5 @@ export const eventsKeys = {
     [...eventsKeys.all, "list", status ?? "all", page] as const,
   statistics: () => [...eventsKeys.all, "statistics"] as const,
   halls: () => [...eventsKeys.all, "event-halls"] as const,
+  nearest: () => [...eventsKeys.all, "nearest"] as const,
 };

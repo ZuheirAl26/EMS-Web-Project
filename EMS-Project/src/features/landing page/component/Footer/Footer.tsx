@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { Button } from "../../../../components";
 import { LogoMark } from "../LogoMark/LogoMark";
 import "./Footer.scss";
 
@@ -39,26 +38,13 @@ export function Footer() {
               <li>{t("footer.location")}</li>
             </ul>
           </div>
-          <form className="landing-footer__form">
-            <input
-              aria-label={t("footer.name")}
-              placeholder={t("footer.name")}
-            />
-            <textarea
-              aria-label={t("footer.message")}
-              placeholder={t("footer.message")}
-            />
-            <Button>{t("footer.send")}</Button>
-          </form>
         </div>
         <div className="landing-footer__bottom">
           <span>{t("footer.copyright")}</span>
           <div>
-            <a href="#contact">{t("footer.privacy")}</a>
+            {/* <a href="#contact">{t("footer.privacy")}</a>
             <span aria-hidden="true">·</span>
-            <a href="#contact">{t("footer.terms")}</a>
-            <span aria-hidden="true">·</span>
-            <a href="#contact">{t("footer.cookies")}</a>
+            <a href="#contact">{t("footer.terms")}</a> */}
           </div>
         </div>
       </div>

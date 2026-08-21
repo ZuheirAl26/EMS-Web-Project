@@ -6,6 +6,7 @@ import type {
   EventFilterStatus,
   EventsResponse,
   EventStatisticsResponse,
+  NearestEventsResponse,
 } from "../types/eventType";
 
 export async function getEvents(
@@ -79,6 +80,18 @@ export async function requestEvent(
   if (!response.data.status) {
     throw new Error(
       response.data.message || "The event request could not be submitted.",
+    );
+  }
+  return response.data;
+}
+
+export async function getNearestEvents(): Promise<NearestEventsResponse> {
+  const response = await apiClient.get<NearestEventsResponse>(
+    "/v1/exhibitor/events/nearest",
+  );
+  if (!response.data.status) {
+    throw new Error(
+      response.data.message || "The nearest events could not be retrieved.",
     );
   }
   return response.data;

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Globe02Icon, Moon02Icon, Sun01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useLanguageStore } from "../../../../context/useLanguageStore";
 import { useThemeStore } from "../../../../context/useThemeStore";
 import type {
@@ -49,29 +51,53 @@ export function SiteNav() {
           ))}
         </nav>
 
-        {/* Action Buttons */}
+        {/* Controls & Action Buttons */}
         <div className="site-nav__actions">
-          <button
-            aria-pressed={theme === "dark"}
-            className="site-nav__theme"
-            onClick={toggleTheme}
-            type="button"
-          >
-            {theme === "dark" ? t("nav.lightMode") : t("nav.darkMode")}
-          </button>
-          <button
-            className="site-nav__language"
-            onClick={toggleLanguage}
-            type="button"
-          >
-            {t("nav.language")}
-          </button>
-          <Link to="/login" className="btn btn--outline">
-            {t("nav.login")}
-          </Link>
-          <Link to="/register" className="btn btn--solid">
-            {t("nav.getStarted")}
-          </Link>
+          <div className="site-nav__controls">
+            <button
+              aria-label={theme === "dark" ? t("nav.lightMode") : t("nav.darkMode")}
+              className="site-nav__theme-btn"
+              onClick={toggleTheme}
+              title={theme === "dark" ? t("nav.lightMode") : t("nav.darkMode")}
+              type="button"
+            >
+              <HugeiconsIcon
+                aria-hidden="true"
+                color="currentColor"
+                icon={theme === "dark" ? Sun01Icon : Moon02Icon}
+                size={18}
+                strokeWidth={1.8}
+              />
+            </button>
+
+            <button
+              aria-label={t("nav.language")}
+              className="site-nav__lang-btn"
+              onClick={toggleLanguage}
+              title={t("nav.language")}
+              type="button"
+            >
+              <HugeiconsIcon
+                aria-hidden="true"
+                color="currentColor"
+                icon={Globe02Icon}
+                size={16}
+                strokeWidth={1.8}
+              />
+              <span>{t("nav.language")}</span>
+            </button>
+          </div>
+
+          <div className="site-nav__divider" aria-hidden="true" />
+
+          <div className="site-nav__auth">
+            <Link to="/login" className="btn btn--outline">
+              {t("nav.login")}
+            </Link>
+            <Link to="/register" className="btn btn--solid">
+              {t("nav.getStarted")}
+            </Link>
+          </div>
         </div>
       </div>
     </header>

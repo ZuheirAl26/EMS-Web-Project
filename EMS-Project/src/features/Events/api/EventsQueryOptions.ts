@@ -1,5 +1,5 @@
 import { keepPreviousData, queryOptions } from "@tanstack/react-query";
-import { getEvents, getEventStatistics } from "./EventsApi";
+import { getEvents, getEventStatistics, getNearestEvents } from "./EventsApi";
 import { eventsKeys } from "./EventsKeys";
 import type { EventFilterStatus } from "../types/eventType";
 
@@ -28,6 +28,17 @@ export function eventStatisticsQueryOptions() {
     queryFn: getEventStatistics,
     staleTime: EVENTS_STALE_TIME,
     gcTime: EVENT_STATISTICS_GC_TIME,
+    refetchOnWindowFocus: false,
+    retry: 2,
+  });
+}
+
+export function nearestEventsQueryOptions() {
+  return queryOptions({
+    queryKey: eventsKeys.nearest(),
+    queryFn: getNearestEvents,
+    staleTime: 60_000,
+    gcTime: 5 * 60_000,
     refetchOnWindowFocus: false,
     retry: 2,
   });

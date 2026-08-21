@@ -1,8 +1,8 @@
 export const metrics = [
-  { id: "exhibitors", value: "500+" },
-  { id: "visitors", value: "12,000+" },
-  { id: "halls", value: "3" },
-  { id: "showcase", value: "2025" },
+  { id: "exhibitors", value: "+400" },
+  { id: "visitors", value: "+12,000" },
+  { id: "halls", value: "12" },
+  { id: "showcase", value: "2026" },
 ] as const;
 
 export const features = [

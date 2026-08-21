@@ -56,6 +56,12 @@ export interface EventsResponse {
   data: EventsPagination;
 }
 
+export interface NearestEventsResponse {
+  status: boolean;
+  message: string;
+  data: ExhibitorEvent[];
+}
+
 export interface EventStatistics {
   total_requests: number;
   pending_requests: number;

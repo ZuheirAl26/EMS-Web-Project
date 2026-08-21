@@ -8,7 +8,8 @@
     "floorMap": "Floor Map",
     "plan": "Create Plan",
     "features": "Features",
-    "blog": "Blog",
+    "blog": "Announcements",
+    "announcements": "Announcements",
     "contact": "Contact",
     "login": "Log In",
     "getStarted": "Get Started",
@@ -21,37 +22,29 @@
     "description": "Manage booths, capture leads, coordinate your team, and delight your visitors, all from one powerful portal.",
     "explore": "Explore the Floor Map",
     "register": "Register as Exhibitor",
-    "exhibitors": "500+ Exhibitors",
+    "appHintText": "Looking for the interactive live map?",
+    "appHintLink": "Download our mobile app",
+    "exhibitors": "400+ Exhibitors",
     "visitors": "12,000+ Visitors",
-    "halls": "3 Event Halls"
+    "halls": "12 Event Halls"
   },
   "exhibition": {
     "eyebrow": "About the Exhibition",
-    "title": "TechConnect Expo 2025",
-    "description": "TechConnect Expo 2025 is the premier technology trade show for enterprise software, industrial IoT, and AI-powered solutions. Bringing together 500+ exhibitors and 12,000+ industry professionals across 3 dedicated halls.",
+    "title": "Damascus International Fair 2026",
+    "description": "The Damascus International Fair is the oldest and most prominent multi-sector economic event in the Middle East. Returning for its 63rd edition, this premier commercial exhibition serves as a strategic platform for reconstruction, trade, and economic partnerships. Bringing together nearly 1,000 exhibiting entities from 60 countries, the event spans diverse sectors including construction, technology, agriculture, and energy at the Damascus Fairgrounds.",
     "metrics": {
       "exhibitors": "Exhibitors",
       "visitors": "Expected Visitors",
       "halls": "Event Halls",
-      "showcase": "Startup Pitch Showcase"
+      "showcase": "Edition Year"
     },
     "schedule": "Event Schedule",
-    "hallCount": "3 Halls",
-    "events": {
-      "keynote": {
-        "title": "Opening Keynote",
-        "description": "Enterprise innovation and AI-powered operations."
-      },
-      "pitch": {
-        "title": "Startup Pitch Showcase",
-        "description": "New ventures present products to buyers and partners."
-      },
-      "networking": {
-        "title": "Networking Session",
-        "description": "Connect with exhibitors, visitors, and event teams."
-      }
-    },
-    "viewSchedule": "View Event Schedule"
+    "hallCount": "12 Halls",
+    "viewSchedule": "View Event Schedule",
+    "showLess": "Show Less",
+    "hall": "Hall",
+    "speakers": "Speakers",
+    "organizer": "Organized by"
   },
   "floorMap": {
     "eyebrow": "Floor Plan",
@@ -106,7 +99,7 @@
     "title": "Build Your Personal Section",
     "description": "Manage your hall, schedule meetings, and get a personalized route through the halls. Scan a lead and manage your events.",
     "button": "Create My Plan",
-    "cardTitle": "My Plan — TechConnect 2025",
+    "cardTitle": "My Plan — Damascus International Fair 2026",
     "items": {
       "booth": "A-03 Booth demo",
       "launch": "B-03 Product launch",
@@ -140,33 +133,40 @@
         "description": "Push announcements to all exhibitors and visitors instantly."
       },
       "reports": {
-        "title": "Engagement Reports",
+        "title": "Engagement Reviews",
         "description": "Track profile views, lead scores, and visitor engagement in real-time."
       }
     }
   },
+  "announcements": {
+    "eyebrow": "Announcements",
+    "title": "Exhibition Announcements & Updates",
+    "viewAll": "View All",
+    "official": "Official Announcement",
+    "empty": "No announcements published at this time."
+  },
   "blog": {
-    "eyebrow": "Blog",
-    "title": "From the ExhibitorHub Blog",
-    "viewAll": "View All Posts",
+    "eyebrow": "Announcements",
+    "title": "Exhibition Announcements & Updates",
+    "viewAll": "View All",
     "posts": {
       "roi": {
-        "title": "5 Ways to Maximize Booth ROI at Trade Shows",
-        "description": "Learn how top exhibitors generate 3x more leads by combining digital follow-up with engaging live demos."
+        "title": "Official Welcome to Damascus International Fair 2026",
+        "description": "Important guidelines and schedule for all exhibitors and participants at the 63rd edition."
       },
       "ai": {
-        "title": "How AI is Changing Lead Capture at Events",
-        "description": "AI-powered badge scanning and sentiment analysis are transforming how exhibitors qualify leads in real time."
+        "title": "Digital Transformation & Smart Booth Access",
+        "description": "Instructions for activating digital badges, lead scanning, and interactive booth management."
       },
       "setup": {
-        "title": "The Complete Guide to Booth Setup at TechConnect 2025",
-        "description": "From media uploads to service requests, a step-by-step walkthrough of the ExhibitorHub portal."
+        "title": "The Complete Guide to Booth Setup at Damascus International Fair 2026",
+        "description": "From media uploads to service requests, a step-by-step walkthrough of the exhibitor portal."
       }
     }
   },
   "footer": {
-    "brand": "ExhibitorHub",
-    "description": "The complete exhibitor management platform.",
+    "brand": "Damascus International Fair",
+    "description": "The premier economic and exhibition platform.",
     "exhibition": "Exhibition",
     "floorMap": "Floor Map",
     "schedule": "Event Schedule",
@@ -176,7 +176,7 @@
     "name": "Name",
     "message": "Message",
     "send": "Send",
-    "copyright": "© 2025 ExhibitorHub. All rights reserved.",
+    "copyright": "© 2026 Damascus International Fair. All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "cookies": "Cookie Policy"
