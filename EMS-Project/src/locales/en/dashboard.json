@@ -355,12 +355,14 @@
       "pending": "Pending",
       "approved": "Approved",
       "rejected": "Rejected",
+      "cancelled": "Cancelled",
       "descriptions": {
         "all": "Every booking",
         "owned": "Approved booths ready for visitors",
         "pending": "Needs review",
         "approved": "Ready for visitors",
-        "rejected": "Needs attention"
+        "rejected": "Needs attention",
+        "cancelled": "Cancelled requests"
       }
     },
     "status": {
