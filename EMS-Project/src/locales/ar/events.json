@@ -21,6 +21,7 @@
     "approved": "مقبولة",
     "pending": "قيد الانتظار",
     "rejected": "مرفوضة",
+    "cancelled": "ملغية",
     "other": "{{value}}"
   },
   "card": {

@@ -30,7 +30,12 @@ export function getEventQrUrl({
 }
 
 export function getEventStatusTone(status: string): EventStatusTone {
-  if (status === "approved" || status === "pending" || status === "rejected") {
+  if (
+    status === "approved" ||
+    status === "pending" ||
+    status === "rejected" ||
+    status === "cancelled"
+  ) {
     return status;
   }
 
@@ -47,6 +52,8 @@ export function getEventStatusTranslationKey(
       return "status.pending";
     case "rejected":
       return "status.rejected";
+    case "cancelled":
+      return "status.cancelled";
     default:
       return "status.other";
   }

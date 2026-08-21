@@ -39,7 +39,7 @@ export interface MyBooth {
   created_at: string;
 }
 
-export type BoothRequestStatus = "pending" | "rejected";
+export type BoothRequestStatus = "pending" | "rejected" | "cancelled";
 
 export interface BoothRequestCompany {
   id: number;
@@ -91,6 +91,7 @@ export const MY_BOOTH_STATUSES = [
   "pending",
   "approved",
   "rejected",
+  "cancelled",
 ] as const;
 
 export type MyBoothStatus = (typeof MY_BOOTH_STATUSES)[number];

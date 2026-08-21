@@ -84,7 +84,7 @@ export interface EventMetricsProps {
   numberFormatter: Intl.NumberFormat;
 }
 
-export type EventFilterStatus = "approved" | "pending" | "rejected";
+export type EventFilterStatus = "approved" | "pending" | "rejected" | "cancelled";
 
 export interface EventStatisticsCardsProps {
   statistics: EventStatistics;
@@ -98,6 +98,7 @@ export type EventStatusTranslationKey =
   | "status.approved"
   | "status.pending"
   | "status.rejected"
+  | "status.cancelled"
   | "status.other";
 
 export type EventType = "conference" | "workshop" | "lecture" | "other";

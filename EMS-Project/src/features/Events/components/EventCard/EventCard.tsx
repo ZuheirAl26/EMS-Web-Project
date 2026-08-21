@@ -39,7 +39,7 @@ export function EventCard({ event }: EventCardProps) {
       ? Tick02Icon
       : statusTone === "pending"
         ? Clock03Icon
-        : statusTone === "rejected"
+        : statusTone === "rejected" || statusTone === "cancelled"
           ? CancelCircleIcon
           : InformationCircleIcon;
 

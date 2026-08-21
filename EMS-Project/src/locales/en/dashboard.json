@@ -365,7 +365,8 @@
     },
     "status": {
       "pending": "Pending",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
     },
     "requests": {
       "requestStatus": "Request status",
@@ -380,6 +381,8 @@
       "pendingDescription": "We will notify you when your booth request has been reviewed.",
       "rejectedTitle": "Request not approved",
       "rejectedDescription": "This booth request was not approved. You can submit a new request at any time.",
+      "cancelledTitle": "Request cancelled",
+      "cancelledDescription": "This booth request was cancelled.",
       "submitted": "Submitted {{date}}",
       "errorTitle": "We couldn't load your booth requests",
       "errorMessage": "Please check your connection and try again.",

@@ -171,6 +171,27 @@
       color: var(--color-danger);
     }
   }
+
+  &--cancelled {
+    .booth-details-card,
+    .booth-request-card__summary {
+      border-color: color-mix(
+        in srgb,
+        #f87171 40%,
+        var(--color-neutral-200)
+      );
+    }
+
+    .booth-details-card {
+      box-shadow: inset 4px 0 0 #f87171;
+    }
+
+    .booth-request-card__status-callout {
+      background: #fef2f2;
+      color: #e11d48;
+      border: 1px solid #fecdd3;
+    }
+  }
 }
 
 @media (max-width: 980px) {

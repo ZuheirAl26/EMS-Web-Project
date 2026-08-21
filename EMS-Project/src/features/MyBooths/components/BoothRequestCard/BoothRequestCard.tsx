@@ -43,9 +43,17 @@ export function BoothRequestCard({ request, booth }: BoothRequestCardProps) {
     [locale],
   );
   const requestedDate = new Date(request.created_at.replace(" ", "T"));
-  const statusKey = request.status === "rejected" ? "rejected" : "pending";
+  const statusKey =
+    request.status === "cancelled"
+      ? "cancelled"
+      : request.status === "rejected"
+        ? "rejected"
+        : "pending";
   const companyName = request.company?.name ?? request.company_name ?? "—";
-  const statusIcon = statusKey === "rejected" ? CancelCircleIcon : Clock01Icon;
+  const statusIcon =
+    statusKey === "cancelled" || statusKey === "rejected"
+      ? CancelCircleIcon
+      : Clock01Icon;
   const requestBooth: MyBooth = {
     id: request.booth_id,
     number: booth?.number ?? "—",

@@ -20,6 +20,10 @@
     border-top-color: var(--color-danger);
   }
 
+  &--cancelled {
+    border-top-color: #f87171;
+  }
+
   &__overview {
     display: grid;
     grid-template-columns: 152px minmax(0, 1fr);
@@ -109,6 +113,12 @@
     &--rejected {
       background: var(--color-danger-surface-muted);
       color: var(--color-danger-text);
+    }
+
+    &--cancelled {
+      background: #fef2f2;
+      color: #e11d48;
+      border: 1px solid #fecdd3;
     }
 
     &--neutral {

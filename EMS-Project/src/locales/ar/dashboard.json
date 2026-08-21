@@ -365,7 +365,8 @@
     },
     "status": {
       "pending": "معلق",
-      "rejected": "مرفوض"
+      "rejected": "مرفوض",
+      "cancelled": "ملغي"
     },
     "requests": {
       "requestStatus": "حالة الطلب",
@@ -380,6 +381,8 @@
       "pendingDescription": "سنخطرك فور مراجعة طلب الجناح الخاص بك.",
       "rejectedTitle": "لم تتم الموافقة على الطلب",
       "rejectedDescription": "لم تتم الموافقة على طلب هذا الجناح. يمكنك تقديم طلب جديد في أي وقت.",
+      "cancelledTitle": "تم إلغاء الطلب",
+      "cancelledDescription": "تم إلغاء طلب هذا الجناح.",
       "submitted": "تم الإرسال بتاريخ {{date}}",
       "errorTitle": "تعذر تحميل طلبات الأجنحة",
       "errorMessage": "يُرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",

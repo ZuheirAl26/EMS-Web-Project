@@ -13,6 +13,69 @@ export async function getEvents(
   page: number,
   status: EventFilterStatus | null,
 ): Promise<EventsResponse> {
+  if (status === "rejected") {
+    const [rejectedRes, cancelledRes] = await Promise.allSettled([
+      apiClient.get<EventsResponse>("/v1/exhibitor/events", {
+        params: { page, "filter[status]": "rejected" },
+      }),
+      apiClient.get<EventsResponse>("/v1/exhibitor/events", {
+        params: { page, "filter[status]": "cancelled" },
+      }),
+    ]);
+
+    const rejectedData =
+      rejectedRes.status === "fulfilled"
+        ? rejectedRes.value.data?.data?.data ?? []
+        : [];
+    const cancelledData =
+      cancelledRes.status === "fulfilled"
+        ? cancelledRes.value.data?.data?.data ?? []
+        : [];
+
+    const combinedData = [...rejectedData, ...cancelledData];
+    const firstSuccess =
+      rejectedRes.status === "fulfilled"
+        ? rejectedRes.value.data
+        : cancelledRes.status === "fulfilled"
+          ? cancelledRes.value.data
+          : null;
+
+    if (!firstSuccess && rejectedRes.status === "rejected") {
+      throw rejectedRes.reason;
+    }
+
+    return {
+      status: true,
+      message: firstSuccess?.message || "Success",
+      data: {
+        data: combinedData,
+        current_page: page,
+        per_page:
+          (rejectedRes.status === "fulfilled"
+            ? rejectedRes.value.data?.data?.per_page ?? 10
+            : 10) +
+          (cancelledRes.status === "fulfilled"
+            ? cancelledRes.value.data?.data?.per_page ?? 10
+            : 10),
+        total:
+          (rejectedRes.status === "fulfilled"
+            ? rejectedRes.value.data?.data?.total ?? 0
+            : 0) +
+          (cancelledRes.status === "fulfilled"
+            ? cancelledRes.value.data?.data?.total ?? 0
+            : 0),
+        last_page: Math.max(
+          rejectedRes.status === "fulfilled"
+            ? rejectedRes.value.data?.data?.last_page ?? 1
+            : 1,
+          cancelledRes.status === "fulfilled"
+            ? cancelledRes.value.data?.data?.last_page ?? 1
+            : 1,
+        ),
+      },
+    };
+  }
+
   const response = await apiClient.get<EventsResponse>("/v1/exhibitor/events", {
     params: status ? { page, "filter[status]": status } : { page },
   });
