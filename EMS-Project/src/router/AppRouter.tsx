@@ -18,7 +18,7 @@ import { MyBoothsPage } from "../features/MyBooths/pages";
 import { ExhibitorProfilePage } from "../features/ExhibitorProfile/pages";
 import { EventRequestPage, EventsPage } from "../features/Events/pages";
 import { DashboardLayout } from "../layouts/DashboardLayout";
-import { ProtectedRoute } from "./guards";
+import { GuestRoute, ProtectedRoute } from "./guards";
 import TeamPage, { InvitationResponsePage } from "../features/Team&Staff/pages";
 import { ReviewsPage } from "../features/Reviews/pages";
 import { NotificationsPage } from "../features/Notifications";
@@ -40,13 +40,17 @@ export const AppRouter = () => {
 
   return (
     <>
-      {/* <Route element={<GuestRoute />}> */}
       <Routes location={background || location}>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/check-email" element={<CheckEmailPage />} />
-        <Route path="/verify-email" element={<VerifyAccountPage />} />
+
+        {/* Guest only routes: logged-in users will be redirected to /dashboard */}
+        <Route element={<GuestRoute />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/check-email" element={<CheckEmailPage />} />
+          <Route path="/verify-email" element={<VerifyAccountPage />} />
+        </Route>
+
         <Route
           path="/invitations/:token"
           element={<InvitationResponsePage />}
