@@ -7,10 +7,11 @@ import { FloorMapSection } from "../component/MapSection/MapSection";
 import { MobileAppSection } from "../component/MobileAppSection/MobileAppSection";
 import { PlanSection } from "../component/PlanSection/PlanSection";
 import { SiteNav } from "../component/SiteNav/SiteNav";
+import "./LandingPage.scss";
 
 export function LandingPage() {
   return (
-    <>
+    <div className="landing-page">
       <SiteNav />
       <main>
         <HeroSection />
@@ -22,6 +23,6 @@ export function LandingPage() {
         <BlogSection />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

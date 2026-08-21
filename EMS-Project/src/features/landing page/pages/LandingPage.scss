@@ -1,0 +1,40 @@
+.landing-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+
+  *,
+  *::before,
+  *::after {
+    font-family: inherit;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+
+  main {
+    width: 100%;
+    overflow-x: hidden;
+    flex: 1;
+  }
+
+  section {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+html[lang="ar"] .landing-page,
+html[lang="ar"] .landing-page *,
+[dir="rtl"] .landing-page,
+[dir="rtl"] .landing-page * {
+  font-family: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif !important;
+}

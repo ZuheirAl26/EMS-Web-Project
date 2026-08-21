@@ -12,38 +12,12 @@ body,
 html {
   margin: 0;
   padding: 0;
-  width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  color: var(--color-ink);
-  background-color: var(--color-page);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-main {
-  width: 100%;
-  overflow-x: hidden;
-}
-
-section {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-html[lang="ar"],
 html[lang="ar"] body,
-html[lang="ar"] body *,
-[dir="rtl"],
-[dir="rtl"] * {
+html[lang="ar"] body * {
   font-family: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif;
-}
-
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
 }
