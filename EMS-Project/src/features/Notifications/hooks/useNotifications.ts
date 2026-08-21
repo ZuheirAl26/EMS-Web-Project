@@ -4,6 +4,7 @@ import { getToken, onMessage } from "firebase/messaging";
 import logo from "../../../assets/logo.png";
 import { getFirebaseMessaging } from "../../../config/firebase";
 import { useAuthStore } from "../../../store/AuthStore";
+import { useLanguageStore } from "../../../context/useLanguageStore";
 import { notificationsApi } from "../api/notificationsApi";
 import type {
   FetchNotificationsParams,
@@ -12,10 +13,10 @@ import type {
 
 export const NOTIFICATIONS_KEYS = {
   all: ["notifications"] as const,
-  list: (params?: FetchNotificationsParams) =>
-    ["notifications", "list", params] as const,
-  unread: (params?: FetchNotificationsParams) =>
-    ["notifications", "unread", params] as const,
+  list: (params?: FetchNotificationsParams, lang?: string) =>
+    ["notifications", "list", lang, params] as const,
+  unread: (params?: FetchNotificationsParams, lang?: string) =>
+    ["notifications", "unread", lang, params] as const,
   count: ["notifications", "unread-count"] as const,
   stats: ["notifications", "stats"] as const,
 };
@@ -26,10 +27,11 @@ export function useNotifications(
   isUnreadOnly?: boolean,
 ) {
   const token = useAuthStore((state) => state.token);
+  const lang = useLanguageStore((state) => state.language);
   return useQuery({
     queryKey: isUnreadOnly
-      ? NOTIFICATIONS_KEYS.unread(params)
-      : NOTIFICATIONS_KEYS.list(params),
+      ? NOTIFICATIONS_KEYS.unread(params, lang)
+      : NOTIFICATIONS_KEYS.list(params, lang),
     queryFn: () =>
       isUnreadOnly
         ? notificationsApi.getUnreadNotifications(params)

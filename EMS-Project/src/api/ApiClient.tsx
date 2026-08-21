@@ -19,6 +19,13 @@ apiClient.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
+    const currentLang =
+      (typeof window !== "undefined"
+        ? localStorage.getItem("app_language")
+        : null) || "en";
+
+    config.headers["Accept-Language"] = currentLang === "ar" ? "ar" : "en";
+
     return config;
   },
   (error) => {
