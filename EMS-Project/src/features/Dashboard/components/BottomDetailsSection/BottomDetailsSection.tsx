@@ -105,26 +105,53 @@ export function BottomDetailsSection({
         <div className="card-header">
           <div className="header-title">
             <HugeiconsIcon icon={Store01Icon} size={20} className="icon" />
-            <h2>{t("dashboardHome.bottomDetails.boothTitle", "Booth Details")}</h2>
+            <h2>
+              {t("dashboardHome.bottomDetails.boothTitle", "Booth Details")}
+            </h2>
           </div>
           {singleBooth && renderStatusBadge(singleBooth.status, t)}
         </div>
 
         {!hasActiveBooth ? (
           <div className="card-empty-state">
-            <HugeiconsIcon icon={Store01Icon} size={36} className="empty-icon" />
-            <p>{t("dashboardHome.bottomDetails.noBooth", "No booth selected or assigned.")}</p>
+            <HugeiconsIcon
+              icon={Store01Icon}
+              size={36}
+              className="empty-icon"
+            />
+            <p>
+              {t(
+                "dashboardHome.bottomDetails.noBooth",
+                "No booth selected or assigned.",
+              )}
+            </p>
           </div>
         ) : isBoothLoading ? (
           <div className="card-loading">
-            {t("dashboardHome.bottomDetails.loading", "Loading booth details...")}
+            {t(
+              "dashboardHome.bottomDetails.loading",
+              "Loading booth details...",
+            )}
           </div>
         ) : isBoothError ? (
           <div className="card-error">
-            <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
-            <p>{t("dashboardHome.bottomDetails.error", "Failed to load booth details.")}</p>
+            <HugeiconsIcon
+              icon={AlertCircleIcon}
+              size={28}
+              className="error-icon"
+            />
+            <p>
+              {t(
+                "dashboardHome.bottomDetails.error",
+                "Failed to load booth details.",
+              )}
+            </p>
             {onRetryBooth && (
-              <button type="button" className="retry-btn" onClick={onRetryBooth}>
+              <button
+                type="button"
+                className="retry-btn"
+                onClick={onRetryBooth}
+              >
                 <HugeiconsIcon icon={RefreshIcon} size={14} />
                 <span>{t("common.retry", "Retry Connection")}</span>
               </button>
@@ -137,7 +164,9 @@ export function BottomDetailsSection({
                 <span className="detail-label">
                   {t("dashboardHome.bottomDetails.boothNumber", "Booth Number")}
                 </span>
-                <strong className="detail-val">{singleBooth.number || "—"}</strong>
+                <strong className="detail-val">
+                  {singleBooth.number || "—"}
+                </strong>
               </div>
               <div className="detail-item">
                 <span className="detail-label">
@@ -165,7 +194,9 @@ export function BottomDetailsSection({
                   {t("dashboardHome.bottomDetails.basePrice", "Base Price")}
                 </span>
                 <strong className="detail-val">
-                  {singleBooth.price !== undefined ? `$${singleBooth.price}` : "—"}
+                  {singleBooth.price !== undefined
+                    ? `$${singleBooth.price}`
+                    : "—"}
                 </strong>
               </div>
             </div>
@@ -177,7 +208,10 @@ export function BottomDetailsSection({
                 </div>
                 <div className="qr-copy">
                   <span className="qr-title">
-                    {t("dashboardHome.bottomDetails.qrTitle", "Visitor Entry QR")}
+                    {t(
+                      "dashboardHome.bottomDetails.qrTitle",
+                      "Visitor Entry QR",
+                    )}
                   </span>
                   <code className="qr-token">{singleBooth.qr_token}</code>
                 </div>
@@ -186,8 +220,17 @@ export function BottomDetailsSection({
           </div>
         ) : (
           <div className="card-empty-state">
-            <HugeiconsIcon icon={Store01Icon} size={36} className="empty-icon" />
-            <p>{t("dashboardHome.bottomDetails.noBooth", "No booth selected or assigned.")}</p>
+            <HugeiconsIcon
+              icon={Store01Icon}
+              size={36}
+              className="empty-icon"
+            />
+            <p>
+              {t(
+                "dashboardHome.bottomDetails.noBooth",
+                "No booth selected or assigned.",
+              )}
+            </p>
           </div>
         )}
       </div>
@@ -209,24 +252,47 @@ export function BottomDetailsSection({
       <div className="card-header">
         <div className="header-title">
           <HugeiconsIcon icon={Calendar03Icon} size={20} className="icon" />
-          <h2>{t("dashboardHome.bottomDetails.eventTitle", "Event Space Details")}</h2>
+          <h2>
+            {t("dashboardHome.bottomDetails.eventTitle", "Event Space Details")}
+          </h2>
         </div>
         {singleEvent && renderStatusBadge(singleEvent.status, t)}
       </div>
 
       {!hasActiveEvent ? (
         <div className="card-empty-state">
-          <HugeiconsIcon icon={Calendar03Icon} size={36} className="empty-icon" />
-          <p>{t("dashboardHome.bottomDetails.noEvent", "No event selected or requested.")}</p>
+          <HugeiconsIcon
+            icon={Calendar03Icon}
+            size={36}
+            className="empty-icon"
+          />
+          <p>
+            {t(
+              "dashboardHome.bottomDetails.noEvent",
+              "No event selected or requested.",
+            )}
+          </p>
         </div>
       ) : isEventLoading ? (
         <div className="card-loading">
-          {t("dashboardHome.bottomDetails.eventLoading", "Loading event details...")}
+          {t(
+            "dashboardHome.bottomDetails.eventLoading",
+            "Loading event details...",
+          )}
         </div>
       ) : isEventError ? (
         <div className="card-error">
-          <HugeiconsIcon icon={AlertCircleIcon} size={28} className="error-icon" />
-          <p>{t("dashboardHome.bottomDetails.eventError", "Failed to load event details.")}</p>
+          <HugeiconsIcon
+            icon={AlertCircleIcon}
+            size={28}
+            className="error-icon"
+          />
+          <p>
+            {t(
+              "dashboardHome.bottomDetails.eventError",
+              "Failed to load event details.",
+            )}
+          </p>
           {onRetryEvent && (
             <button type="button" className="retry-btn" onClick={onRetryEvent}>
               <HugeiconsIcon icon={RefreshIcon} size={14} />
@@ -239,7 +305,10 @@ export function BottomDetailsSection({
           <div className="event-info-box">
             <div className="info-row">
               <span className="label">
-                {t("dashboardHome.bottomDetails.eventTitleLabel", "Event Title")}
+                {t(
+                  "dashboardHome.bottomDetails.eventTitleLabel",
+                  "Event Title",
+                )}
               </span>
               <strong className="val">{singleEvent.title || "—"}</strong>
             </div>
@@ -249,7 +318,9 @@ export function BottomDetailsSection({
                 <span className="label">
                   {t("dashboardHome.bottomDetails.eventType", "Event Type")}
                 </span>
-                <strong className="val text-capitalize">{singleEvent.type || "—"}</strong>
+                <strong className="val text-capitalize">
+                  {singleEvent.type || "—"}
+                </strong>
               </div>
               <div className="info-row half">
                 <span className="label">
@@ -270,7 +341,9 @@ export function BottomDetailsSection({
               <span className="label">
                 {t("dashboardHome.bottomDetails.eventTime", "Start Time")}
               </span>
-              <strong className="val">{formatDate(singleEvent.start_at, locale)}</strong>
+              <strong className="val">
+                {formatDate(singleEvent.start_at, locale)}
+              </strong>
             </div>
 
             {speakersList && (
@@ -282,14 +355,14 @@ export function BottomDetailsSection({
               </div>
             )}
 
-            {singleEvent.description && (
+            {/* {singleEvent.description && (
               <div className="info-row">
                 <span className="label">
                   {t("dashboardHome.bottomDetails.eventDesc", "Description")}
                 </span>
                 <p className="desc">{singleEvent.description}</p>
               </div>
-            )}
+            )} */}
 
             {eventQrUrl && (
               <div className="qr-preview-box" style={{ marginTop: 8 }}>
@@ -298,7 +371,10 @@ export function BottomDetailsSection({
                 </div>
                 <div className="qr-copy">
                   <span className="qr-title">
-                    {t("dashboardHome.bottomDetails.qrTitle", "Visitor Entry QR")}
+                    {t(
+                      "dashboardHome.bottomDetails.qrTitle",
+                      "Visitor Entry QR",
+                    )}
                   </span>
                   <code className="qr-token">{singleEvent.qr_token}</code>
                 </div>
@@ -308,8 +384,17 @@ export function BottomDetailsSection({
         </div>
       ) : (
         <div className="card-empty-state">
-          <HugeiconsIcon icon={Calendar03Icon} size={36} className="empty-icon" />
-          <p>{t("dashboardHome.bottomDetails.noEvent", "No event selected or requested.")}</p>
+          <HugeiconsIcon
+            icon={Calendar03Icon}
+            size={36}
+            className="empty-icon"
+          />
+          <p>
+            {t(
+              "dashboardHome.bottomDetails.noEvent",
+              "No event selected or requested.",
+            )}
+          </p>
         </div>
       )}
     </div>

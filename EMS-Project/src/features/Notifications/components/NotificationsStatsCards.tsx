@@ -10,12 +10,12 @@ import "./NotificationsStatsCards.scss";
 
 export function NotificationsStatsCards() {
   const { t } = useTranslation("dashboard");
-  const { data: statsData, isLoading } = useNotificationStats();
+  const { data: statsData, isLoading, isError } = useNotificationStats();
   const stats = statsData?.data;
 
-  const total = stats?.total_notifications ?? 0;
-  const unread = stats?.unread_notifications ?? 0;
-  const read = stats?.read_notifications ?? 0;
+  const total = isError ? "—" : (stats?.total_notifications ?? 0);
+  const unread = isError ? "—" : (stats?.unread_notifications ?? 0);
+  const read = isError ? "—" : (stats?.read_notifications ?? 0);
 
   return (
     <div className="notifications-stats-grid">

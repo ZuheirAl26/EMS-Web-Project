@@ -2,6 +2,8 @@ import { useState } from "react";
 import {
   CheckmarkSquare01Icon,
   Notification02Icon,
+  Alert01Icon,
+  Refresh01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
@@ -50,7 +52,7 @@ export function NotificationsList() {
     useState<NotificationItem | null>(null);
 
   // Unread count for badge
-  const { data: countData } = useUnreadNotificationsCount();
+  const { data: countData, refetch: refetchCount } = useUnreadNotificationsCount();
   const unreadCount = countData?.data?.numberOfUnreadNotifications ?? 0;
 
   // Active option configuration
@@ -59,7 +61,12 @@ export function NotificationsList() {
   const isUnreadOnly = activeTab === "unread";
 
   // Fetch API notifications list
-  const { data: notificationsData, isLoading } = useNotifications(
+  const {
+    data: notificationsData,
+    isLoading,
+    isError,
+    refetch: refetchNotifications,
+  } = useNotifications(
     {
       page,
       per_page: 15,
@@ -146,6 +153,30 @@ export function NotificationsList() {
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="skeleton-card-item" />
             ))}
+          </div>
+        ) : isError ? (
+          <div className="notifications-empty-state notifications-error-state">
+            <div className="empty-icon-circle error-icon-circle">
+              <HugeiconsIcon icon={Alert01Icon} size={36} />
+            </div>
+            <h3>{t("notifications.error.title", "Failed to Load Notifications")}</h3>
+            <p>
+              {t(
+                "notifications.error.message",
+                "We couldn't connect to the server. Please check your internet connection or try again.",
+              )}
+            </p>
+            <button
+              type="button"
+              className="primary-btn retry-btn"
+              onClick={() => {
+                void refetchNotifications();
+                void refetchCount();
+              }}
+            >
+              <HugeiconsIcon icon={Refresh01Icon} size={18} />
+              <span>{t("common.retry", "Retry Connection")}</span>
+            </button>
           </div>
         ) : displayList.length === 0 ? (
           <div className="notifications-empty-state">

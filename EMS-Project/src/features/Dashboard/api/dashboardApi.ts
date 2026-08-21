@@ -21,7 +21,7 @@ export const getSingleEventApi = async (
   eventId: number,
 ): Promise<ExhibitorEvent> => {
   const { data } = await apiClient.get<ApiResponse<ExhibitorEvent>>(
-    `/v1/exhibitor/event/${eventId}`,
+    `/v1/exhibitor/events/${eventId}`,
   );
   return data.data;
 };

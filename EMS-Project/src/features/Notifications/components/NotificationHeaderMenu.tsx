@@ -9,6 +9,8 @@ import {
   StarIcon,
   MegaphoneIcon,
   ArrowRight01Icon,
+  Alert01Icon,
+  Refresh01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
@@ -97,6 +99,7 @@ export function NotificationHeaderMenu() {
   const {
     data: notificationsData,
     isLoading,
+    isError,
     refetch: refetchNotifications,
   } = useNotifications({
     per_page: 8,
@@ -266,6 +269,19 @@ export function NotificationHeaderMenu() {
             {isLoading ? (
               <div className="dropdown-loading">
                 {t("notifications.dropdown.loading", "Loading notifications...")}
+              </div>
+            ) : isError ? (
+              <div className="dropdown-empty">
+                <HugeiconsIcon icon={Alert01Icon} size={28} />
+                <p>{t("notifications.error.title", "Failed to Load Notifications")}</p>
+                <button
+                  type="button"
+                  className="dropdown-retry-btn"
+                  onClick={() => void refetchNotifications()}
+                >
+                  <HugeiconsIcon icon={Refresh01Icon} size={14} />
+                  <span>{t("common.retry", "Retry")}</span>
+                </button>
               </div>
             ) : displayNotifications.length === 0 ? (
               <div className="dropdown-empty">

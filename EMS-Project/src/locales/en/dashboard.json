@@ -284,6 +284,10 @@
   "notifications": {
     "title": "Notifications",
     "subtitle": "Stay updated with your booth approvals, event requests, new visitor reviews, and announcements.",
+    "error": {
+      "title": "Failed to Load Notifications",
+      "message": "We couldn't connect to the server. Please check your internet connection or try again."
+    },
     "stats": {
       "total": "Total Notifications",
       "unread": "Unread",

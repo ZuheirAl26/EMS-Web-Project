@@ -44,9 +44,34 @@
       .empty-icon {
         margin-bottom: 12px;
         color: var(--color-text-muted-light);
+
+        &.text-danger {
+          color: var(--color-danger, #ef4444);
+        }
       }
       p {
+        margin: 0;
         font-size: 0.9rem;
+      }
+
+      .retry-btn {
+        margin-top: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 8px;
+        background: var(--color-primary, #0a8782);
+        color: #ffffff;
+        border: none;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s ease;
+
+        &:hover {
+          background: var(--color-primary-dark, #076d69);
+        }
       }
     }
 

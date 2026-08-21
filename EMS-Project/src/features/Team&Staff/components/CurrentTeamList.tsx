@@ -2,7 +2,12 @@ import { useState } from "react";
 import type { useTeamManagement } from "../hooks/useTeamManagement";
 import type { LookupEntity, TeamInvitation } from "../types/teamsType";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { UserGroupIcon, Cancel01Icon } from "@hugeicons/core-free-icons";
+import {
+  UserGroupIcon,
+  Cancel01Icon,
+  Alert01Icon,
+  Refresh01Icon,
+} from "@hugeicons/core-free-icons";
 import { CustomSelect } from "../../../components";
 import type { SelectOption } from "../../../components/CustomSelect/CustomSelect";
 import { CancelInvitationDialog } from "./CancelInvitationDialog";
@@ -13,6 +18,8 @@ type TeamListProps = ReturnType<typeof useTeamManagement>;
 export default function CurrentTeamList({
   invitations,
   isInvitationsLoading,
+  isInvitationsError,
+  handleRefetch,
   booths,
   companies,
   role,
@@ -84,6 +91,29 @@ export default function CurrentTeamList({
           {isInvitationsLoading ? (
             <div className="loading-state">
               <p>{t("team.list.loading", "Loading invitations...")}</p>
+            </div>
+          ) : isInvitationsError ? (
+            <div className="empty-state error-state">
+              <HugeiconsIcon
+                icon={Alert01Icon}
+                size={42}
+                strokeWidth={1.5}
+                className="empty-icon text-danger"
+              />
+              <p>
+                {t(
+                  "team.error.desc",
+                  "We couldn't fetch your team members. Please verify your connection.",
+                )}
+              </p>
+              <button
+                type="button"
+                className="retry-btn"
+                onClick={() => handleRefetch()}
+              >
+                <HugeiconsIcon icon={Refresh01Icon} size={16} />
+                <span>{t("common.retry", "Retry Connection")}</span>
+              </button>
             </div>
           ) : invitationList.length === 0 ? (
             <div className="empty-state">
