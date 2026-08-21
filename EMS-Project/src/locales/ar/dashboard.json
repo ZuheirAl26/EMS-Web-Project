@@ -404,6 +404,7 @@
       "statusApproved": "معتمد",
       "statusPending": "معلق",
       "statusRejected": "مرفوض",
+      "statusCancelled": "ملغي",
       "fair": "المعرض",
       "hall": "الصالة",
       "hallValue": "الصالة {{number}}",

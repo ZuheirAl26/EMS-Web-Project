@@ -1,4 +1,8 @@
-import { Tick02Icon } from "@hugeicons/core-free-icons";
+import {
+  CancelCircleIcon,
+  Clock01Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTranslation } from "react-i18next";
 import type { BoothDetailsCardProps } from "../../types/myBoothsType";
@@ -19,6 +23,12 @@ export function BoothDetailsCard({
   const companyName = booth.company?.name ?? "—";
   const services = booth.services ?? [];
   const boothStatus = booth.status ?? (booth.is_booked ? "approved" : "pending");
+  const statusIcon =
+    boothStatus === "approved"
+      ? Tick02Icon
+      : boothStatus === "cancelled" || boothStatus === "rejected"
+        ? CancelCircleIcon
+        : Clock01Icon;
   const areaValue = Number.isFinite(booth.area)
     ? t("myBooths.details.areaValue", {
         area: numberFormatter.format(booth.area),
@@ -62,13 +72,15 @@ export function BoothDetailsCard({
         <span
           className={`booth-details-card__status booth-details-card__status--${boothStatus}`}
         >
-          <HugeiconsIcon aria-hidden="true" icon={Tick02Icon} size={12} strokeWidth={2} />
+          <HugeiconsIcon aria-hidden="true" icon={statusIcon} size={12} strokeWidth={2} />
           {t(
             boothStatus === "approved"
               ? "myBooths.details.statusApproved"
               : boothStatus === "rejected"
                 ? "myBooths.details.statusRejected"
-                : "myBooths.details.statusPending",
+                : boothStatus === "cancelled"
+                  ? "myBooths.details.statusCancelled"
+                  : "myBooths.details.statusPending",
           )}
         </span>
       </header>

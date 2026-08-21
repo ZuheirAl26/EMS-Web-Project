@@ -45,6 +45,12 @@
       background: var(--color-danger-surface);
       color: var(--color-danger);
     }
+
+    &--cancelled {
+      background: #fef2f2;
+      color: #e11d48;
+      border: 1px solid #fecdd3;
+    }
   }
 
   &__list {

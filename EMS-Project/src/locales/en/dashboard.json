@@ -404,6 +404,7 @@
       "statusApproved": "Approved",
       "statusPending": "Pending",
       "statusRejected": "Rejected",
+      "statusCancelled": "Cancelled",
       "fair": "Fair",
       "hall": "Hall",
       "hallValue": "Hall {{number}}",
