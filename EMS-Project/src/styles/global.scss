@@ -163,37 +163,96 @@
 
 [data-theme="dark"] {
   /* Brand Colors */
-  --color-primary: #0d968b;
-  --color-sidebar-start: #2a1647;
-  --color-sidebar-end: #0a4240;
+  --color-primary: #0a8782;
+  --color-primary-light: #14b8a6;
+  --color-primary-dark: #064e56;
+  --color-primary-strong: #0d9e98;
+  --color-primary-deep: #0a8782;
+  --color-sidebar-start: #1e1b4b;
+  --color-sidebar-end: #042f2e;
 
   /* Extracted Page Colors (Dark Mode Adjustments) */
   --color-blue-chill: #0d9e98;
-  --color-eminence: #7b43a8;
-  --color-cerise: #f0428d;
+  --color-eminence: #9333ea;
+  --color-cerise: #f43f5e;
 
-  /* Extracted Backgrounds & UI Elements (Dark Mode Adjustments) */
+  /* Backgrounds & Surfaces */
+  --color-page: #0c141a;
   --color-aqua-haze: #0c141a;
-  --color-ebony: #ffffff;
-  --color-athens-gray: rgba(248, 250, 251, 0.07);
-  --color-pale-sky: #94a3b8;
-
-  /* Backgrounds & Gradients */
   --color-bg-white: #151c23;
   --color-surface: #0c141a;
   --color-muted-surface: #1e293b;
+  --color-primary-surface: rgba(10, 135, 130, 0.15);
   --color-input-bg: #0c141a;
   --color-shadow: rgba(0, 0, 0, 0.5);
 
-  /* Text Colors */
-  --color-text-main: #ffffff;
-  --color-text-dark: #ffffff;
-  --color-text-strong: #f8fafc;
-  --color-text-muted: #64748b;
+  /* Text & Ink */
+  --color-ink: #f8fafc;
+  --color-ebony: #f8fafc;
+  --color-text-main: #f8fafc;
+  --color-text-dark: #f8fafc;
+  --color-text-strong: #ffffff;
+  --color-text-muted: #94a3b8;
   --color-text-muted-light: rgba(255, 255, 255, 0.6);
   --color-text-hover: #e2e8f0;
+  --color-pale-sky: #94a3b8;
 
-  /* UI Elements */
-  --color-border: rgba(248, 250, 251, 0.07);
+  /* Neutral scale in Dark Mode */
+  --color-neutral-50: #0f172a;
+  --color-neutral-100: #1e293b;
+  --color-neutral-150: #1a2234;
+  --color-neutral-200: rgba(255, 255, 255, 0.08);
+  --color-neutral-300: rgba(255, 255, 255, 0.15);
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #94a3b8;
+  --color-neutral-600: #cbd5e1;
+
+  /* UI Elements & Borders */
+  --color-border: rgba(248, 250, 251, 0.09);
+  --color-athens-gray: rgba(248, 250, 251, 0.09);
   --color-input-placeholder: rgba(255, 255, 255, 0.4);
+
+  /* Status Colors in Dark Mode */
+  --color-success: #34d399;
+  --color-success-surface: rgba(16, 185, 129, 0.15);
+  --color-danger: #f87171;
+  --color-danger-surface: rgba(239, 68, 68, 0.15);
+  --color-danger-border: rgba(239, 68, 68, 0.3);
+  --color-warning-surface: rgba(245, 158, 11, 0.15);
+  --color-warning-border: rgba(245, 158, 11, 0.3);
+
+  color-scheme: dark;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Custom Themed Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-neutral-300, rgba(0, 0, 0, 0.2)) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-300, rgba(0, 0, 0, 0.2));
+  border-radius: 999px;
+
+  &:hover {
+    background: var(--color-neutral-400, rgba(0, 0, 0, 0.35));
+  }
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
 }

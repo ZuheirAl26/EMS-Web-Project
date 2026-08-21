@@ -45,6 +45,11 @@
       &.status-approved {
         background: #dcfce7;
         color: #16a34a;
+
+        [data-theme="dark"] & {
+          background: rgba(22, 163, 74, 0.2);
+          color: #4ade80;
+        }
       }
     }
 
@@ -55,6 +60,10 @@
       padding: 4px 10px;
       border-radius: 999px;
       background: var(--color-primary-surface, #f0fafa);
+
+      [data-theme="dark"] & {
+        color: var(--color-primary-light, #14b8a6);
+      }
     }
   }
 

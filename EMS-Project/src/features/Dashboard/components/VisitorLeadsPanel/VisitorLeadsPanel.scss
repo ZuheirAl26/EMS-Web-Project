@@ -368,18 +368,36 @@
                   color: #047857;
                   background: #f0fdf4;
                   border-color: #bbf7d0;
+
+                  [data-theme="dark"] & {
+                    color: #34d399;
+                    background: rgba(16, 185, 129, 0.15);
+                    border-color: rgba(16, 185, 129, 0.3);
+                  }
                 }
 
                 &.email-chip {
                   color: #0369a1;
                   background: #f0f9ff;
                   border-color: #bae6fd;
+
+                  [data-theme="dark"] & {
+                    color: #38bdf8;
+                    background: rgba(14, 165, 233, 0.15);
+                    border-color: rgba(14, 165, 233, 0.3);
+                  }
                 }
 
                 &.location-chip {
                   color: #b45309;
                   background: #fffbeb;
                   border-color: #fde68a;
+
+                  [data-theme="dark"] & {
+                    color: #fbbf24;
+                    background: rgba(245, 158, 11, 0.15);
+                    border-color: rgba(245, 158, 11, 0.3);
+                  }
                 }
               }
             }

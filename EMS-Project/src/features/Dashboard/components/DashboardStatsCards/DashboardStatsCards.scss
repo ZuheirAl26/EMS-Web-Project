@@ -67,6 +67,11 @@
       .icon-wrapper {
         background: var(--color-primary-surface, #f0fafa);
         color: var(--color-primary, #0a8782);
+
+        [data-theme="dark"] & {
+          background: rgba(10, 135, 130, 0.2);
+          color: #14b8a6;
+        }
       }
     }
 
@@ -74,6 +79,11 @@
       .icon-wrapper {
         background: #e0f2fe;
         color: #0284c7;
+
+        [data-theme="dark"] & {
+          background: rgba(2, 132, 199, 0.18);
+          color: #38bdf8;
+        }
       }
     }
 
@@ -81,6 +91,11 @@
       .icon-wrapper {
         background: #fef3c7;
         color: #d97706;
+
+        [data-theme="dark"] & {
+          background: rgba(217, 119, 6, 0.18);
+          color: #fbbf24;
+        }
       }
     }
 
@@ -88,6 +103,11 @@
       .icon-wrapper {
         background: #dcfce7;
         color: #16a34a;
+
+        [data-theme="dark"] & {
+          background: rgba(22, 163, 74, 0.18);
+          color: #4ade80;
+        }
       }
     }
   }

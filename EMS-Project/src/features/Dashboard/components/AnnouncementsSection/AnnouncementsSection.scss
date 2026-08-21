@@ -56,7 +56,7 @@
 
         &:hover {
           background: var(--color-primary-surface, #f0fafa);
-          color: var(--color-primary, #0a8782);
+          color: var(--color-primary-light, var(--color-primary, #0a8782));
           border-color: var(--color-primary-a30);
         }
       }
@@ -157,7 +157,7 @@
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.03em;
-          color: var(--color-primary, #0a8782);
+          color: var(--color-primary-light, var(--color-primary, #0a8782));
           background: var(--color-primary-surface, #f0fafa);
           padding: 2px 8px;
           border-radius: 6px;

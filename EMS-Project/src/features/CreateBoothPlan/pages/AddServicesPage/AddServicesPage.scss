@@ -5,7 +5,7 @@
     grid-template-columns: minmax(200px, 1.3fr) repeat(2, minmax(0, 1fr)) auto;
     align-items: end;
     gap: 12px;
-    border: 1px solid var(--color-neutral-200);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
     background: var(--color-page);
 
@@ -28,10 +28,10 @@
       width: 100%;
       height: 36px;
       padding: 8px 10px;
-      border: 1px solid var(--color-neutral-200);
+      border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       outline: none;
-      background: var(--color-white);
+      background: var(--color-bg-white);
       color: var(--color-ink);
       font: inherit;
       font-size: 12px;
@@ -67,7 +67,7 @@
     }
 
     > span {
-      color: var(--color-primary);
+      color: var(--color-primary-light, var(--color-primary));
     }
   }
 
@@ -86,15 +86,15 @@
       border: 1px solid var(--color-primary);
       border-radius: var(--radius-lg);
       background: var(--color-primary);
-      color: var(--color-white);
+      color: #ffffff;
       font-size: 11px;
       font-weight: 700;
       white-space: nowrap;
       cursor: pointer;
 
       + button {
-        border-color: var(--color-neutral-200);
-        background: var(--color-white);
+        border-color: var(--color-border);
+        background: var(--color-bg-white);
         color: var(--color-neutral-600);
       }
     }
@@ -113,9 +113,9 @@
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    border: 1px solid var(--color-neutral-200);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
-    background: var(--color-white);
+    background: var(--color-bg-white);
 
     > div:first-child {
       min-width: 0;
@@ -169,9 +169,9 @@
       display: grid;
       flex: 0 0 auto;
       place-items: center;
-      border: 1px solid var(--color-neutral-200);
+      border: 1px solid var(--color-border);
       border-radius: var(--radius-pill);
-      background: var(--color-white);
+      background: var(--color-bg-white);
       color: var(--color-neutral-600);
       cursor: pointer;
 
@@ -206,7 +206,7 @@
     justify-content: center;
     flex-direction: column;
     gap: 6px;
-    border: 1px dashed var(--color-neutral-300);
+    border: 1px dashed var(--color-border);
     border-radius: var(--radius-2xl);
     color: var(--color-neutral-500);
     font-size: 12px;
@@ -231,7 +231,7 @@
     padding: 8px 16px;
     border-radius: var(--radius-lg);
     background: var(--color-primary);
-    color: var(--color-white);
+    color: #ffffff;
     font-size: 12px;
     font-weight: 700;
     text-decoration: none;
@@ -244,9 +244,9 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    border: 1px solid var(--color-neutral-200);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-xl);
-    background: var(--color-white);
+    background: var(--color-bg-white);
     color: var(--color-neutral-600);
     font: inherit;
     font-size: 13px;

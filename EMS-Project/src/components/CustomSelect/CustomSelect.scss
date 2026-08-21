@@ -169,8 +169,8 @@
       }
 
       &:hover {
-        background: var(--color-primary-a08);
-        color: var(--color-primary-dark);
+        background: var(--color-primary-surface, rgba(10, 135, 130, 0.08));
+        color: var(--color-primary);
       }
 
       &.selected {

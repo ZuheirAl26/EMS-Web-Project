@@ -1,9 +1,9 @@
 .booth-map {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--color-neutral-200);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
-  background: var(--color-white);
+  background: var(--color-bg-white);
 
   &__toolbar {
     min-height: 58px;
@@ -12,7 +12,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    border-bottom: 1px solid var(--color-neutral-200);
+    border-bottom: 1px solid var(--color-border);
 
     > div:first-child {
       min-width: 0;
@@ -46,15 +46,15 @@
       padding: 0;
       display: grid;
       place-items: center;
-      border: 1px solid var(--color-neutral-200);
+      border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      background: var(--color-white);
+      background: var(--color-bg-white);
       color: var(--color-neutral-600);
       cursor: pointer;
 
       &:hover:not(:disabled) {
         border-color: var(--color-primary);
-        color: var(--color-primary);
+        color: var(--color-primary-light, var(--color-primary));
       }
 
       &:disabled {
@@ -74,11 +74,31 @@
   &__viewport {
     height: 520px;
     overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-neutral-300) transparent;
     background:
       linear-gradient(var(--color-page) 1px, transparent 1px),
       linear-gradient(90deg, var(--color-page) 1px, transparent 1px),
-      var(--color-white);
+      var(--color-bg-white);
     background-size: 24px 24px;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-neutral-300);
+      border-radius: 999px;
+
+      &:hover {
+        background: var(--color-neutral-400);
+      }
+    }
   }
 
   &__surface {
@@ -91,7 +111,7 @@
       width: 100%;
       height: auto;
       display: block;
-      background: var(--color-white);
+      background: var(--color-bg-white);
     }
 
     object {
@@ -116,7 +136,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 16px;
-    border-top: 1px solid var(--color-neutral-200);
+    border-top: 1px solid var(--color-border);
 
     span {
       display: inline-flex;

@@ -28,7 +28,7 @@
     position: relative;
     min-height: 500px;
     overflow: hidden;
-    border: 1px solid var(--color-neutral-200);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
     background: var(--color-page);
 
@@ -56,9 +56,9 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--color-neutral-200);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
-    background: var(--color-white);
+    background: var(--color-bg-white);
   }
 
   &__results-heading {
@@ -68,7 +68,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    border-bottom: 1px solid var(--color-neutral-200);
+    border-bottom: 1px solid var(--color-border);
 
     > .skeleton:first-child {
       height: 14px;

@@ -36,9 +36,9 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    border: 1px solid var(--color-neutral-200);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    background: var(--color-white);
+    background: var(--color-bg-white);
     color: var(--color-ink);
     font: inherit;
     font-size: 11px;
@@ -48,7 +48,7 @@
 
     &:hover {
       border-color: var(--color-primary-a30);
-      color: var(--color-primary);
+      color: var(--color-primary-light, var(--color-primary));
     }
 
     &:focus-visible {
@@ -92,9 +92,9 @@
   &__company-state {
     min-height: 320px;
     padding: 32px;
-    border: 1px solid var(--color-neutral-200);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
-    background: var(--color-white);
+    background: var(--color-bg-white);
 
     > p {
       margin: 0;
