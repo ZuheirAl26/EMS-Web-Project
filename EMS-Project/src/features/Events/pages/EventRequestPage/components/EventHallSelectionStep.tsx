@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight02Icon } from "@hugeicons/core-free-icons";
 import { useTranslation } from "react-i18next";
@@ -29,6 +30,15 @@ export function EventHallSelectionStep({
   priceFormatter,
 }: EventHallSelectionStepProps) {
   const { t } = useTranslation("events");
+  const selectedHallRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    selectedHallRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  }, [selectedHallId]);
+
   return (
     <section
       className="event-request-page__card"
@@ -96,6 +106,7 @@ export function EventHallSelectionStep({
                     }
                     key={hall.id}
                     onClick={() => selectHall(hall)}
+                    ref={selected ? selectedHallRef : undefined}
                     type="button"
                   >
                     <span>

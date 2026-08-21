@@ -40,10 +40,7 @@ export function EventRequestPage() {
   const [errors, setErrors] = useState<FormErrors>({});
 
   const halls = useMemo(
-    () =>
-      (eventHallsQuery.data?.data ?? []).filter(
-        (hall) => hall.number !== "M5",
-      ),
+    () => eventHallsQuery.data?.data ?? [],
     [eventHallsQuery.data?.data],
   );
   const selectedHall = useMemo(

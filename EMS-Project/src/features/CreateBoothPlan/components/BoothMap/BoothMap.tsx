@@ -71,6 +71,17 @@ export function BoothMap({ booths, selectedBoothId, onSelect }: BoothMapProps) {
           cursor: not-allowed;
           opacity: 0.65;
         }
+        #runtime-event-halls,
+        #runtime-event-halls * {
+          fill: #ffffff !important;
+          stroke: #94a3b8 !important;
+          stroke-width: 1.2 !important;
+          pointer-events: none !important;
+          cursor: default !important;
+        }
+        #runtime-event-halls text {
+          fill: #94a3b8 !important;
+        }
       `;
       mapDocument.documentElement.prepend(style);
     }

@@ -45,30 +45,46 @@ export function EventHallMap({
       );
       style.id = MAP_STYLE_ID;
       style.textContent = `
+        #runtime-booth-hitboxes,
+        #runtime-booth-hitboxes * {
+          pointer-events: none !important;
+        }
+        #runtime-booth_boundary,
+        #runtime-facility,
+        #runtime-entrance_exit {
+          pointer-events: none !important;
+        }
+        #runtime-event-halls text {
+          pointer-events: none !important;
+        }
         [data-ems-event-hall-state] {
           pointer-events: all !important;
-          cursor: pointer;
+          cursor: pointer !important;
           outline: none;
-          transition: opacity 160ms ease, filter 160ms ease;
+          transition: fill 160ms ease, stroke 160ms ease, filter 160ms ease;
         }
-        [data-ems-event-hall-state],
-        [data-ems-event-hall-state] * {
+        [data-ems-event-hall-state="available"] {
           fill: #d1fae5 !important;
           stroke: #047857 !important;
-          stroke-width: 1.6 !important;
+          stroke-width: 1.8 !important;
+          cursor: pointer !important;
         }
-        [data-ems-event-hall-state]:hover,
-        [data-ems-event-hall-state]:focus {
-          filter: drop-shadow(0 0 8px rgba(10, 135, 130, 0.65));
+        [data-ems-event-hall-state="available"]:hover,
+        [data-ems-event-hall-state="available"]:focus {
+          fill: #a7f3d0 !important;
+          stroke: #065f46 !important;
+          filter: drop-shadow(0 0 8px rgba(10, 135, 130, 0.65)) !important;
         }
-        [data-ems-event-hall-state="selected"],
+        [data-ems-event-hall-state="selected"] {
+          fill: #0a8782 !important;
+          stroke: #064e56 !important;
+          stroke-width: 2.2 !important;
+          cursor: pointer !important;
+          filter: drop-shadow(0 0 10px rgba(10, 135, 130, 0.8)) !important;
+        }
         [data-ems-event-hall-state="selected"] * {
           fill: #0a8782 !important;
           stroke: #064e56 !important;
-        }
-        [data-ems-event-hall-state="selected"] {
-          cursor: pointer;
-          filter: drop-shadow(0 0 10px rgba(10, 135, 130, 0.8));
         }
       `;
       mapDocument.documentElement.prepend(style);
@@ -78,7 +94,20 @@ export function EventHallMap({
     let matchedHalls = 0;
 
     halls.forEach((hall) => {
-      const hallElement = mapDocument.getElementById(hall.svg_id);
+      const rawId = hall.svg_id || hall.number;
+      const num = rawId.replace(/^[Mm]-?0?/, "");
+      const normalizedNum = hall.number.replace(/^[Mm]-?0?/, "");
+      const hallElement =
+        mapDocument.getElementById(hall.svg_id) ||
+        mapDocument.getElementById(`event-hall-${rawId.toLowerCase()}`) ||
+        mapDocument.getElementById(`event-hall-m${num.toLowerCase()}`) ||
+        mapDocument.getElementById(`event-hall-m${normalizedNum.toLowerCase()}`) ||
+        mapDocument.getElementById(hall.number) ||
+        mapDocument.getElementById(`M${num}`) ||
+        mapDocument.querySelector(`[data-hall-id="${hall.svg_id}"]`) ||
+        mapDocument.querySelector(`[data-hall-id="event-hall-m${num.toLowerCase()}"]`) ||
+        mapDocument.querySelector(`[data-hall-number="${hall.number}"]`) ||
+        mapDocument.querySelector(`[data-hall-number="M${normalizedNum}"]`);
       if (!hallElement) {
         return;
       }
