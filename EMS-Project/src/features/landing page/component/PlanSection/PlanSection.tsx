@@ -3,12 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "../../../../components";
 import "./PlanSection.scss";
 
-const planItems = [
-  "booth",
-  "launch",
-  "showcase",
-  "followUp",
-] as const;
+const planItems = ["booth", "launch", "showcase", "followUp"] as const;
 
 export function PlanSection() {
   const { t } = useTranslation("landing");
@@ -22,7 +17,10 @@ export function PlanSection() {
             <h2>{t("plan.title")}</h2>
           </div>
           <span>{t("plan.description")}</span>
-          <Link to="/register" style={{ textDecoration: "none", width: "fit-content" }}>
+          <Link
+            to={`${import.meta.env.VITE_API_URL}/volunteer/apply`}
+            style={{ textDecoration: "none", width: "fit-content" }}
+          >
             <Button size="hero" variant="secondary">
               {t("plan.button")}
             </Button>

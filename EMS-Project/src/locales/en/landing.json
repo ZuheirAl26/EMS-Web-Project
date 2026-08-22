@@ -6,7 +6,7 @@
     "home": "Home",
     "exhibition": "Exhibition",
     "floorMap": "Floor Map",
-    "plan": "Create Plan",
+    "plan": "Volunteers",
     "features": "Features",
     "blog": "Announcements",
     "announcements": "Announcements",
@@ -92,14 +92,15 @@
     "fairVisitors": "Fair Visitors",
     "appRating": "App Rating",
     "free": "Free",
+
     "alwaysFree": "Always Free"
   },
   "plan": {
     "eyebrow": "Start your journey with us",
-    "title": "Build Your Personal Section",
-    "description": "Manage your hall, schedule meetings, and get a personalized route through the halls. Scan a lead and manage your events.",
-    "button": "Create My Plan",
-    "cardTitle": "My Plan — Damascus International Fair 2026",
+    "title": "Want to Voulenteer at Damascus International Fair 2026?",
+    "description": "Participate as a volunteer and help organize the exhibition, receiving a volunteer certificate upon completion.",
+    "button": "Apply Now",
+    "cardTitle": "Our Plan — Damascus International Fair 2026",
     "items": {
       "booth": "A-03 Booth demo",
       "launch": "B-03 Product launch",
